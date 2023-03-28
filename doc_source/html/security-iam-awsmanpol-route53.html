@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>security-iam-awsmanpol-route53</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="aws-managed-policies-for-amazon-route-53">AWS managed policies for Amazon Route 53<a name="security-iam-awsmanpol-route53"></a></h1>
+<p>To add permissions to users, groups, and roles, it is easier to use AWS managed policies than to write policies yourself. It takes time and expertise to <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_create-console.html">create IAM customer managed policies</a> that provide your team with only the permissions they need. To get started quickly, you can use our AWS managed policies. These policies cover common use cases and are available in your AWS account. For more information about AWS managed policies, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html#aws-managed-policies">AWS managed policies</a> in the <em>IAM User Guide</em>.</p>
+<p>AWS services maintain and update AWS managed policies. You can’t change the permissions in AWS managed policies. Services occasionally add additional permissions to an AWS managed policy to support new features. This type of update affects all identities (users, groups, and roles) where the policy is attached. Services are most likely to update an AWS managed policy when a new feature is launched or when new operations become available. Services do not remove permissions from an AWS managed policy, so policy updates won’t break your existing permissions.</p>
+<p>Additionally, AWS supports managed policies for job functions that span multiple services. For example, the <code>ViewOnlyAccess</code> AWS managed policy provides read-only access to many AWS services and resources. When a service launches a new feature, AWS adds read-only permissions for new operations and resources. For a list and descriptions of job function policies, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_job-functions.html">AWS managed policies for job functions</a> in the <em>IAM User Guide</em>.</p>
+<h2 id="aws-managed-policy-amazonroute53fullaccess">AWS managed policy: AmazonRoute53FullAccess<a name="security-iam-awsmanpol-AmazonRoute53FullAccess"></a></h2>
+<p>You can attach the <code>AmazonRoute53FullAccess</code> policy to your IAM identities.</p>
+<p>This policy grants full access to Route 53 resources, including domain registration and health checking, but excluding Resolver.</p>
+<p><strong>Permissions details</strong></p>
+<p>This policy includes the following permissions. + <code>route53:*</code> – Lets you perform all Route 53 actions <em>except</em> the following: + Create and update alias records for which the value of <strong>Alias Target</strong> is a CloudFront distribution, an Elastic Load Balancing load balancer, an Elastic Beanstalk environment, or an Amazon S3 bucket. (With these permissions, you can create alias records for which the value of <strong>Alias Target</strong> is another record in the same hosted zone.) + Work with private hosted zones. + Work with domains. + Create, delete, and view CloudWatch alarms. + Render CloudWatch metrics in the Route 53 console. + <code>route53domains:*</code>– Lets you work with domains. + <code>cloudfront:ListDistributions</code> – Lets you create and update alias records for which the value of <strong>Alias Target</strong> is a CloudFront distribution.</p>
+<p>This permission isn’t required if you aren’t using the Route 53 console. Route 53 uses it only to get a list of distributions to display in the console. + <code>elasticloadbalancing:DescribeLoadBalancers</code> – Lets you create and update alias records for which the value of <strong>Alias Target</strong> is an Elastic Load Balancing load balancer.</p>
+<p>These permissions aren’t required if you aren’t using the Route 53 console. Route 53 uses it only to get a list of load balancers to display in the console. + <code>elasticbeanstalk:DescribeEnvironments</code> – Lets you create and update alias records for which the value of <strong>Alias Target</strong> is an Elastic Beanstalk environment.</p>
+<p>These permissions aren’t required if you aren’t using the Route 53 console. Route 53 uses it only to get a list of environments to display in the console. + <code>s3:ListBucket</code>, <code>s3:GetBucketLocation</code>, and <code>s3:GetBucketWebsite</code> – Let you create and update alias records for which the value of <strong>Alias Target</strong> is an Amazon S3 bucket. (You can create an alias to an Amazon S3 bucket only if the bucket is configured as a website endpoint; <code>s3:GetBucketWebsite</code> gets the required configuration information.)</p>
+<p>These permissions aren’t required if you aren’t using the Route 53 console. Route 53 uses these only to get a list of buckets to display in the console. + <code>ec2:DescribeVpcs</code> – Lets you display a list of VPCs. + <code>ec2:DescribeVpcEndpoints</code> – Lets you display a list of VPC endpoints. + <code>ec2:DescribeRegions</code> – Lets you display a list of Availability Zones. + <code>sns:ListTopics</code>, <code>sns:ListSubscriptionsByTopic</code>, <code>cloudwatch:DescribeAlarms</code> – Let you create, delete, and view CloudWatch alarms. + <code>cloudwatch:GetMetricStatistics</code> – Lets you create CloudWatch metric health checks.</p>
+<p>These permissions aren’t required if you aren’t using the Route 53 console. Route 53 uses it only to get statistics to display in the console. + <code>apigateway:GET</code> – Lets you create and update alias records for which the value of <strong>Alias Target</strong> is an Amazon API Gateway API.</p>
+<p>This permission isn’t required if you aren’t using the Route 53 console. Route 53 uses it only to get a list of APIs to display in the console.</p>
+<p>For more information about the permissions, see <a href="r53-api-permissions-ref.html">Amazon Route 53 API permissions: Actions, resources, and conditions reference</a>,</p>
+<pre><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: [
+                &quot;route53:*&quot;,
+                &quot;route53domains:*&quot;,
+                &quot;cloudfront:ListDistributions&quot;,
+                &quot;elasticloadbalancing:DescribeLoadBalancers&quot;,
+                &quot;elasticbeanstalk:DescribeEnvironments&quot;,
+                &quot;s3:ListBucket&quot;,
+                &quot;s3:GetBucketLocation&quot;,
+                &quot;s3:GetBucketWebsite&quot;,
+                &quot;ec2:DescribeVpcs&quot;,
+                &quot;ec2:DescribeVpcEndpoints&quot;,
+                &quot;ec2:DescribeRegions&quot;,
+                &quot;sns:ListTopics&quot;,
+                &quot;sns:ListSubscriptionsByTopic&quot;,
+                &quot;cloudwatch:DescribeAlarms&quot;,
+                &quot;cloudwatch:GetMetricStatistics&quot;
+            ],
+            &quot;Resource&quot;: &quot;*&quot;
+        },
+        {
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: &quot;apigateway:GET&quot;,
+            &quot;Resource&quot;: &quot;arn:aws:apigateway:*::/domainnames&quot;
+        }
+    ]
+}</code></pre>
+<h2 id="aws-managed-policy-amazonroute53readonlyaccess">AWS managed policy: AmazonRoute53ReadOnlyAccess<a name="security-iam-awsmanpol-AmazonRoute53ReadOnlyAccess"></a></h2>
+<p>You can attach the <code>AmazonRoute53ReadOnlyAccess</code> policy to your IAM identities.</p>
+<p>This policy grants read-only access to Route 53 resources, including domain registration and health checking, but excluding Resolver.</p>
+<p><strong>Permissions details</strong></p>
+<p>This policy includes the following permissions. + <code>route53:Get*</code> – Gets the Route 53 resources. + <code>route53:List*</code> – Lists the Route 53 resources. + <code>route53:TestDNSAnswer</code> – Gets the value that Route 53 returns in response to a DNS request.</p>
+<p>For more information about the permissions, see <a href="r53-api-permissions-ref.html">Amazon Route 53 API permissions: Actions, resources, and conditions reference</a>,</p>
+<pre><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: [
+                &quot;route53:Get*&quot;,
+                &quot;route53:List*&quot;,
+                &quot;route53:TestDNSAnswer&quot;
+            ],
+            &quot;Resource&quot;: [
+                &quot;*&quot;
+            ]
+        }
+    ]
+}</code></pre>
+<h2 id="aws-managed-policy-amazonroute53domainsfullaccess">AWS managed policy: AmazonRoute53DomainsFullAccess<a name="security-iam-awsmanpol-AmazonRoute53DomainsFullAccess"></a></h2>
+<p>You can attach the <code>AmazonRoute53DomainsFullAccess</code> policy to your IAM identities.</p>
+<p>This policy grants full access to Route 53 domain registration resources.</p>
+<p><strong>Permissions details</strong></p>
+<p>This policy includes the following permissions. + <code>route53:CreateHostedZone</code> – Lets you create a Route 53 hosted zone. + <code>route53domains:*</code> – Lets you register domain names and perform related operations.</p>
+<p>For more information about the permissions, see <a href="r53-api-permissions-ref.html">Amazon Route 53 API permissions: Actions, resources, and conditions reference</a>,</p>
+<pre><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: [
+                &quot;route53:CreateHostedZone&quot;,
+                &quot;route53domains:*&quot;
+            ],
+            &quot;Resource&quot;: [
+                &quot;*&quot;
+            ]
+        }
+    ]
+}</code></pre>
+<h2 id="aws-managed-policy-amazonroute53domainsreadonlyaccess">AWS managed policy: AmazonRoute53DomainsReadOnlyAccess<a name="security-iam-awsmanpol-AmazonRoute53DomainsReadOnlyAccess"></a></h2>
+<p>You can attach the <code>AmazonRoute53DomainsReadOnlyAccess</code> policy to your IAM identities.</p>
+<p>This policy grants read-only access to Route 53 domain registration resources.</p>
+<p><strong>Permissions details</strong></p>
+<p>This policy includes the following permissions. + <code>route53domains:Get*</code> – Lets you retrieve a list of domains from Route 53. + <code>route53domains:List*</code> – Lets you display a list of Route 53 domains.</p>
+<p>For more information about the permissions, see <a href="r53-api-permissions-ref.html">Amazon Route 53 API permissions: Actions, resources, and conditions reference</a>,</p>
+<pre><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: [
+                &quot;route53domains:Get*&quot;,
+                &quot;route53domains:List*&quot;
+            ],
+            &quot;Resource&quot;: [
+                &quot;*&quot;
+            ]
+        }
+    ]
+}</code></pre>
+<h2 id="aws-managed-policy-amazonroute53resolverfullaccess">AWS managed policy: AmazonRoute53ResolverFullAccess<a name="security-iam-awsmanpol-AmazonRoute53ResolverFullAccess"></a></h2>
+<p>You can attach the <code>AmazonRoute53ResolverFullAccess</code> policy to your IAM identities.</p>
+<p>This policy grants full access to Route 53 Resolver resources.</p>
+<p><strong>Permissions details</strong></p>
+<p>This policy includes the following permissions. + <code>route53resolver:*</code> – Lets you create and manage Resolver resources on the Route 53 console. + <code>ec2:DescribeSubnets</code> – Lets you list your Amazon VPC subnets. + <code>ec2:CreateNetworkInterface</code>, <code>ec2:DeleteNetworkInterface</code>, and <code>ec2:ModifyNetworkInterfaceAttribute</code> – Let you create, modify, and delete network interfaces. + <code>ec2:DescribeNetworkInterfaces</code> – Lets you display a list of network interfaces. + <code>ec2:DescribeSecurityGroups</code> – Lets you display a list of all of your security groups. + <code>ec2:DescribeVpcs</code> – Lets you display a list of VPCs. + <code>ec2:DescribeAvailabilityZones</code> – Lets you list the zones that are available to you.</p>
+<p>For more information about the permissions, see <a href="r53-api-permissions-ref.html">Amazon Route 53 API permissions: Actions, resources, and conditions reference</a>,</p>
+<pre><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: [
+                &quot;route53resolver:*&quot;,
+                &quot;ec2:DescribeSubnets&quot;,
+                &quot;ec2:CreateNetworkInterface&quot;,
+                &quot;ec2:DeleteNetworkInterface&quot;,
+                &quot;ec2:ModifyNetworkInterfaceAttribute&quot;,
+                &quot;ec2:DescribeNetworkInterfaces&quot;,
+                &quot;ec2:CreateNetworkInterfacePermission&quot;,
+                &quot;ec2:DescribeSecurityGroups&quot;,
+                &quot;ec2:DescribeVpcs&quot;,
+                &quot;ec2:DescribeAvailabilityZones&quot;
+            ],
+            &quot;Resource&quot;: [
+                &quot;*&quot;
+            ]
+        }
+    ]
+}</code></pre>
+<h2 id="aws-managed-policy-amazonroute53resolverreadonlyaccess">AWS managed policy: AmazonRoute53ResolverReadOnlyAccess<a name="security-iam-awsmanpol-AmazonRoute53ResolverReadOnlyAccess"></a></h2>
+<p>You can attach the <code>AmazonRoute53ResolverReadOnlyAccess</code> policy to your IAM identities.</p>
+<p>This policy grants read-only access to Route 53 Resolver resources.</p>
+<p><strong>Permissions details</strong></p>
+<p>This policy includes the following permissions. + <code>route53resolver:Get*</code> – Lets you retrieve list of Resolver resources. + <code>route53resolver:List*</code> – Lets you display a list of Resolver resources. + <code>ec2:DescribeNetworkInterfaces</code> – Lets you display a list of network interfaces. + <code>ec2:DescribeSecurityGroups</code> – Lets you display a list of all of your security groups.</p>
+<p>For more information about the permissions, see <a href="r53-api-permissions-ref.html">Amazon Route 53 API permissions: Actions, resources, and conditions reference</a>,</p>
+<pre><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: [
+                &quot;route53resolver:Get*&quot;,
+                &quot;route53resolver:List*&quot;,
+                &quot;ec2:DescribeNetworkInterfaces&quot;,
+                &quot;ec2:DescribeSecurityGroups&quot;,
+                &quot;ec2:DescribeVpcs&quot;,
+                &quot;ec2:DescribeSubnets&quot;
+            ],
+            &quot;Resource&quot;: [
+                &quot;*&quot;
+            ]
+        }
+    ]
+}</code></pre>
+<h2 id="aws-managed-policy-route53resolverservicerolepolicy">AWS managed policy: Route53ResolverServiceRolePolicy<a name="security-iam-awsmanpol-Route53ResolverServiceRolePolicy"></a></h2>
+<p>You can’t attach <code>Route53ResolverServiceRolePolicy</code> to your IAM entities. This policy is attached to a service-linked role that allows Route 53 Resolver to access AWS services and resources that are used or managed by Resolver. For more information, see <a href="using-service-linked-roles.html">Using Service-Linked Roles for Amazon Route 53 Resolver</a>.</p>
+<h2 id="route-53-updates-to-aws-managed-policies">Route 53 updates to AWS managed policies<a name="security-iam-awsmanpol-route53-updates"></a></h2>
+<p>View details about updates to AWS managed policies for Route 53 since this service began tracking these changes. For automatic alerts about changes to this page, subscribe to the RSS feed on the Route 53 <a href="History.html">Document history page</a>.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Change</th>
+<th>Description</th>
+<th>Date</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Route 53 started tracking changes</td>
+<td>Route 53 started tracking changes for its AWS managed policies.</td>
+<td>July 14, 2021</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

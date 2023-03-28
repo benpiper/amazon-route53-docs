@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>routing-to-app-runner</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="routing-traffic-to-an-aws-app-runner-service">Routing traffic to an AWS App Runner service<a name="routing-to-app-runner"></a></h1>
+<p>AWS App Runner is a fully managed service that makes it easy for developers to deploy containerized web applications and APIs at scale and with no prior infrastructure experience required. Start with your source code or a container image. App Runner builds and deploys the web application automatically, load balances traffic with encryption, scales to meet your traffic needs, and makes it easy for your services to communicate with other AWS services and applications that run in a private Amazon VPC. With App Runner, rather than thinking about servers or scaling, you have more time to focus on your applications. For more information, see <a href="https://docs.aws.amazon.com/apprunner/latest/dg/what-is-apprunner.html">What is AWS App Runner</a> in the <em>AWS App Runner Developer Guide.</em></p>
+<p><strong>Important</strong><br />
+Amazon Route 53 currently supports alias records for AWS App Runner services that are created after August 1, 2022.</p>
+<p>To route domain traffic to an App Runner Service, use Amazon Route 53 to create an <a href="resource-record-sets-choosing-alias-non-alias.html">alias record</a> that points to your App Runner service. An alias record is a Route 53 extension to DNS. It’s similar to a CNAME record, except you can create an alias record both for the root domain, such as example.com, and for subdomains, such as www.example.com (http://www.example.com/). You can create only CNAME records for subdomains.</p>
+<p><strong>Note</strong><br />
+Route 53 doesn’t charge for alias queries to App Runner service or other AWS resources.</p>
+<h2 id="prerequisites">Prerequisites<a name="routing-to-app-runner-prereqs"></a></h2>
+<p>To get started, you need the following: + An App Runner service. For information about creating an App Runner service, see <a href="https://docs.aws.amazon.com/apprunner/latest/dg/getting-started.html">Getting started with App Runner</a>. + A registered domain name. You can use Amazon Route 53 as your domain registrar, or you can use a different registrar. + Route 53 as the DNS service for the domain. If you register your domain name by using Route 53, we automatically configure Route 53 as the DNS service for the domain.</p>
+<p>For information about using Route 53 as the DNS service provider for your domain, see <a href="MigratingDNS.html">Making Amazon Route 53 the DNS service for an existing domainMaking Route 53 the DNS service for an existing domain</a>. + Associated the custom domain to your App Runner service. For more information, see <a href="https://docs.aws.amazon.com/apprunner/latest/dg/manage-custom-domains.html">Managing custom domain names for App Runner</a>. + Configure the certificate validation record returned by App Runner to you Route 53 hosted zone to start the domain validation process. For more information, see <a href="https://docs.aws.amazon.com/acm/latest/userguide/dns-validation.html">DNS validation in the AWS Certificate Manager</a> in the <em>AWS Certificate Manager User Guide.</em></p>
+<h2 id="configuring-amazon-route-53-to-route-traffic-to-an-app-runner-service">Configuring Amazon Route 53 to route traffic to an App Runner service<a name="routing-to-app-runner-configuring"></a></h2>
+<p>To configure Amazon Route 53 to route traffic to an App Runner service, perform the following procedure.<a name="routing-to-app-runner-procedure"></a></p>
+<p><strong>To route traffic to an App Runner service</strong></p>
+<ol type="1">
+<li><p>Open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Hosted zones</strong>.</p></li>
+<li><p>Choose the name of the hosted zone that matches the name of the domain that you want to route traffic for.</p></li>
+<li><p>Choose <strong>Create record</strong>.</p></li>
+<li><p>Specify the following values:<br />
+<strong>Routing policy</strong><br />
+Choose the applicable routing policy. For more information, see <a href="routing-policy.html">Choosing a routing policy</a>.<br />
+<strong>Record name</strong><br />
+Enter the domain name that you want to use to route traffic to your App Runner service. The default value is the name of the hosted zone.<br />
+For example, if the name of the hosted zone is example.com and you want to use acme.example.com to route traffic to your App Runner service, enter <strong>acme</strong>.<br />
+<strong>Value/Route traffic to</strong><br />
+Choose <strong>Alias to App Runner Service</strong>, then choose the AWS Region. Choose the domain name of the environment that you want to route traffic to.<br />
+<strong>Record type</strong><br />
+Accept the default value, <strong>A – IPv4 address</strong>.<br />
+<strong>Evaluate target health</strong><br />
+Accept the default value of <strong>Yes</strong>.</p></li>
+<li><p>Choose <strong>Create records</strong>.</p>
+<p>Changes generally propagate to all Route 53 servers within 60 seconds. When propagation is done, you’ll be able to route traffic to your App Runner service by using the name of the alias record that you created in this procedure.</p></li>
+</ol>
+</body>
+</html>

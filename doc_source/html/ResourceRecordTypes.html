@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>ResourceRecordTypes</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="supported-dns-record-types">Supported DNS record types<a name="ResourceRecordTypes"></a></h1>
+<p>Amazon Route 53 supports the DNS record types that are listed in this section. Each record type also includes an example of how to format the <code>Value</code> element when you are accessing Route 53 using the API.</p>
+<p><strong>Note</strong><br />
+For record types that include a domain name, enter a fully qualified domain name, for example, <em>www.example.com</em>. The trailing dot is optional; Route 53 assumes that the domain name is fully qualified. This means that Route 53 treats <em>www.example.com</em> (without a trailing dot) and <em>www.example.com.</em> (with a trailing dot) as identical.</p>
+<p>Route 53 provides an extension to DNS functionality known as alias records. Similar to CNAME records, alias records let you route traffic to selected AWS resources, such as CloudFront distributions and Amazon S3 buckets. For more information, including a comparison of alias and CNAME records, see <a href="resource-record-sets-choosing-alias-non-alias.html">Choosing between alias and non-alias records</a>.</p>
+<p><strong>Topics</strong> + <a href="#AFormat">A record type</a> + <a href="#AAAAFormat">AAAA record type</a> + <a href="#CAAFormat">CAA record type</a> + <a href="#CNAMEFormat">CNAME record type</a> + <a href="#DSFormat">DS record type</a> + <a href="#MXFormat">MX record type</a> + <a href="#NAPTRFormat">NAPTR record type</a> + <a href="#NSFormat">NS record type</a> + <a href="#PTRFormat">PTR record type</a> + <a href="#SOAFormat">SOA record type</a> + <a href="#SPFFormat">SPF record type</a> + <a href="#SRVFormat">SRV record type</a> + <a href="#TXTFormat">TXT record type</a></p>
+<h2 id="a-record-type">A record type<a name="AFormat"></a></h2>
+<p>You use an A record to route traffic to a resource, such as a web server, using an IPv4 address in dotted decimal notation.</p>
+<p><strong>Example for the Amazon Route 53 console</strong></p>
+<pre><code>1. 192.0.2.1</code></pre>
+<p><strong>Example for the Route 53 API</strong></p>
+<pre><code>1. &lt;Value&gt;192.0.2.1&lt;/Value&gt;</code></pre>
+<h2 id="aaaa-record-type">AAAA record type<a name="AAAAFormat"></a></h2>
+<p>You use an AAAA record to route traffic to a resource, such as a web server, using an IPv6 address in colon-separated hexadecimal format.</p>
+<p><strong>Example for the Amazon Route 53 console</strong></p>
+<pre><code>1. 2001:0db8:85a3:0:0:8a2e:0370:7334</code></pre>
+<p><strong>Example for the Route 53 API</strong></p>
+<pre><code>1. &lt;Value&gt;2001:0db8:85a3:0:0:8a2e:0370:7334&lt;/Value&gt;</code></pre>
+<h2 id="caa-record-type">CAA record type<a name="CAAFormat"></a></h2>
+<p>A CAA record specifies which certificate authorities (CAs) are allowed to issue certificates for a domain or subdomain. Creating a CAA record helps to prevent the wrong CAs from issuing certificates for your domains. A CAA record isn’t a substitute for the security requirements that are specified by your certificate authority, such as the requirement to validate that you’re the owner of a domain.</p>
+<p>You can use CAA records to specify the following: + Which certificate authorities (CAs) can issue SSL/TLS certificates, if any + The email address or URL to contact when a CA issues a certificate for the domain or subdomain</p>
+<p>When you add a CAA record to your hosted zone, you specify three settings separated by spaces:</p>
+<p><code>flags tag "value"</code></p>
+<p>Note the following about the format for CAA records: + The value of <code>tag</code> can contain only the characters A-Z, a-z, and 0-9. + Always enclose <code>value</code> in quotation marks (""). + Some CAs allow or require additional values for <code>value</code>. Specify additional values as name-value pairs, and separate them with semicolons (;), for example:</p>
+<p><code>0 issue "ca.example.net; account=123456"</code> + If a CA receives a request for a certificate for a subdomain (such as www.example.com) and if no CAA record for the subdomain exists, the CA submits a DNS query for a CAA record for the parent domain (such as example.com). If a record for the parent domain exists and if the certificate request is valid, the CA issues the certificate for the subdomain. + We recommend that you consult with your CA to determine what values to specify for a CAA record. + You can’t create a CAA record and a CNAME record that have the same name because DNS doesn’t allow using the same name for both a CNAME record and any other type of record.</p>
+<p><strong>Topics</strong> + <a href="#CAAFormat-issue">Authorize a CA to issue a certificate for a domain or subdomain</a> + <a href="#CAAFormat-issue-wild">Authorize a CA to issue a wildcard certificate for a domain or subdomain</a> + <a href="#CAAFormat-prevent-issue">Prevent any CA from issuing a certificate for a domain or subdomain</a> + <a href="#CAAFormat-contact">Request that any CA contacts you if the CA receives an invalid certificate request</a> + <a href="#CAAFormat-custom-setting">Use another setting that is supported by the CA</a> + <a href="#CAAFormat-examples">Examples</a></p>
+<h3 id="authorize-a-ca-to-issue-a-certificate-for-a-domain-or-subdomain">Authorize a CA to issue a certificate for a domain or subdomain<a name="CAAFormat-issue"></a></h3>
+<p>To authorize a CA to issue a certificate for a domain or subdomain, create a record that has the same name as the domain or subdomain, and specify the following settings: + <strong>flags</strong> – <code>0</code> + <strong>tag</strong> – <code>issue</code> + <strong>value</strong> – the code for the CA that you authorize to issue a certificate for the domain or subdomain</p>
+<p>For example, suppose you want to authorize ca.example.net to issue a certificate for example.com. You create a CAA record for example.com with the following settings:</p>
+<pre><code>0 issue &quot;ca.example.net&quot;</code></pre>
+<p>For information about how to authorize AWS Certificate Manager to issue a certificate, see <a href="https://docs.aws.amazon.com/acm/latest/userguide/setup-caa.html">Configure a CAA record</a> in the <em>AWS Certificate Manager User Guide</em>.</p>
+<h3 id="authorize-a-ca-to-issue-a-wildcard-certificate-for-a-domain-or-subdomain">Authorize a CA to issue a wildcard certificate for a domain or subdomain<a name="CAAFormat-issue-wild"></a></h3>
+<p>To authorize a CA to issue a wildcard certificate for a domain or subdomain, create a record that has the same name as the domain or subdomain, and specify the following settings. A wildcard certificate applies to the domain or subdomain and all of its subdomains. + <strong>flags</strong> – <code>0</code> + <strong>tag</strong> – <code>issuewild</code> + <strong>value</strong> – the code for the CA that you authorize to issue a certificate for a domain or subdomain, and its subdomains</p>
+<p>For example, suppose you want to authorize ca.example.net to issue a wildcard certificate for example.com, which applies to example.com and all of its subdomains. You create a CAA record for example.com with the following settings:</p>
+<pre><code>0 issuewild &quot;ca.example.net&quot;</code></pre>
+<p>When you want to authorize a CA to issue a wildcard certificate for a domain or subdomain, create a record that has the same name as the domain or subdomain, and specify the following settings. A wildcard certificate applies to the domain or subdomain and all of its subdomains.</p>
+<h3 id="prevent-any-ca-from-issuing-a-certificate-for-a-domain-or-subdomain">Prevent any CA from issuing a certificate for a domain or subdomain<a name="CAAFormat-prevent-issue"></a></h3>
+<p>To prevent any CA from issuing a certificate for a domain or subdomain, create a record that has the same name as the domain or subdomain, and specify the following settings: + <strong>flags</strong> – <code>0</code> + <strong>tag</strong> – <code>issue</code> + <strong>value</strong> – <code>";"</code></p>
+<p>For example, suppose you don’t want any CA to issue a certificate for example.com. You create a CAA record for example.com with the following settings:</p>
+<p><code>0 issue ";"</code></p>
+<p>If you don’t want any CA to issue a certificate for example.com or its subdomains, you create a CAA record for example.com with the following settings:</p>
+<p><code>0 issuewild ";"</code></p>
+<p><strong>Note</strong><br />
+If you create a CAA record for example.com and specify both of the following values, a CA that is using the value ca.example.net can issue the certificate for example.com:</p>
+<pre><code>0 issue &quot;;&quot;
+0 issue &quot;ca.example.net&quot;</code></pre>
+<h3 id="request-that-any-ca-contacts-you-if-the-ca-receives-an-invalid-certificate-request">Request that any CA contacts you if the CA receives an invalid certificate request<a name="CAAFormat-contact"></a></h3>
+<p>If you want any CA that receives an invalid request for a certificate to contact you, specify the following settings: + <strong>flags</strong> – <code>0</code> + <strong>tag</strong> – <code>iodef</code> + <strong>value</strong> – the URL or email address that you want the CA to notify if the CA receives an invalid request for a certificate. Use the applicable format:</p>
+<p><code>"mailto:email-address"</code></p>
+<p><code>"http://URL"</code></p>
+<p><code>"https://URL"</code></p>
+<p>For example, if you want any CA that receives an invalid request for a certificate to send email to admin@example.com, you create a CAA record with the following settings:</p>
+<pre><code>0 iodef &quot;mailto:admin@example.com&quot;</code></pre>
+<h3 id="use-another-setting-that-is-supported-by-the-ca">Use another setting that is supported by the CA<a name="CAAFormat-custom-setting"></a></h3>
+<p>If your CA supports a feature that isn’t defined in the RFC for CAA records, specify the following settings: + <strong>flags</strong> – 128 (This value prevents the CA from issuing a certificate if the CA doesn’t support the specified feature.) + <strong>tag</strong> – the tag that you authorize the CA to use + <strong>value</strong> – the value that corresponds with the value of tag</p>
+<p>For example, suppose your CA supports sending a text message if the CA receives an invalid certificate request. (We aren’t aware of any CAs that support this option.) Settings for the record might be the following:</p>
+<pre><code>128 exampletag &quot;15555551212&quot;</code></pre>
+<h3 id="examples">Examples<a name="CAAFormat-examples"></a></h3>
+<p><strong>Example for the Route 53 console</strong></p>
+<pre><code>0 issue &quot;ca.example.net&quot;
+0 iodef &quot;mailto:admin@example.com&quot;</code></pre>
+<p><strong>Example for the Route 53 API</strong></p>
+<pre><code>&lt;ResourceRecord&gt;
+   &lt;Value&gt;0 issue &quot;ca.example.net&quot;&lt;/Value&gt;
+   &lt;Value&gt;0 iodef &quot;mailto:admin@example.com&quot;&lt;/Value&gt;
+&lt;/ResourceRecord&gt;</code></pre>
+<h2 id="cname-record-type">CNAME record type<a name="CNAMEFormat"></a></h2>
+<p>A CNAME record maps DNS queries for the name of the current record, such as acme.example.com, to another domain (example.com or example.net) or subdomain (acme.example.com or zenith.example.org).</p>
+<p><strong>Important</strong><br />
+The DNS protocol does not allow you to create a CNAME record for the top node of a DNS namespace, also known as the zone apex. For example, if you register the DNS name example.com, the zone apex is example.com. You cannot create a CNAME record for example.com, but you can create CNAME records for www.example.com, newproduct.example.com, and so on.<br />
+In addition, if you create a CNAME record for a subdomain, you cannot create any other records for that subdomain. For example, if you create a CNAME for www.example.com, you cannot create any other records for which the value of the <strong>Name</strong> field is www.example.com.</p>
+<p>Amazon Route 53 also supports alias records, which allow you to route queries to selected AWS resources, such as CloudFront distributions and Amazon S3 buckets. Aliases are similar in some ways to the CNAME record type; however, you can create an alias for the zone apex. For more information, see <a href="resource-record-sets-choosing-alias-non-alias.html">Choosing between alias and non-alias records</a>.</p>
+<p><strong>Example for the Route 53 console</strong></p>
+<pre><code>1. hostname.example.com</code></pre>
+<p><strong>Example for the Route 53 API</strong></p>
+<pre><code>1. &lt;Value&gt;hostname.example.com&lt;/Value&gt;</code></pre>
+<h2 id="ds-record-type">DS record type<a name="DSFormat"></a></h2>
+<p>A delegation signer (DS) record refers a zone key for a delegated subdomain zone. You might create a DS record when you establish a chain of trust when you configure DNSSEC signing. For more information about configuring DNSSEC in Route 53, see <a href="dns-configuring-dnssec.html">Configuring DNSSEC signing in Amazon Route 53</a>.</p>
+<p>The first three values are decimal numbers representing the key tag, algorithm, and digest type. The fourth value is the digest of the zone key. For more information about the DS record format, see <a href="https://www.ietf.org/rfc/rfc4034.txt">RFC 4034</a>.</p>
+<p><strong>Example for the Route 53 console</strong></p>
+<pre><code>1. 123 4 5 1234567890abcdef1234567890absdef</code></pre>
+<p><strong>Example for the Route 53 API</strong></p>
+<pre><code>1. &lt;Value&gt;123 4 5 1234567890abcdef1234567890absdef&lt;/Value&gt;</code></pre>
+<h2 id="mx-record-type">MX record type<a name="MXFormat"></a></h2>
+<p>An MX record specifies the names of your mail servers and, if you have two or more mail servers, the priority order. Each value for an MX record contains two values, priority and domain name.</p>
+<p><strong>Priority</strong><br />
+An integer that represents the priority for an email server. If you specify only one server, the priority can be any integer between 0 and 65535. If you specify multiple servers, the value that you specify for the priority indicates which email server you want email to be routed to first, second, and so on. The server with the lowest value for the priority takes precedence. For example, if you have two email servers and you specify values of 10 and 20 for the priority, email always goes to the server with a priority of 10 unless it’s unavailable. If you specify values of 10 and 10, email is routed to the two servers approximately equally.</p>
+<p><strong>Domain name</strong><br />
+The domain name of the email server. Specify the name (such as mail.example.com) of an A or AAAA record. In <a href="https://tools.ietf.org/html/rfc2181">RFC 2181, Clarifications to the DNS Specification</a>, section 10.3 forbids specifying the name of a CNAME record for the domain name value. (When the RFC mentions “alias,” it means a CNAME record, not a Route 53 alias record.)</p>
+<p><strong>Example for the Amazon Route 53 console</strong></p>
+<pre><code>1. 10 mail.example.com</code></pre>
+<p><strong>Example for the Route 53 API</strong></p>
+<pre><code>1. &lt;Value&gt;10 mail.example.com&lt;/Value&gt;</code></pre>
+<h2 id="naptr-record-type">NAPTR record type<a name="NAPTRFormat"></a></h2>
+<p>A Name Authority Pointer (NAPTR) is a type of record that is used by Dynamic Delegation Discovery System (DDDS) applications to convert one value to another or to replace one value with another. For example, one common use is to convert phone numbers into SIP URIs.</p>
+<p>The <code>Value</code> element for an NAPTR record consists of six space-separated values:</p>
+<p><strong>Order</strong><br />
+When you specify more than one record, the sequence that you want the DDDS application to evaluate records in. Valid values: 0-65535.</p>
+<p><strong>Preference</strong><br />
+When you specify two or more records that have the same <strong>Order</strong>, your preference for the sequence that those records are evaluated in. For example, if two records have an <strong>Order</strong> of 1, the DDDS application first evaluates the record that has the lower <strong>Preference</strong>. Valid values: 0-65535.</p>
+<p><strong>Flags</strong><br />
+A setting that is specific to DDDS applications. Values currently defined in <a href="https://www.ietf.org/rfc/rfc3404.txt">RFC 3404</a> are uppercase- and lowercase letters <strong>“A”</strong>, <strong>“P”</strong>, <strong>“S”</strong>, and <strong>“U”</strong>, and the empty string, <strong>""</strong>. Enclose <strong>Flags</strong> in quotation marks.</p>
+<p><strong>Service</strong><br />
+A setting that is specific to DDDS applications. Enclose <strong>Service</strong> in quotation marks.<br />
+For more information, see the applicable RFCs:<br />
++ <strong>URI DDDS application</strong> – <a href="https://tools.ietf.org/html/rfc3404#section-4.4">https://tools.ietf.org/html/rfc3404#section-4.4</a> + <strong>S-NAPTR DDDS application</strong> – <a href="https://tools.ietf.org/html/rfc3958#section-6.5">https://tools.ietf.org/html/rfc3958#section-6.5</a> + <strong>U-NAPTR DDDS application</strong> – <a href="https://tools.ietf.org/html/rfc4848#section-4.5">https://tools.ietf.org/html/rfc4848#section-4.5</a></p>
+<p><strong>Regexp</strong><br />
+A regular expression that the DDDS application uses to convert an input value into an output value. For example, an IP phone system might use a regular expression to convert a phone number that is entered by a user into a SIP URI. Enclose <strong>Regexp</strong> in quotation marks. Specify either a value for <strong>Regexp</strong> or a value for <strong>Replacement</strong>, but not both.<br />
+The regular expression can include any of the following printable ASCII characters:<br />
++ a-z + 0-9 + - (hyphen) + (space) + ! # $ % &amp; ’ ( ) * + , - / : ; &lt; = &gt; ? @ [ ] ^ _ ` { | } ~ . + " (quotation mark). To include a literal quote in a string, precede it with a \ character: \". + \ (backslash). To include a backslash in a string, precede it with a \ character: \\. Specify all other values, such as internationalized domain names, in octal format.<br />
+For the syntax for <strong>Regexp</strong>, see <a href="https://tools.ietf.org/html/rfc3402#section-3.2">RFC 3402, section 3.2, Substitution Expression Syntax</a></p>
+<p><strong>Replacement</strong><br />
+The fully qualified domain name (FQDN) of the next domain name that you want the DDDS application to submit a DNS query for. The DDDS application replaces the input value with the value that you specify for <strong>Replacement</strong>, if any. Specify either a value for <strong>Regexp</strong> or a value for <strong>Replacement</strong>, but not both. If you specify a value for <strong>Regexp</strong>, specify a dot (<strong>.</strong>) for <strong>Replacement</strong>.<br />
+The domain name can include a-z, 0-9, and - (hyphen).</p>
+<p>For more information about DDDS applications and about NAPTR records, see the following RFCs: + <a href="https://www.ietf.org/rfc/rfc3401.txt">RFC 3401</a> + <a href="https://www.ietf.org/rfc/rfc3402.txt">RFC 3402</a> + <a href="https://www.ietf.org/rfc/rfc3403.txt">RFC 3403</a> + <a href="https://www.ietf.org/rfc/rfc3404.txt">RFC 3404</a></p>
+<p><strong>Example for the Amazon Route 53 console</strong></p>
+<pre><code>1. 100 50 &quot;u&quot; &quot;E2U+sip&quot; &quot;!^(\\+441632960083)$!sip:\\1@example.com!&quot; .
+2. 100 51 &quot;u&quot; &quot;E2U+h323&quot; &quot;!^\\+441632960083$!h323:operator@example.com!&quot; .
+3. 100 52 &quot;u&quot; &quot;E2U+email:mailto&quot; &quot;!^.*$!mailto:info@example.com!&quot; .</code></pre>
+<p><strong>Example for the Route 53 API</strong></p>
+<pre><code>1. &lt;ResourceRecord&gt;
+2.    &lt;Value&gt;100 50 &quot;u&quot; &quot;E2U+sip&quot; &quot;!^(\\+441632960083)$!sip:\\1@example.com!&quot; .&lt;/Value&gt;
+3.    &lt;Value&gt;100 51 &quot;u&quot; &quot;E2U+h323&quot; &quot;!^\\+441632960083$!h323:operator@example.com!&quot; .&lt;/Value&gt;
+4.    &lt;Value&gt;100 52 &quot;u&quot; &quot;E2U+email:mailto&quot; &quot;!^.*$!mailto:info@example.com!&quot; .&lt;/Value&gt;
+5. &lt;/ResourceRecord&gt;</code></pre>
+<h2 id="ns-record-type">NS record type<a name="NSFormat"></a></h2>
+<p>An NS record identifies the name servers for the hosted zone. Note the following: + The most common use for an NS record is to control how internet traffic is routed for a domain. To use the records in a hosted zone to route traffic for a domain, you update the domain registration settings to use the four name servers in the default NS record. (This is the NS record that has the same name as the hosted zone.) + You can create a separate hosted zone for a subdomain (acme.example.com) and use that hosted zone to route internet traffic for the subdomain and its subdomains (subdomain.acme.example.com). You set up this configuration, known as “delegating responsibility for a subdomain to a hosted zone” by creating another NS record in the hosted zone for the root domain (example.com). For more information, see <a href="dns-routing-traffic-for-subdomains.html">Routing traffic for subdomains</a>. + You also use NS records to configure white-label name servers. For more information, see <a href="white-label-name-servers.html">Configuring white-label name servers</a>.</p>
+<p>For more information about NS records, see <a href="SOA-NSrecords.html">NS and SOA records that Amazon Route 53 creates for a public hosted zone</a>.</p>
+<p><strong>Example for the Amazon Route 53 console</strong></p>
+<pre><code>1. ns-1.example.com</code></pre>
+<p><strong>Example for the Route 53 API</strong></p>
+<pre><code>1. &lt;Value&gt;ns-1.example.com&lt;/Value&gt;</code></pre>
+<h2 id="ptr-record-type">PTR record type<a name="PTRFormat"></a></h2>
+<p>A PTR record maps an IP address to the corresponding domain name.</p>
+<p><strong>Example for the Amazon Route 53 console</strong></p>
+<pre><code>1. hostname.example.com</code></pre>
+<p><strong>Example for the Route 53 API</strong></p>
+<pre><code>1. &lt;Value&gt;hostname.example.com&lt;/Value&gt;</code></pre>
+<h2 id="soa-record-type">SOA record type<a name="SOAFormat"></a></h2>
+<p>A start of authority (SOA) record provides information about a domain and the corresponding Amazon Route 53 hosted zone. For information about the fields in an SOA record, see <a href="SOA-NSrecords.html">NS and SOA records that Amazon Route 53 creates for a public hosted zone</a>.</p>
+<p><strong>Example for the Route 53 console</strong></p>
+<pre><code>1. ns-2048.awsdns-64.net hostmaster.awsdns.com 1 1 1 1 60</code></pre>
+<p><strong>Example for the Route 53 API</strong></p>
+<pre><code>1. &lt;Value&gt;ns-2048.awsdns-64.net hostmaster.awsdns.com 1 1 1 1 60&lt;/Value&gt;</code></pre>
+<h2 id="spf-record-type">SPF record type<a name="SPFFormat"></a></h2>
+<p>SPF records were formerly used to verify the identity of the sender of email messages. However, we no longer recommend that you create records for which the record type is SPF. RFC 7208, <em>Sender Policy Framework (SPF) for Authorizing Use of Domains in Email, Version 1</em>, has been updated to say, “...[I]ts existence and mechanism defined in [RFC4408] have led to some interoperability issues. Accordingly, its use is no longer appropriate for SPF version 1; implementations are not to use it.” In RFC 7208, see section 14.1, <a href="http://tools.ietf.org/html/rfc7208#section-14.1">The SPF DNS Record Type</a>.</p>
+<p>Instead of an SPF record, we recommend that you create a TXT record that contains the applicable value. For more information about valid values, see the Wikipedia article <a href="https://en.wikipedia.org/wiki/Sender_Policy_Framework">Sender Policy Framework</a>.</p>
+<p><strong>Example for the Amazon Route 53 console</strong></p>
+<pre><code>1. &quot;v=spf1 ip4:192.168.0.1/16 -all&quot;</code></pre>
+<p><strong>Example for the Route 53 API</strong></p>
+<pre><code>1. &lt;Value&gt;&quot;v=spf1 ip4:192.168.0.1/16 -all&quot;&lt;/Value&gt;</code></pre>
+<h2 id="srv-record-type">SRV record type<a name="SRVFormat"></a></h2>
+<p>An SRV record <code>Value</code> element consists of four space-separated values. The first three values are decimal numbers representing priority, weight, and port. The fourth value is a domain name. SRV records are used for accessing services, such as a service for email or communications. For information about SRV record format, refer to the documentation for the service that you want to connect to.</p>
+<p><strong>Example for the Amazon Route 53 console</strong></p>
+<pre><code>1. 10 5 80 hostname.example.com</code></pre>
+<p><strong>Example for the Route 53 API</strong></p>
+<pre><code>1. &lt;Value&gt;10 5 80 hostname.example.com&lt;/Value&gt;</code></pre>
+<h2 id="txt-record-type">TXT record type<a name="TXTFormat"></a></h2>
+<p>A TXT record contains one or more strings that are enclosed in double quotation marks (<code>"</code>). When you use the simple <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy.html">routing policy</a>, include all values for a domain (example.com) or subdomain (www.example.com) in the same TXT record.</p>
+<p><strong>Topics</strong> + <a href="#TXTformat-limits">Entering TXT record values</a> + <a href="#TXTformat-special-characters">Special characters in a TXT record value</a> + <a href="#TXTformat-case">Uppercase and lowercase in a TXT record value</a> + <a href="#TXTformat-examples">Examples</a></p>
+<h3 id="entering-txt-record-values">Entering TXT record values<a name="TXTformat-limits"></a></h3>
+<p>A single string can include up to 255 characters, including the following: + a-z + A-Z + 0-9 + Space + - (hyphen) + ! " # $ % &amp; ’ ( ) * + , - / : ; &lt; = &gt; ? @ [ \ ] ^ _ ` { | } ~ .</p>
+<p>If you need to enter a value longer than 255 characters, break the value into strings of 255 characters or fewer, and enclose each string in double quotation marks (<code>"</code>). In the console, list all the strings on the same line:</p>
+<pre><code>1. &quot;String 1&quot; &quot;String 2&quot; &quot;String 3&quot;</code></pre>
+<p>For the API, include all the strings in the same <code>Value</code> element:</p>
+<pre><code>1. &lt;Value&gt;&quot;String 1&quot; &quot;String 2&quot; &quot;String 3&quot;&lt;/Value&gt;</code></pre>
+<p>The maximum length of a value in a TXT record is 4,000 characters.</p>
+<p>To enter more than one TXT value, enter one value per row.</p>
+<h3 id="special-characters-in-a-txt-record-value">Special characters in a TXT record value<a name="TXTformat-special-characters"></a></h3>
+<p>If your TXT record contains any of the following characters, you must specify the characters by using escape codes in the format <code>\</code><em>three-digit octal code</em>: + Characters 000 to 040 octal (0 to 32 decimal, 0x00 to 0x20 hexadecimal) + Characters 177 to 377 octal (127 to 255 decimal, 0x7F to 0xFF hexadecimal)</p>
+<p>For example, if the value of your TXT record is <code>"exämple.com"</code>, you specify <code>"ex\344mple.com"</code>.</p>
+<p>For a mapping between ASCII characters and octal codes, perform an internet search for “ascii octal codes.” One useful reference is <a href="https://www.ascii-code.com/">ASCII Code - The extended ASCII table</a>.</p>
+<p>To include a quotation mark (<code>"</code>) in a string, put a backslash (<code>\</code>) character before the quotation mark: <code>\"</code>.</p>
+<h3 id="uppercase-and-lowercase-in-a-txt-record-value">Uppercase and lowercase in a TXT record value<a name="TXTformat-case"></a></h3>
+<p>Case is preserved, so <code>"Ab"</code> and <code>"aB"</code> are different values.</p>
+<h3 id="examples-1">Examples<a name="TXTformat-examples"></a></h3>
+<p><strong>Example for the Amazon Route 53 console</strong></p>
+<p>Put each value on a separate line:</p>
+<pre><code>1. &quot;This string includes \&quot;quotation marks\&quot;.&quot;
+2. &quot;The last character in this string is an accented e specified in octal format: \351&quot;
+3. &quot;v=spf1 ip4:192.168.0.1/16 -all&quot;</code></pre>
+<p><strong>Example for the Route 53 API</strong></p>
+<p>Put each value in a separate <code>Value</code> element:</p>
+<pre><code>1. &lt;Value&gt;&quot;This string includes \&quot;quotation marks\&quot;.&quot;&lt;/Value&gt;
+2. &lt;Value&gt;&quot;The last character in this string is an accented e specified in octal format: \351&quot;&lt;/Value&gt;
+3. &lt;Value&gt;&quot;v=spf1 ip4:192.168.0.1/16 -all&quot;&lt;/Value&gt;</code></pre>
+</body>
+</html>

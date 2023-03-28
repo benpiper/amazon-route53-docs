@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>ListInfoOnHostedZone</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="listing-public-hosted-zones">Listing public hosted zones<a name="ListInfoOnHostedZone"></a></h1>
+<p>You can use the Amazon Route 53 console to list all of the hosted zones that you created with the current AWS account. For information about how to list hosted zones using the Route 53 API, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_ListHostedZones.html">ListHostedZones</a> in the <em>Amazon Route 53 API Reference</em>.</p>
+<p><strong>To list the public hosted zones associated with an AWS account using the Route 53 console</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Hosted zones</strong>. The page displays a list of the hosted zones that are associated with the AWS account that you are currently signed in with.</p></li>
+<li><p>To filter hosted zones, use the search bar located at the top of the table.</p></li>
+</ol>
+<p>Search behavior depends on whether the hosted zone contains up to 2,000 records or more than 2,000 records:</p>
+<p><strong>Up to 2,000 hosted zones</strong> + To display the records that have specific values, click the search bar, choose a property in the dropdown list, and enter a value. You can also enter a value directly in the search bar and press Enter. For example, to display the hosted zones that have a name beginning with <strong>abc</strong>, enter that value in the search bar and press Enter. + To display only the hosted zones that have the same hosted zone type, select the type in the dropdown list, and enter the type.</p>
+<p><strong>More than 2,000 hosted zones</strong> + You can search for properties based on exact domain name, all properties, and type. + Search using the exact domain name for faster search results.</p>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>routing-policy</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="choosing-a-routing-policy">Choosing a routing policy<a name="routing-policy"></a></h1>
+<p>When you create a record, you choose a routing policy, which determines how Amazon Route 53 responds to queries: + <strong>Simple routing policy</strong> – Use for a single resource that performs a given function for your domain, for example, a web server that serves content for the example.com website. You can use simple routing to create records in a private hosted zone. + <strong>Failover routing policy</strong> – Use when you want to configure active-passive failover. You can use failover routing to create records in a private hosted zone. + <strong>Geolocation routing policy</strong> – Use when you want to route traffic based on the location of your users. You can use geolocation routing to create records in a private hosted zone. + <strong>Geoproximity routing policy</strong> – Use when you want to route traffic based on the location of your resources and, optionally, shift traffic from resources in one location to resources in another. + <strong>Latency routing policy</strong> – Use when you have resources in multiple AWS Regions and you want to route traffic to the region that provides the best latency. You can use latency routing to create records in a private hosted zone. + <strong>IP-based routing policy</strong> – Use when you want to route traffic based on the location of your users, and have the IP addresses that the traffic originates from. + <strong>Multivalue answer routing policy</strong> – Use when you want Route 53 to respond to DNS queries with up to eight healthy records selected at random. You can use multivalue answer routing to create records in a private hosted zone. + <strong>Weighted routing policy</strong> – Use to route traffic to multiple resources in proportions that you specify. You can use weighted routing to create records in a private hosted zone.</p>
+<p><strong>Topics</strong> + <a href="routing-policy-simple.html">Simple routing</a> + <a href="routing-policy-failover.html">Failover routing</a> + <a href="routing-policy-geo.html">Geolocation routing</a> + <a href="routing-policy-geoproximity.html">Geoproximity routing (traffic flow only)</a> + <a href="routing-policy-latency.html">Latency-based routing</a> + <a href="routing-policy-ipbased.html">IP-based routing</a> + <a href="routing-policy-multivalue.html">Multivalue answer routing</a> + <a href="routing-policy-weighted.html">Weighted routing</a> + <a href="routing-policy-edns0.html">How Amazon Route 53 uses EDNS0 to estimate the location of a user</a></p>
+</body>
+</html>

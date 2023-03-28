@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resource-record-sets-move-geolocation-to-cidr</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="moving-a-geolocation-to-ip-based-routing">Moving a geolocation to IP-based routing<a name="resource-record-sets-move-geolocation-to-cidr"></a></h1>
+<p>If you are using either geolocation or geoproximity routing policies, and you’re consistently seeing specific clients routed to an endpoint that isn’t optimal based on their physical location or network topology, you can better target these clients’ public IP ranges by using IP-based routing.</p>
+<p>The following table contains an example geolocation configuration for an existing geolocation routing that we will fine-tune for California IP ranges.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Record set name</th>
+<th>Routing policy and origin</th>
+<th>IP address of the application endpoint</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>example.com</td>
+<td>Geolocation-routing (US)</td>
+<td><code>198.51.100.1</code></td>
+</tr>
+<tr class="even">
+<td>example.com</td>
+<td>Geolocation-routing (EU)</td>
+<td><code>198.51.100.2</code></td>
+</tr>
+</tbody>
+</table>
+<p>To override IP ranges from California to go to a new application endpoint, first recreate the geolocation routing under a new record set name.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Record set name</th>
+<th>Routing policy and origin</th>
+<th>IP address of the application endpoint</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>geo.example.com</td>
+<td>Geolocation-routing (US)</td>
+<td><code>198.51.100.1</code></td>
+</tr>
+<tr class="even">
+<td>geo.example.com</td>
+<td>Geoloaction-routing (EU)</td>
+<td><code>198.51.100.2</code></td>
+</tr>
+</tbody>
+</table>
+<p>Then, create IP-based routing records and a default record that points to your recently recreated geolocation routing recordset.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Record set name</th>
+<th>Routing policy and origin</th>
+<th>IP address of the application endpoint</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>example.com</td>
+<td>IP-based routing (default)</td>
+<td>Alias record to geo.example.com application endpoint that you want to be the default. For example, <code>198.51.100.1</code>.</td>
+</tr>
+<tr class="even">
+<td>example.com</td>
+<td>IP-based routing (California IP ranges)</td>
+<td><code>198.51.100.3</code></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

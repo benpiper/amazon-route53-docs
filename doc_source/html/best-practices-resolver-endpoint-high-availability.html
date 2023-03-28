@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>best-practices-resolver-endpoint-high-availability</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="high-availability-for-resolver-endpoints">High availability for Resolver endpoints<a name="best-practices-resolver-endpoint-high-availability"></a></h1>
+<p>When you create your Route 53 Resolver inbound endpoints, Route 53 requires that you create at least two IP addresses that the DNS resolvers on your network will forward queries to. You should also specify IP addresses in at least two Availability Zones for redundancy.</p>
+<p>If you require more than one elastic network interface endpoint to be available at all times, we recommend that you create at least one more network interface than you need, to make sure you have additional capacity available for handling possible traffic surges. The additional network interface also ensures availability during service operations like maintenance or upgrades.</p>
+<p>For more information, see <a href="resolver-forwarding-inbound-queries.html#resolver-forwarding-inbound-queries-values">Values that you specify when you create or edit inbound endpoints</a>.</p>
+</body>
+</html>

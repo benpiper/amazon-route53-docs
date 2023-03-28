@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>dns-configuring</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="configuring-amazon-route-53-as-your-dns-service">Configuring Amazon Route 53 as your DNS service<a name="dns-configuring"></a></h1>
+<p>You can use Amazon Route 53 as the DNS service for your domain, such as example.com. When Route 53 is your DNS service, it routes internet traffic to your website by translating friendly domain names like www.example.com into numeric IP addresses, like 192.0.2.1, that computers use to connect to each other. When someone types your domain name in a browser or sends you an email, a DNS query is forwarded to Route 53, which responds with the appropriate value. For example, Route 53 might respond with the IP address for the web server for example.com.</p>
+<p>In this chapter, we explain how to configure Route 53 to route your internet traffic to the right places. We also explain how to migrate DNS service to Route 53 if you’re currently using another DNS service, and how to use Route 53 as the DNS service for a new domain.</p>
+<p><strong>Topics</strong> + <a href="MigratingDNS.html">Making Amazon Route 53 the DNS service for an existing domain</a> + <a href="dns-configuring-new-domain.html">Configuring DNS routing for a new domain</a> + <a href="dns-routing-traffic-to-resources.html">Routing traffic to your resources</a> + <a href="hosted-zones-working-with.html">Working with hosted zones</a> + <a href="rrsets-working-with.html">Working with records</a> + <a href="traffic-flow.html">Using traffic flow to route DNS traffic</a> + <a href="dns-configuring-dnssec.html">Configuring DNSSEC signing in Amazon Route 53</a> + <a href="autonaming.html">Using AWS Cloud Map to create records and health checks</a> + <a href="DNSBehavior.html">DNS constraints and behaviors</a></p>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>health-checks-creating</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="creating-and-updating-health-checks">Creating and updating health checks<a name="health-checks-creating"></a></h1>
+<p>The following procedure describes how to create and update health checks using the Route 53 console.</p>
+<p><a name="health-checks-creating-console-proc"></a></p>
+<p><strong>To create or update a health check (console)</strong></p>
+<ol type="1">
+<li><p>If you’re updating health checks that are already associated with records, perform the recommended tasks in <a href="health-checks-updating-deleting-tasks.html">Updating or deleting health checks when DNS failover is configured</a>.</p></li>
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Health Checks</strong>.</p></li>
+<li><p>If you want to update an existing health check, select the health check, and then choose <strong>Edit Health Check</strong>.</p>
+<p>If you want to create a health check, choose <strong>Create Health Check</strong>. For more information about each setting, move the mouse pointer over a label to see its tooltip.</p></li>
+<li><p>Enter the applicable values. Note that some values can’t be changed after you create a health check. For more information, see <a href="health-checks-creating-values.html">Values that you specify when you create or update health checks</a>.</p></li>
+<li><p>Choose <strong>Create Health Check</strong>. <strong>Note</strong><br />
+Route 53 considers a new health check to be healthy until there’s enough data to determine the actual status, healthy or unhealthy. If you chose the option to invert the health check status, Route 53 considers a new health check to be <em>unhealthy</em> until there’s enough data.</p></li>
+<li><p>Associate the health check with one or more Route 53 records. For information about creating and updating records, see <a href="rrsets-working-with.html">Working with records</a>.</p></li>
+</ol>
+</body>
+</html>

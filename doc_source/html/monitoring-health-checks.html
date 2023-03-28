@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>monitoring-health-checks</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="monitoring-health-checks-using-cloudwatch">Monitoring health checks using CloudWatch<a name="monitoring-health-checks"></a></h1>
+<p>Route 53 health checks integrate with CloudWatch metrics so that you can do the following: + Verify that a health check is properly configured. + Review the status of a health check over a specified period of time. + Configure CloudWatch to send an Amazon SNS alert when the status of a health check is unhealthy. Note that several minutes might elapse between the time that a health check fails and the time that you receive the associated SNS notification.</p>
+<p>For more information, see <a href="dns-failover-determining-health-of-endpoints.html">How Amazon Route 53 determines whether a health check is healthyHow Route 53 determines whether a health check is healthy</a>. + <a href="#monitoring-status-procedure">To view the status of a health check (console)</a> + <a href="#monitoring-sns-notification-procedure">To receive an Amazon SNS notification when a health check status is unhealthy (console)</a> + <a href="#monitoring-alarm-status-procedure">To view CloudWatch alarm status and edit alarms for Amazon Route 53 (console)</a> + <a href="#monitoring-metrics-in-cloudwatch-console-procedure">To view Route 53 metrics on the CloudWatch console</a><a name="monitoring-status-procedure"></a></p>
+<p><strong>To view the status of a health check (console)</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Health Checks</strong>.</p></li>
+<li><p>Choose the rows for the applicable health checks.</p></li>
+<li><p>In the bottom pane, choose the <strong>Monitoring</strong> tab.</p>
+<p>The two graphs display the status for the last hour in one-minute intervals:<br />
+<strong>Health check status</strong><br />
+The graph shows the Route 53 assessment of endpoint health. <strong>1</strong> indicates healthy and <strong>0</strong> indicates unhealthy.<br />
+<strong>Health checkers that report the endpoint healthy (%)</strong><br />
+For health checks that monitor an endpoint only, the graph shows the percentage of Route 53 health checkers that consider the selected endpoint to be healthy.<br />
+When a health check is disabled, this metric isn’t available.<br />
+<strong>Number of healthy child health checks</strong><br />
+For calculated health checks only, the graph shows the number of child health checks that are healthy. <strong>Note</strong><br />
+If you selected more than one health check, the graph displays a separate color-coded line for each health check.</p></li>
+<li><p>To view a larger graph and specify different settings, click the graph. You can change the following settings:<br />
+<strong>Statistic</strong><br />
+Changes the calculation that CloudWatch performs on the data.<br />
+<strong>Time range</strong><br />
+Displays the status of a health check over a different period, for example, overnight or last week.<br />
+<strong>Period</strong><br />
+Changes the interval between data points in the graph.</p>
+<p>Note the following:</p>
+<ul>
+<li>If you just created a health check, you might need to wait for a few minutes for data to appear in the graph and for the health check metric to appear in the list of available metrics.</li>
+<li>The graph doesn’t refresh itself automatically. To update the display, choose the refresh (<img src="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/images/cloudwatch-refresh-icon.png" alt="[Icon to refresh the CloudWatch graph]" />) icon.<a name="monitoring-sns-notification-procedure"></a></li>
+</ul></li>
+</ol>
+<p><strong>To receive an Amazon SNS notification when a health check status is unhealthy (console)</strong></p>
+<ol type="1">
+<li><p>In the navigation pane of the Route 53 console, choose <strong>Health Checks</strong>.</p></li>
+<li><p>Choose the row for the applicable health check.</p></li>
+<li><p>In the bottom pane, choose the <strong>Alarms</strong> tab.</p>
+<p>The table lists the alarms that you’ve already created for this health check.</p></li>
+<li><p>Choose <strong>Create Alarm</strong>.</p></li>
+<li><p>Specify the following values:<br />
+<strong>Alarm name</strong><br />
+Enter the name that you want Route 53 to display in the <strong>Name</strong> column on the <strong>Alarms</strong> tab.<br />
+<strong>Alarm description</strong><br />
+(Optional) Enter a description for the alarm. This value appears in the CloudWatch console.<br />
+<strong>Send notification</strong><br />
+Choose whether you want Route 53 to send you notification if the status of this health check triggers an alarm.<br />
+<strong>Notification target (Only when “Send notification” is “Yes”)</strong><br />
+If you want CloudWatch to send notification to an existing SNS topic, choose the topic from the list.<br />
+If you want CloudWatch to send notification but not to an existing SNS topic, do one of the following:</p>
+<ul>
+<li><strong>If you want CloudWatch to send email notification</strong> – Choose <strong>New SNS topic</strong> and continue with this procedure.</li>
+<li><strong>If you want CloudWatch to send notification by another method</strong> – Open a new browser tab, go to the Amazon SNS console, and create the new topic. Then return to the Route 53 console, choose the name of the new topic from the <strong>Notification target</strong> list, and continue with this procedure.<br />
+<strong>Topic name (Only when you choose to create a new Amazon SNS topic)</strong><br />
+Enter a name for the new Amazon SNS topic.<br />
+<strong>Recipient email addresses (Only when you choose to create a new Amazon SNS topic)</strong><br />
+Enter the email address that you want Route 53 to send an SNS notification to when a health check triggers an alarm.<br />
+<strong>Alarm target</strong><br />
+Choose the value that you want Route 53 to evaluate for this health check:<br />
+</li>
+<li><strong>Health check status</strong> – Route 53 health checkers report that the health check is healthy or unhealthy</li>
+<li><strong>Health checkers that report the endpoint healthy (%)</strong> (health checks that monitor an endpoint only) – The percentage of Route 53 health checkers that report that the status of the health check is healthy</li>
+<li><strong>Number of healthy child health checks</strong> (calculated health checks only) – The number of child health checks in a calculated health check that report that the status of the health check is healthy</li>
+<li><strong>TCP connection time</strong> (HTTP and TCP health checks only) – The time in milliseconds that it took Route 53 health checkers to establish a TCP connection with the endpoint</li>
+<li><strong>Time to complete SSL handshake</strong> (HTTPS health checks only) – The time in milliseconds that it took Route 53 health checkers to complete the SSL/TLS handshake</li>
+<li><strong>Time to first byte</strong> (HTTP and HTTPS health checks only) – The time in milliseconds that it took Route 53 health checkers to receive the first byte of the response to an HTTP or HTTPS request<br />
+<strong>Alarm target</strong><br />
+For the alarm targets that are based on latency (<strong>TCP connection time</strong>, <strong>Time to complete SSL handshake</strong>, <strong>Time to first byte</strong>), choose whether you want CloudWatch to calculate latency for Route 53 health checkers in a specific region or for all regions (<strong>Global</strong>).<br />
+Note that if you choose a region, Route 53 measures latency only twice per minute, and the number of samples will be smaller than if you choose all regions. As a result, outlying values are more likely. To prevent spurious alarm notifications, we recommend that you specify a larger number of consecutive periods that the health check must fail before CloudWatch sends you a notification.<br />
+<strong>Fulfill condition</strong><br />
+Use the following settings to determine when CloudWatch should trigger an alarm.<br />
+****<br />
+<a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/monitoring-health-checks.html">[See the AWS documentation website for more details]</a><br />
+<strong>For at least <em>x</em> consecutive periods of <em>y</em> minutes/hours/day</strong><br />
+Specify how many consecutive time periods that the specified value must meet the criteria before Route 53 sends notification. Then specify the length of the time period.</li>
+</ul></li>
+<li><p>When you choose <strong>Create</strong>, Amazon SNS sends you an email with information about the new SNS topic.</p></li>
+<li><p>In the email, choose <strong>Confirm subscription</strong>. You must confirm your subscription to begin receiving CloudWatch notifications. <a name="monitoring-alarm-status-procedure"></a></p></li>
+</ol>
+<p><strong>To view CloudWatch alarm status and edit alarms for Amazon Route 53 (console)</strong></p>
+<ol type="1">
+<li><p>In the navigation pane of the Route 53 console, choose <strong>Health Checks</strong>.</p></li>
+<li><p>Choose the row for any health check.</p></li>
+<li><p>In the details pane (following <em>x</em> <strong>Health Checks Selected</strong>), choose the right caret (<img src="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/images/cloudwatch-expand-alarms-list.png" alt="[Icon to expand the list of CloudWatch alarms]" />) icon.</p>
+<p>The <strong>CloudWatch Alarms</strong> list contains all the Route 53 alarms that you have created using the current AWS account.</p>
+<p>The <strong>State</strong> column shows the current status of each alarm:<br />
+<strong>OK</strong><br />
+CloudWatch has accumulated enough statistics from Route 53 health checks to determine that the endpoint doesn’t meet the alarm threshold.<br />
+<strong>INSUFFICIENT DATA</strong><br />
+CloudWatch hasn’t accumulated enough statistics to determine whether the endpoint meets the alarm threshold. This is the initial state of a new alarm. The alarm state also changes to <strong>INSUFFICIENT DATA</strong> if CloudWatch metrics become unavailable or if you delete the health check without deleting the associated alarm.<br />
+<strong>ALARM</strong><br />
+CloudWatch has accumulated enough statistics from Route 53 health checks to determine that the endpoint meets the alarm threshold and to send notification to the specified email address.</p></li>
+<li><p>To view or edit settings for an alarm, choose the name of the alarm.</p></li>
+<li><p>To view an alarm in the CloudWatch console, which provides more detailed information about the alarm (for example, a history of updates to the alarm and changes in status), choose <strong>View</strong> in the <strong>More Options</strong> column for the alarm.</p></li>
+<li><p>To view all the CloudWatch alarms that you created using the current AWS account, including alarms for other AWS services, choose <strong>View All CloudWatch Alarms</strong>.</p></li>
+<li><p>To view all the available CloudWatch metrics, including metrics that aren’t currently being used by the current AWS account, choose <strong>View All CloudWatch Metrics</strong>.<a name="monitoring-metrics-in-cloudwatch-console-procedure"></a></p></li>
+</ol>
+<p><strong>To view Route 53 metrics on the CloudWatch console</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the CloudWatch console at <a href="https://console.aws.amazon.com/cloudwatch/">https://console.aws.amazon.com/cloudwatch/</a>.</p></li>
+<li><p>Change the current region to <strong>US East (N. Virginia)</strong>. Route 53 metrics are not available if you select any other region as the current region.</p></li>
+<li><p>In the navigation pane, choose <strong>Metrics</strong>.</p></li>
+<li><p>On the <strong>All metrics</strong> tab, choose <strong>Route 53</strong>.</p></li>
+<li><p>Choose <strong>Health Check Metrics</strong>.</p></li>
+</ol>
+</body>
+</html>

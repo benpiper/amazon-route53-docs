@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>GetInfoAboutHostedZone</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="getting-the-name-servers-for-a-public-hosted-zone">Getting the name servers for a public hosted zone<a name="GetInfoAboutHostedZone"></a></h1>
+<p>You get the name servers for a public hosted zone if you want to change the DNS service for your domain registration. For information about how to change your DNS service, see <a href="MigratingDNS.html">Making Amazon Route 53 the DNS service for an existing domainMaking Route 53 the DNS service for an existing domain</a>.</p>
+<p><strong>Note</strong><br />
+Some registrars only allow you to specify name servers using IP addresses; they don’t allow you to specify fully qualified domain names. If your registrar requires using IP addresses, you can get the IP addresses for your name servers using the dig utility (for Mac, Unix, or Linux) or the nslookup utility (for Windows). We rarely change the IP addresses of name servers; if we need to change IP addresses, we’ll notify you in advance.</p>
+<p><strong>To get the name servers for a hosted zone using the Route 53 console</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, click <strong>Hosted zones</strong>.</p></li>
+<li><p>On the <strong>Hosted zones</strong> page, choose the radio button (not the name) for the hosted zone, then choose <strong>View details</strong>.</p></li>
+<li><p>On the details page for the hosted zone, choose <strong>Hosted zone details</strong>.</p></li>
+<li><p>Make note of the four servers listed for <strong>Name servers</strong>.</p></li>
+</ol>
+</body>
+</html>

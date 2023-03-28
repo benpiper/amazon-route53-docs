@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resolver-dns-firewall-rule-group-managing</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="managing-rule-groups-and-rules-in-dns-firewall">Managing rule groups and rules in DNS Firewall<a name="resolver-dns-firewall-rule-group-managing"></a></h1>
+<p>To manage rule groups and rules in the console, follow the guidance in this topic.</p>
+<p>When you make changes to DNS Firewall entities, like rules and domain lists, DNS Firewall propagates the changes everywhere that the entities are stored and used. Your changes are applied within seconds, but there might be a brief period of inconsistency when the changes have arrived in some places and not in others. So, for example, if you add a domain to a domain list that’s referenced by a blocking rule, the new domain might briefly be blocked in one area of your VPC while still allowed in another. This temporary inconsistency can occur when you first configure your rule group and VPC associations and when you change existing settings. Generally, any inconsistencies of this type last only a few seconds.</p>
+<h2 id="creating-a-rule-group-and-rules">Creating a rule group and rules<a name="resolver-dns-firewall-rule-group-adding"></a></h2>
+<p><strong>To create a rule group and its rules</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p>
+<p>- OR -</p>
+<p>Sign in to the AWS Management Console and open the</p>
+<p>the Amazon VPC console under <a href="https://console.aws.amazon.com/vpc/">https://console.aws.amazon.com/vpc/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Rule groups</strong>.</p></li>
+<li><p>On the navigation bar, choose the Region for the rule group.</p></li>
+<li><p>Choose <strong>Add rule group</strong>, then follow the wizard guidance to specify your rule group and rule settings.</p>
+<p>For information about the values for rule groups, see <a href="resolver-dns-firewall-rule-group-settings.html">Rule group settings in DNS Firewall</a>.</p>
+<p>For information about the values for rules, see <a href="resolver-dns-firewall-rule-settings.html">Rule settings in DNS Firewall</a>.</p></li>
+</ol>
+<h2 id="viewing-and-updating-a-rule-group-and-rules">Viewing and updating a rule group and rules<a name="resolver-dns-firewall-rule-group-editing"></a></h2>
+<p><strong>To view and update a rule group</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p>
+<p>- OR -</p>
+<p>Sign in to the AWS Management Console and open the</p>
+<p>the Amazon VPC console under <a href="https://console.aws.amazon.com/vpc/">https://console.aws.amazon.com/vpc/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Rule groups</strong>.</p></li>
+<li><p>On the navigation bar, choose the Region for the rule group.</p></li>
+<li><p>Select the rule group that you want to view or edit, then choose <strong>View details</strong>.</p></li>
+<li><p>In the rule group’s page, you can view and edit settings.</p>
+<p>For information about the values for rule groups, see <a href="resolver-dns-firewall-rule-group-settings.html">Rule group settings in DNS Firewall</a>.</p>
+<p>For information about the values for rules, see <a href="resolver-dns-firewall-rule-settings.html">Rule settings in DNS Firewall</a>.</p></li>
+</ol>
+<h2 id="deleting-a-rule-group">Deleting a rule group<a name="resolver-dns-firewall-rule-group-deleting"></a></h2>
+<p>To delete a rule group, perform the following procedure.</p>
+<p><strong>Important</strong><br />
+If you delete a rule group that’s associated with a VPC, DNS Firewall removes the association and stops the protections that the rule group was providing to the VPC.</p>
+<p><strong>Deleting DNS Firewall entities</strong><br />
+When you delete an entity that you can use in DNS Firewall, like a domain list that might be in use in a rule group, or a rule group that might be associated with a VPC, DNS Firewall checks to see if the entity is currently being used. If it finds that it is in use, DNS Firewall warns you. DNS Firewall is almost always able to determine if an entity is in use. However, in rare cases it might not be able to do so. If you need to be sure that nothing is currently using the entity, check for it in your DNS Firewall configurations before deleting it. If the entity is a referenced domain list, check that no rule groups are using it. If the entity is a rule group, check that it is not associated with any VPCs.</p>
+<p><strong>To delete a rule group</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p>
+<p>- OR -</p>
+<p>Sign in to the AWS Management Console and open the</p>
+<p>the Amazon VPC console under <a href="https://console.aws.amazon.com/vpc/">https://console.aws.amazon.com/vpc/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Rule groups</strong>.</p></li>
+<li><p>On the navigation bar, choose the Region for the rule group.</p></li>
+<li><p>Select the rule group that you want to delete, then choose <strong>Delete</strong>, and confirm the deletion.</p></li>
+</ol>
+</body>
+</html>

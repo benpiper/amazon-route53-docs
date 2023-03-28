@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>DNSBehavior</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="dns-constraints-and-behaviors">DNS constraints and behaviors<a name="DNSBehavior"></a></h1>
+<p>DNS messaging is subject to factors that affect how you create and use hosted zones and records. This section explains these factors.</p>
+<h2 id="maximum-response-size">Maximum response size<a name="MaxSize"></a></h2>
+<p>To comply with DNS standards, responses sent over UDP are no more than 512 bytes in size. Responses exceeding 512 bytes are truncated and the resolver must re-issue the request over TCP. If the resolver supports EDNS0 (as defined in <a href="https://tools.ietf.org/html/rfc2671">RFC 2671</a>), and advertises the EDNS0 option to Amazon Route 53, Route 53 permits responses up to 4096 bytes over UDP, without truncation.</p>
+<h2 id="authoritative-section-processing">Authoritative section processing<a name="AuthSectionProcessing"></a></h2>
+<p>For successful queries, Route 53 appends name server (NS) records for the relevant hosted zone to the Authority section of the DNS response. For names that are not found (NXDOMAIN responses), Route 53 appends the start of authority (SOA) record (as defined in <a href="https://tools.ietf.org/html/rfc1035">RFC 1035</a>) for the relevant hosted zone to the Authority section of the DNS response.</p>
+<h2 id="additional-section-processing">Additional section processing<a name="SectionProcessing"></a></h2>
+<p>Route 53 appends records to the Additional section. If the records are known and appropriate, the service appends A or AAAA records for any target of an MX, CNAME, NS, or SRV record cited in the Answer section. For more information about these DNS record types, see <a href="ResourceRecordTypes.html">Supported DNS record types</a>.</p>
+</body>
+</html>

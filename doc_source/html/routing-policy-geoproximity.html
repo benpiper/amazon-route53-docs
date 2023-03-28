@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>routing-policy-geoproximity</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="geoproximity-routing-traffic-flow-only">Geoproximity routing (traffic flow only)<a name="routing-policy-geoproximity"></a></h1>
+<p>Geoproximity routing lets Amazon Route 53 route traffic to your resources based on the geographic location of your users and your resources. You can also optionally choose to route more traffic or less to a given resource by specifying a value, known as a <em>bias</em>. A bias expands or shrinks the size of the geographic region from which traffic is routed to a resource.</p>
+<p>To use geoproximity routing, you must use Route 53 <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/traffic-flow.html">traffic flow</a>. You create geoproximity rules for your resources and specify one of the following values for each rule: + If you’re using AWS resources, the AWS Region that you created the resource in + If you’re using non-AWS resources, the latitude and longitude of the resource</p>
+<p>To optionally change the size of the geographic region from which Route 53 routes traffic to a resource, specify the applicable value for the bias: + To expand the size of the geographic region from which Route 53 routes traffic to a resource, specify a positive integer from 1 to 99 for the bias. Route 53 shrinks the size of adjacent regions. + To shrink the size of the geographic region from which Route 53 routes traffic to a resource, specify a negative bias of -1 to -99. Route 53 expands the size of adjacent regions.</p>
+<p>The following map shows four AWS Regions (numbered 1 through 4) and a location in Johannesburg, South Africa that is specified by latitude and longitude (5).</p>
+<figure>
+<img src="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/images/traffic-flow-geoproximity-map-example-no-bias.png" alt="" /><figcaption>[A map of the world that shows how traffic is routed when you have geoproximity records for resources in the AWS Regions in US West (Oregon), US East (Northern Virginia), EU West (Paris), and Asia Pacific (Tokyo), and you have a record for a non-AWS resource in Johannesburg, South Africa.]</figcaption>
+</figure>
+<p>The following map shows what happens if you add a bias of +25 for the US East (Northern Virginia) Region (number <strong>2</strong> on the map). Traffic is routed to the resource in that Region from a larger portion of North America than previously, and from all of South America.</p>
+<figure>
+<img src="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/images/traffic-flow-geoproximity-map-example-bias-plus-25.png" alt="" /><figcaption>[A map of the world that shows how traffic is routed when you add a bias of +25 in the US East (Northern Virginia) Region.]</figcaption>
+</figure>
+<p>The following map shows what happens if you change the bias to -25 for the US East (Northern Virginia) Region. Traffic is routed to the resource in that Region from smaller portions of North and South America than previously, and more traffic is routed to resources in the adjacent regions <strong>1</strong>, <strong>3</strong>, and <strong>5</strong>.</p>
+<figure>
+<img src="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/images/traffic-flow-geoproximity-map-example-bias-minus-25.png" alt="" /><figcaption>[A map of the world that shows how traffic is routed when you add a bias of -25 in the US East (Northern Virginia) Region.]</figcaption>
+</figure>
+<p>The effect of changing the bias for your resources depends on a number of factors, including the following: + The number of resources that you have. + How close the resources are to one another. + The number of users that you have near the border area between geographic regions. For example, suppose you have resources in the AWS Regions US East (Northern Virginia) and US West (Oregon) and you have a lot of users in Dallas, Austin, and San Antonio, Texas, USA. Those cities are roughly equidistant between your resources, so a small change in bias could result in a large swing in traffic from resources in one AWS Region to the other.</p>
+<p>We recommend that you change the bias in small increments to prevent overwhelming your resources due to an unanticipated swing in traffic.</p>
+<p>For more information, see <a href="routing-policy-edns0.html">How Amazon Route 53 uses EDNS0 to estimate the location of a user</a>.</p>
+<h2 id="how-amazon-route-53-uses-bias-to-route-traffic">How Amazon Route 53 uses bias to route traffic<a name="routing-policy-geoproximity-bias"></a></h2>
+<p>Here’s the formula that Amazon Route 53 uses to determine how to route traffic:</p>
+<p><strong>Positive bias</strong><br />
+<code>Biased distance = actual distance * [1 - (bias/100)]</code></p>
+<p><strong>Negative bias</strong><br />
+<code>Biased distance = actual distance / [1 + (bias/100)]</code></p>
+<p>When the value of the bias is positive, Route 53 treats the source of a DNS query and the resource that you specify in a geoproximity record (such as an EC2 instance in an AWS Region) as if they were closer together than they really are. For example, suppose you have the following geoproximity records: + A record for web server A, which has a positive bias of 50 + A record for web server B, which has no bias</p>
+<p>When a geoproximity record has a positive bias of 50, Route 53 halves the distance between the source of a query and the resource for that record. Then Route 53 calculates which resource is closer to the source of the query. Suppose web server A is 150 kilometers from the source of a query and web server B is 100 kilometers from the source of the query. If neither record had a bias, Route 53 would route the query to web server B because it’s closer. However, because the record for web server A has a positive bias of 50, Route 53 treats web server A as if it’s 75 kilometers from the source of the query. As a result, Route 53 routes the query to web server A.</p>
+<p>Here’s the calculation for a positive bias of 50:</p>
+<pre><code>Bias = 50
+Biased distance = actual distance * [1 - (bias/100)]
+
+Biased distance = 150 kilometers * [1 - (50/100)]
+Biased distance = 150 kilometers * (1 - .50)
+Biased distance = 150 kilometers * (.50)
+Biased distance = 75 kilometers</code></pre>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>health-checks-types</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="types-of-amazon-route-53-health-checks">Types of Amazon Route 53 health checks<a name="health-checks-types"></a></h1>
+<p>You can create the following types of Amazon Route 53 health checks:</p>
+<p><strong>Health checks that monitor an endpoint</strong><br />
+You can configure a health check that monitors an endpoint that you specify either by IP address or by domain name. At regular intervals that you specify, Route 53 submits automated requests over the internet to your application, server, or other resource to verify that it’s reachable, available, and functional. Optionally, you can configure the health check to make requests similar to those that your users make, such as requesting a web page from a specific URL.</p>
+<p><strong>Health checks that monitor other health checks (calculated health checks)</strong><br />
+You can create a health check that monitors whether Route 53 considers other health checks healthy or unhealthy. One situation where this might be useful is when you have multiple resources that perform the same function, such as multiple web servers, and your chief concern is whether some minimum number of your resources are healthy. You can create a health check for each resource without configuring notification for those health checks. Then you can create a health check that monitors the status of the other health checks and that notifies you only when the number of available web resources drops below a specified threshold.</p>
+<p><strong>Health checks that monitor CloudWatch alarms</strong><br />
+You can create CloudWatch alarms that monitor the status of CloudWatch metrics, such as the number of throttled read events for an Amazon DynamoDB database or the number of Elastic Load Balancing hosts that are considered healthy. After you create an alarm, you can create a health check that monitors the same data stream that CloudWatch monitors for the alarm.<br />
+To improve resiliency and availability, Route 53 doesn’t wait for the CloudWatch alarm to go into the <code>ALARM</code> state. The status of a health check changes from healthy to unhealthy based on the data stream and on the criteria in the CloudWatch alarm.<br />
+Route 53 supports CloudWatch alarms with the following features:<br />
++ Standard-resolution metrics. High-resolution metrics aren’t supported. For more information, see <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html#high-resolution-metrics">High-resolution metrics</a> in the <em>Amazon CloudWatch User Guide</em>. + Statistics: Average, Minimum, Maximum, Sum, and SampleCount. Extended statistics aren’t supported.</p>
+<p><strong>Amazon Route 53 Application Recovery Controller</strong><br />
+Amazon Route 53 Application Recovery Controller gives you insights into whether your applications and resources are ready for recovery, and helps you manage and coordinate failover. Health checks in Route 53 ARC are associated with routing controls, which are simple on/off switches. You configure each routing control health check with a failover DNS record. Then you can simply update your routing controls in Route 53 ARC to reroute traffic and fail over your applications, for example, across Availability Zones or AWS-Regions. For more information, see <a href="https://docs.aws.amazon.com/r53recovery/latest/dg/what-is-route-53-recovery.html">Amazon Route 53 Application Recovery Controller Developer Guide</a>.<br />
+To learn more about readiness checks, see <a href="https://docs.aws.amazon.com/r53recovery/latest/dg/recovery-readiness.html">Readiness check in Route 53 ARC</a>, and to learn more about routing controls, see <a href="https://docs.aws.amazon.com/r53recovery/latest/dg/routing-control.html">Routing control in Route 53 ARC</a> in the Route 53 ARC developer guide.</p>
+</body>
+</html>

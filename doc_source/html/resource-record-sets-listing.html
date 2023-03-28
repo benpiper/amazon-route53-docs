@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resource-record-sets-listing</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="listing-records">Listing records<a name="resource-record-sets-listing"></a></h1>
+<p>The following procedure explains how to use the Amazon Route 53 console to list the records in a hosted zone. For information about how to list records using the Route 53 API, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_ListResourceRecordSets.html">ListResourceRecordSets</a> in the <em>Amazon Route 53 API Reference</em>.</p>
+<p><strong>To list records</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Hosted zones</strong>.</p></li>
+<li><p>On the <strong>Hosted Zones</strong> page, choose the name of a hosted zone.</p>
+<p>To display only selected records, enter the applicable search criteria above the list of records. Search behavior depends on whether the hosted zone contains up to 2,000 records or more than 2,000 records:<br />
+<strong>Up to 2,000 records</strong></p>
+<ul>
+<li>To display the records that have specific values, enter a value in the search bar and press <strong>Enter</strong>. For example, to display the records that have an IP address beginning with <strong>192.0</strong>, enter that value in the <strong>Search</strong> field and press <strong>Enter</strong>.</li>
+<li>To display only the records that have the same DNS record type, select <strong>Record type </strong>in the dropdown list, and enter the record type.</li>
+<li>To display only alias records, select <strong>Alias</strong> in the dropdown list, and enter <strong>Yes</strong>.</li>
+<li>To display only weighted records, select <strong>Routing policy</strong> in the dropdown list, and enter <strong>WEIGHTED</strong>.<br />
+<strong>More than 2,000 records</strong><br />
+</li>
+<li>You can search only on record names, not on record values. You also can’t filter based on the record type, or on alias or weighted records.</li>
+<li>For records that have three labels (three parts separated by dots), when you enter a value in the search field and press <strong>Enter</strong>, the Route 53 console automatically performs a wildcard search on the third label from the right in the record name. For example, suppose the hosted zone example.com contains 100 records named record1.example.com through record100.example.com. (Record1 is the third label from the right.) Here’s what happens when you search on the following values:
+<ul>
+<li><strong>record1</strong> – The Route 53 console searches for <strong>record1*.example.com</strong>, which returns <strong>record1.example.com</strong>, <strong>record10.example.com</strong> through <strong>record19.example.com</strong>, and <strong>record100.example.com</strong>.</li>
+<li><strong>record1.example.com</strong> – As in the preceding example, the console searches for <strong>record1*.example.com</strong> and returns the same records.</li>
+<li><strong>1</strong> – The console searches for <strong>1*.example.com</strong> and returns no records.</li>
+<li><strong>example</strong> – The console searches for <strong>example*.example.com</strong> and returns no records.</li>
+<li><strong>example.com</strong> – In this example, the console doesn’t perform a wildcard search. It returns all the records in the hosted zone. <strong>Note</strong><br />
+If the third label from the right contains one or more hyphens (such as <code>third-label.example.com</code>), and if you search for the part of the third label immediately before the hyphen (<code>third</code> in this example), Route 53 won’t return any records. Instead, either include the hyphen (search for <code>third-</code>) or omit the character immediately before the hyphen (search for <code>third</code>).</li>
+</ul></li>
+<li>For records that have four or more labels, you must specify the exact name of the record. No wildcard searches are supported. For example, if the hosted zone includes a record named label4.record1.example.com, you can find that record only if you specify <strong>label4.record1.example.com</strong> in the search field.</li>
+</ul></li>
+</ol>
+</body>
+</html>

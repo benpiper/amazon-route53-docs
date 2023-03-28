@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resource-record-sets-creating-cidr-collection</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="creating-a-cidr-collection-with-cidr-locations-and-blocks">Creating a CIDR collection with CIDR locations and blocks<a name="resource-record-sets-creating-cidr-collection"></a></h1>
+<p>To get started, create a CIDR collection and add CIDR blocks and locations to it.<a name="CIDR-collection-creating-procedure"></a></p>
+<p><strong>To create a CIDR collection using the Route 53 console</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>IP-based routing</strong>, and then <strong>CIDR collections</strong>.</p></li>
+<li><p>Select <strong>Create CIDR collection</strong>.</p></li>
+<li><p>In the <strong>Create CIDR collection</strong> pane, under <strong>Details</strong>, enter a name for the collection.</p></li>
+<li><p>Choose <strong>Create collection</strong> to create an empty collection.</p>
+<p>- or -</p>
+<p>In the <strong>Create CIDR locations</strong> section, enter a name for the CIDR location in the <strong>CIDR location</strong> box, and enter the CIDR blocks in the <strong>CIDR blocks</strong> box one per line. These can be IPv4 or IPv6 addresses ranging from /0 to /24 for IPv4 and /0 to /48 for IPv6. <strong>Note</strong><br />
+The location name can be any identifying string, for example <strong>company 1</strong>, or <strong>Seattle</strong>. It doesn’t have to be an actual geographic location.</p></li>
+<li><p>After you have entered the CIDR blocks, choose <strong>Create CIDR collection</strong>, or <strong>Add another location</strong> to keep entering locations and CIDR block. You can enter multiple CIDR locations per collection.</p></li>
+<li><p>After you have entered CIDR locations, choose <strong>Create CIDR collection</strong>.</p></li>
+</ol>
+</body>
+</html>

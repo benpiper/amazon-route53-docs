@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resource-record-sets-permissions</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="resource-record-set-permissions">Resource record set permissions<a name="resource-record-sets-permissions"></a></h1>
+<p>Resource record set permissions use Identity and Access management (IAM) policy conditions to allow you to set granular permissions for actions on the Route 53 console or for using the <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_ChangeResourceRecordSets.html">ChangeResourceRecordSets</a> API.</p>
+<p>A resource record set is defined as multiple resource records with the same name and type (and class, but for most purposes the class is always IN, or internet), but they contain different data. For example, if you choose geolocation routing, you can have multiple A or AAAA records pointing to different endpoints for the same domain. All of these A or AAAA records combine to form a resource record set. For more information about DNS terminology, see <a href="https://datatracker.ietf.org/doc/html/rfc7719">RFC 7719</a>.</p>
+<p>With the IAM policy conditions, <code>route53:ChangeResourceRecordSetsNormalizedRecordNames</code>, <code>route53:ChangeResourceRecordSetsRecordTypes</code>, and <code>route53:ChangeResourceRecordSetsActions</code>, you can grant granular administrative rights to other AWS users in any other AWS account. This allows you to grant someone permissions to: + A single resource record set. + All resource record sets of a specific DNS record type. + Resource record sets where the names contain a specific string. + Perform any, or all of the <code>CREATE | UPSERT | DELETE</code>actions when using the <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_ChangeResourceRecordSets.html">ChangeResourceRecordSets</a> API, or the Route 53 console.</p>
+<p>You can also create access permissions that combine any of the Route 53 policy conditions. For example, you can grant someone permissions to modify the A record data for marketing-example.com, but not allow that user to delete any records.</p>
+<p>For more information about resource record set permissions, see <a href="specifying-rrset-conditions.html">Using IAM policy conditions for fine-grained access control to manage resource record sets</a>.</p>
+<p>To learn how to authenticate AWS users, see <a href="auth-and-access-control.html#security_iam_authentication">Authenticating with identities</a> and to learn how to control access to Route 53 resources, see <a href="auth-and-access-control.html#access-control">Access control</a>.</p>
+</body>
+</html>

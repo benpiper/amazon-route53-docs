@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>welcome-health-checks</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="how-amazon-route-53-checks-the-health-of-your-resources">How Amazon Route 53 checks the health of your resources<a name="welcome-health-checks"></a></h1>
+<p>Amazon Route 53 health checks monitor the health of your resources such as web servers and email servers. You can optionally configure Amazon CloudWatch alarms for your health checks, so that you receive notification when a resource becomes unavailable.</p>
+<p>Here’s an overview of how health checking works if you want to be notified when a resource becomes unavailable:</p>
+<figure>
+<img src="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/images/how-health-checks-work.png" alt="" /><figcaption>[Conceptual graphic that shows how you configure Route 53 to monitor the health of specified endpoints.]</figcaption>
+</figure>
+<ol type="1">
+<li><p>You create a health check and specify values that define how you want the health check to work, such as the following:</p>
+<ul>
+<li>The IP address or domain name of the endpoint, such as a web server, that you want Route 53 to monitor. (You can also monitor the status of other health checks, or the state of a CloudWatch alarm.)</li>
+<li>The protocol that you want Amazon Route 53 to use to perform the check: HTTP, HTTPS, or TCP.</li>
+<li>How often you want Route 53 to send a request to the endpoint. This is the <em>request interval</em>.</li>
+<li>How many consecutive times the endpoint must fail to respond to requests before Route 53 considers it unhealthy. This is the <em>failure threshold</em>.</li>
+<li>Optionally, how you want to be notified when Route 53 detects that the endpoint is unhealthy. When you configure notification, Route 53 automatically sets a CloudWatch alarm. CloudWatch uses Amazon SNS to notify users that an endpoint is unhealthy.</li>
+</ul></li>
+<li><p>Route 53 starts to send requests to the endpoint at the interval that you specified in the health check.</p>
+<p>If the endpoint responds to the requests, Route 53 considers the endpoint to be healthy and takes no action.</p></li>
+<li><p>If the endpoint doesn’t respond to a request, Route 53 starts to count the number of consecutive requests that the endpoint doesn’t respond to:</p>
+<ul>
+<li>If the count reaches the value that you specified for the failure threshold, Route 53 considers the endpoint unhealthy.</li>
+<li>If the endpoint starts to respond again before the count reaches the failure threshold, Route 53 resets the count to 0, and CloudWatch doesn’t contact you.</li>
+</ul></li>
+<li><p>If Route 53 considers the endpoint unhealthy and if you configured notification for the health check, Route 53 notifies CloudWatch.</p>
+<p>If you didn’t configure notification, you can still see the status of your Route 53 health checks in the Route 53 console. For more information, see <a href="health-checks-monitor-view-status.html">Monitoring health check status and getting notifications</a>.</p></li>
+<li><p>If you configured notification for the health check, CloudWatch triggers an alarm and uses Amazon SNS to send notification to the specified recipients.</p></li>
+</ol>
+<p>In addition to checking the health of a specified endpoint, you can configure a health check to check the health of one or more other health checks so that you can be notified when a specified number of resources, such as two web servers out of five, are unavailable. You can also configure a health check to check the status of a CloudWatch alarm so that you can be notified on the basis of a broad range of criteria, not just whether a resource is responding to requests.</p>
+<p>If you have multiple resources that perform the same function, for example, web servers or database servers, and you want Route 53 to route traffic only to the resources that are healthy, you can configure DNS failover by associating a health check with each record for that resource. If a health check determines that the underlying resource is unhealthy, Route 53 routes traffic away from the associated record.</p>
+<p>For more information about using Route 53 to monitor the health of your resources, see <a href="dns-failover.html">Creating Amazon Route 53 health checks and configuring DNS failover</a>.</p>
+</body>
+</html>

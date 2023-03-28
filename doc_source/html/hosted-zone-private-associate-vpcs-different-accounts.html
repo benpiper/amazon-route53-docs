@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>hosted-zone-private-associate-vpcs-different-accounts</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="associating-an-amazon-vpc-and-a-private-hosted-zone-that-you-created-with-different-aws-accounts">Associating an Amazon VPC and a private hosted zone that you created with different AWS accounts<a name="hosted-zone-private-associate-vpcs-different-accounts"></a></h1>
+<p>If you want to associate a VPC that you created with one AWS account with a private hosted zone that you created with a different account, perform the following procedure:</p>
+<p><strong>To associate an Amazon VPC and a private hosted zone that you created with different AWS accounts</strong></p>
+<ol type="1">
+<li><p>Using the account that created the hosted zone, authorize the association of the VPC with the private hosted zone by using one of the following methods:</p>
+<ul>
+<li><strong>AWS CLI</strong> – See <a href="https://docs.aws.amazon.com/cli/latest/reference/route53/create-vpc-association-authorization.html">create-vpc-association-authorization</a> in the <em>AWS CLI Command Reference</em></li>
+<li>** AWSSDK** or <strong>AWS Tools for Windows PowerShell</strong> – See the applicable documentation on the <a href="https://docs.aws.amazon.com/">AWSDocumentation</a> page</li>
+<li><strong>Amazon Route 53 API</strong> – See <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_CreateVPCAssociationAuthorization.html">CreateVPCAssociationAuthorization</a> in the <em>Amazon Route 53 API Reference</em></li>
+</ul>
+<p>Note the following:</p>
+<ul>
+<li>If you want to associate multiple VPCs that you created with one account with a hosted zone that you created with a different account, you must submit one authorization request for each VPC.</li>
+<li>When you authorize the association, you must specify the hosted zone ID, so the private hosted zone must already exist.</li>
+<li>You can’t use the Route 53 console either to authorize the association of a VPC with a private hosted zone or to make the association.</li>
+</ul></li>
+<li><p>Using the account that created the VPC, associate the VPC with the hosted zone. As with authorizing the association, you can use the AWS SDK, Tools for Windows PowerShell, the AWS CLI, or the Route 53 API. If you’re using the API, use the <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_AssociateVPCWithHostedZone.html">AssociateVPCWithHostedZone</a> action.</p></li>
+<li><p><em>Recommended</em> – Delete the authorization to associate the VPC with the hosted zone. Deleting the authorization does not affect the association, it just prevents you from reassociating the VPC with the hosted zone in the future. If you want to reassociate the VPC with the hosted zone, you’ll need to repeat steps 1 and 2 of this procedure. <strong>Note</strong><br />
+For the maximum number of authorizations that you can create, see <a href="DNSLimitations.html#limits-api-entities">Quotas on entities</a>.</p></li>
+</ol>
+</body>
+</html>

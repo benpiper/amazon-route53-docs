@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>hosted-zone-private-associate-vpcs</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="associating-more-vpcs-with-a-private-hosted-zone">Associating more VPCs with a private hosted zone<a name="hosted-zone-private-associate-vpcs"></a></h1>
+<p>You can use the Amazon Route 53 console to associate more VPCs with a private hosted zone if you created the hosted zone and the VPCs by using the same AWS account.</p>
+<p><strong>Important</strong><br />
+If you want to associate VPCs that you created by using one account with a private hosted zone that you created by using a different account, you first must authorize the association. In addition, you can’t use the AWS console either to authorize the association or associate the VPCs with the hosted zone. For more information, see <a href="hosted-zone-private-associate-vpcs-different-accounts.html">Associating an Amazon VPC and a private hosted zone that you created with different AWS accounts</a>.</p>
+<p>For information about how to associate more VPCs with a private hosted zone using the Route 53 API, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_AssociateVPCWithHostedZone.html">AssociateVPCWithHostedZone</a> in the <em>Amazon Route 53 API Reference</em>.</p>
+<p><strong>To associate additional VPCs with a private hosted zone using the Route 53 console</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Hosted zones</strong>.</p></li>
+<li><p>Choose the radio button for the private hosted zone that you want to associate more VPCs with.</p></li>
+<li><p>Choose <strong>Edit</strong>.</p></li>
+<li><p>Choose <strong>Add VPC</strong>.</p></li>
+<li><p>Choose the Region and the ID of the VPC that you want to associate with this hosted zone.</p></li>
+<li><p>To associate more VPCs with this hosted zone, repeat steps 5 and 6.</p></li>
+<li><p>Choose <strong>Save changes</strong>.</p></li>
+</ol>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resolver-dns-firewall-getting-started</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="getting-started-with-route-53-resolver-dns-firewall">Getting started with Route 53 Resolver DNS Firewall<a name="resolver-dns-firewall-getting-started"></a></h1>
+<p>The DNS Firewall console includes a wizard that guides you through the following steps for getting started with DNS Firewall: + Create rule groups for each set of rules that you want to use. + For each rule, populate the domain list that you want to inspect for. You can create your own domain lists and you can use AWS managed domain lists. + Associate your rule groups with the VPCs where you want to use them.</p>
+<h2 id="route-53-resolver-dns-firewall-walled-garden-example">Route 53 Resolver DNS Firewall walled garden example<a name="dns-firewall-walled-garden-example"></a></h2>
+<p>In this tutorial, you’ll create a rule group that blocks all but a select group of domains that you trust. This is called a closed platform, or walled garden approach.</p>
+<p><strong>To configure a DNS Firewall rule group using the console wizard</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p>
+<p>- OR -</p>
+<p>Sign in to the AWS Management Console and open the</p>
+<p>the Amazon VPC console under <a href="https://console.aws.amazon.com/vpc/">https://console.aws.amazon.com/vpc/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Rule groups</strong>.</p></li>
+<li><p>On the navigation bar, choose the Region for the rule group.</p></li>
+<li><p>In the <strong>Rule groups</strong> page, choose <strong>Add rule group</strong>.</p></li>
+<li><p>For the rule group name, enter <strong>WalledGardenExample</strong>. If you want an additional description, enter that as well.</p></li>
+<li><p>Choose <strong>Next</strong>.</p></li>
+<li><p>On the <strong>Add rules</strong> page, choose <strong>Add rule</strong>.</p>
+<ol type="1">
+<li><p>In the <strong>Rule details</strong> pane, enter the rule name <strong>BlockAll</strong>.</p></li>
+<li><p>In the <strong>Domain list</strong> pane, select <strong>Add my own domain list</strong>.</p></li>
+<li><p>Under <strong>Choose or create a new domain list</strong> select <strong>Create new domain list</strong>.</p></li>
+<li><p>Enter a domain list name <strong>AllDomains</strong>, then in the text box, enter an asterisk: <strong>*</strong>.</p></li>
+<li><p>For the action, select <strong>BLOCK</strong> and then leave the response to send at the default setting of <strong>NODATA</strong>.</p></li>
+<li><p>Choose <strong>Add rule</strong>. The wizard displays the rule group’s <strong>Add rules</strong> page with your <strong>BlockAll</strong> rule listed.</p></li>
+</ol></li>
+<li><p>Choose <strong>Add rule</strong> again to add a second rule to your rule group.</p>
+<ol type="1">
+<li><p>In the <strong>Rule details</strong> pane, enter the rule name <strong>AllowSelectDomains</strong> and leave the description empty.</p></li>
+<li><p>In the <strong>Domain list</strong> pane, select <strong>Add my own domain list</strong>.</p></li>
+<li><p>Under <strong>Choose or create a new domain list</strong>, select <strong>Create new domain list</strong>.</p></li>
+<li><p>Enter a domain list name <strong>ExampleDomains</strong>.</p></li>
+<li><p>In the text box, on the first line, enter <strong>example.com</strong> and on the second line, enter <strong>example.org</strong>. <strong>Note</strong><br />
+If you want the rule to apply to subdomains as well, you need to add those domains to the list also. For example, to add all of the example.com’s subdomains, add <strong>*.example.com</strong> to the list.</p></li>
+<li><p>For the action, select <strong>ALLOW</strong>.</p></li>
+<li><p>Choose <strong>Add rule</strong>. The wizard displays the <strong>Add rules</strong> page with your two rules listed.</p></li>
+</ol></li>
+<li><p>Choose <strong>Next</strong>.</p></li>
+<li><p>In the <strong>Set rule priority</strong> page, you can adjust the evaluation order of the rules in your rule group. DNS Firewall evaluates rules starting with the lowest priority setting, so the rule at the top of the list is the first one evaluated. For this example, we want DNS Firewall to first identify and allow DNS queries for the select list of domains, and then block any remaining queries.</p>
+<p>Select and adjust the rule ordering so that <strong>AllowSelectDomains</strong> is listed first.</p></li>
+<li><p>Choose <strong>Next</strong>.</p></li>
+<li><p>In the <strong>Add tags</strong> page, choose <strong>Next</strong>. Tags help you organize and manage your AWS resources. For more information, see <a href="tagging-resources.html">Tagging Amazon Route 53 resources</a>.</p></li>
+<li><p>On the <strong>Review and create</strong> page, confirm that the settings that you specified on the previous pages are correct. If necessary, choose <strong>Edit</strong> for the applicable section, and update settings. When you’re satisfied with the settings, choose <strong>Create rule group</strong>. The wizard takes you back to the <strong>Rule groups</strong> page where your new rule group is listed.</p></li>
+</ol>
+<p>You now have a rule group that allows only specific domain queries through. To begin using it, you associate it with the VPCs where you want to use the filtering behavior. For more information, see <a href="resolver-dns-firewall-vpc-associating-rule-group.html">Managing associations between your VPC and Route 53 Resolver DNS Firewall rule group</a>.</p>
+<h2 id="route-53-resolver-dns-firewall-block-list-example">Route 53 Resolver DNS Firewall block list example<a name="dns-firewall-block-list-example"></a></h2>
+<p>In this tutorial, you’ll create a rule group that blocks domains that you know to be malicious. The rule group allows all other outbound DNS requests over the Route 53 Resolver.</p>
+<p><strong>To configure a DNS Firewall block list by using the console wizard</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p>
+<p>- OR -</p>
+<p>Sign in to the AWS Management Console and open the Amazon VPC console at <a href="https://console.aws.amazon.com/vpc/">https://console.aws.amazon.com/vpc/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Rule groups</strong>.</p></li>
+<li><p>On the navigation bar, choose the Region for the rule group.</p></li>
+<li><p>In the <strong>Rule groups</strong> page, choose <strong>Add rule group</strong>.</p></li>
+<li><p>For the rule group name, enter <strong>BlockListExample</strong>. If you want an additional description, enter that as well.</p></li>
+<li><p>Choose <strong>Next</strong>.</p></li>
+<li><p>On the <strong>Add rules</strong> page, choose <strong>Add rule</strong>.</p>
+<ol type="1">
+<li><p>In the <strong>Rule details</strong> pane, enter the rule name <strong>BlockList</strong>.</p></li>
+<li><p>In the <strong>Domain list</strong> pane, select <strong>Add my own domain list</strong>.</p></li>
+<li><p>Under <strong>Choose or create a new domain list</strong>, select <strong>Create new domain list</strong>.</p></li>
+<li><p>Enter a domain list name <strong>MaliciousDomains</strong>, then in the text box, enter the domains you want to block. For example, <strong>example.org</strong>. Enter one domain per line. <strong>Note</strong><br />
+If you want the rule to apply to subdomains as well, you must add those domains to the list also. For example, to add all of the example.org’s subdomains, add <strong>*.example.org</strong> to the list.</p></li>
+<li><p>For the action, select <strong>BLOCK</strong> and then leave the response to send at the default setting of <strong>NODATA</strong>.</p></li>
+<li><p>Choose <strong>Add rule</strong>. The wizard displays the rule group’s <strong>Add rules</strong> page with your <strong>BlockList</strong> rule listed.</p></li>
+</ol></li>
+<li><p>Choose <strong>Next</strong>.</p></li>
+<li><p>In the <strong>Set rule priority</strong> page, you can adjust the evaluation order of the rules in your rule group. DNS Firewall evaluates rules starting with the lowest priority setting, so the rule at the top of the list is the first one evaluated.</p>
+<p>Select and adjust the rule ordering so that <strong>BlockList</strong> is evaluated either before or after any other rules you might have. Most of the time, known malicious domains should be blocked first. That is, the rules associated with them should have the lowest priority number.</p></li>
+<li><p>In the <strong>Add tags</strong> page, you can optionally add a tag that you can use to search and filter your AWS resources.</p></li>
+<li><p>Choose <strong>Next</strong> and then <strong>Create rule group</strong>.</p></li>
+</ol>
+<p>You now have a rule group that blocks specific malicious domain queries. To begin using it, you associate it with the VPCs where you want to use the filtering behavior. For more information, see <a href="resolver-dns-firewall-vpc-associating-rule-group.html">Managing associations between your VPC and Route 53 Resolver DNS Firewall rule group</a>.</p>
+</body>
+</html>

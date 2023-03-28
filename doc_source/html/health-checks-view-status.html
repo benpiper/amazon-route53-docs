@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>health-checks-view-status</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="viewing-health-check-status-and-the-reason-for-health-check-failures">Viewing health check status and the reason for health check failures<a name="health-checks-view-status"></a></h1>
+<p>On the Route 53 console, you can view the status (healthy or unhealthy) of your health checks as reported by Route 53 health checkers. For all health checks except calculated health checks, you can also view the reason for the last health check failure, for example, health checkers were unable to establish a connection with the endpoint. <a name="health-checks-view-status-console-proc"></a></p>
+<p><strong>To view the status and last failure reason for a health check (console)</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Health Checks</strong>.</p></li>
+<li><p>For an overview of the status of all of your health checks—healthy or unhealthy—view the <strong>Status</strong> column. For more information, see <a href="dns-failover-determining-health-of-endpoints.html">How Amazon Route 53 determines whether a health check is healthyHow Route 53 determines whether a health check is healthy</a>.</p></li>
+<li><p>For all health checks except calculated health checks, you can view the status of the Route 53 health checkers that are checking the health of a specified endpoint. Select the health check.</p></li>
+<li><p>In the bottom pane, choose the <strong>Health Checkers</strong> tab. <strong>Note</strong><br />
+New health checks must propagate to Route 53 health checkers before the health check status and last failure reason appear in the <strong>Status</strong> column. Until propagation has finished, the message in that column explains that no status is available.</p></li>
+<li><p>Choose whether you want to view the current status of the health check, or view the date and time of the last failure and the reason for the failure. The table on the <strong>Status</strong> tab includes the following values:<br />
+<strong>Health checker IP</strong><br />
+The IP address of the Route 53 health checker that performed the health check.<br />
+<strong>Last checked</strong><br />
+The date and time of the health check or the date and time of the last failure, depending on the option that you select at the top of the <strong>Status</strong> tab.<br />
+<strong>Status</strong><br />
+Either the current status of the health check or the reason for the last health check failure, depending on the option that you select at the top of the <strong>Status</strong> tab.</p></li>
+</ol>
+</body>
+</html>

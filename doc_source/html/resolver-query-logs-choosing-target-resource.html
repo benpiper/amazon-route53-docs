@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resolver-query-logs-choosing-target-resource</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="aws-resources-that-you-can-send-resolver-query-logs-to">AWS resources that you can send Resolver query logs to<a name="resolver-query-logs-choosing-target-resource"></a></h1>
+<p><strong>Note</strong><br />
+If you expect to log queries for workloads with high queries per second (QPS), you should use Amazon S3 to ensure your query logs are not throttled when written to your destination. If you use Amazon CloudWatch, you can increase your requests per second limit for the <code>PutLogEvents</code> operation. To learn more about increasing your CloudWatch limits, see <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/cloudwatch_limits_cwl.html">CloudWatch Logs quotas</a> in the <em>Amazon CloudWatch User Guide</em>.</p>
+<p>You can send Resolver query logs to the following AWS resources:</p>
+<p><strong>Amazon CloudWatch Logs (Amazon CloudWatch Logs) log group</strong><br />
+You can analyze logs with Logs Insights and create metrics and alarms.<br />
+For more information, see the <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/">Amazon CloudWatch Logs User Guide</a>.</p>
+<p><strong>Amazon S3 (S3) bucket</strong><br />
+An S3 bucket is economical for long-term log archiving. Latency is typically higher.<br />
+If you want to send logs to an S3 bucket in an account that you don’t own, the owner of the S3 bucket must add permissions for your account in their bucket policy. For example:</p>
+<pre><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Id&quot;: &quot;CrossAccountAccess&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Principal&quot;: {
+                &quot;Service&quot;: &quot;delivery.logs.amazonaws.com&quot;
+            },
+            &quot;Action&quot;: &quot;s3:PutObject&quot;,
+            &quot;Resource&quot;: &quot;arn:aws:s3:::your_bucket_name/AWSLogs/your_caller_account/*&quot;
+        },
+        {
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Principal&quot;: {
+                &quot;Service&quot;: &quot;delivery.logs.amazonaws.com&quot;
+            },
+            &quot;Action&quot;: &quot;s3:GetBucketAcl&quot;,
+            &quot;Resource&quot;: &quot;arn:aws:s3:::your_bucket_name&quot;
+        },
+         {
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Principal&quot;: {
+                &quot;AWS&quot;: &quot;iam_user_arn_or_account_number_for_root&quot;
+            },
+            &quot;Action&quot;: &quot;s3:ListBucket&quot;,
+            &quot;Resource&quot;: &quot;arn:aws:s3:::your_bucket_name&quot;
+        }
+    ]
+}</code></pre>
+<p>If you want to store logs in a central S3 bucket for your organization, we recommend that you set up your query logging configuration from a centralized account (with the necessary permissions to write to a central bucket) and use <a href="query-logging-configurations-managing-sharing.html">RAM</a> to share the configuration across accounts. For more information, see the <a href="https://docs.aws.amazon.com/AmazonS3/latest/user-guide/">Amazon Simple Storage Service User Guide</a>.</p>
+<p><strong>Kinesis Data Firehose delivery stream</strong><br />
+You can stream logs in real time to Amazon OpenSearch Service, Amazon Redshift, or other applications.<br />
+For more information, see the <a href="https://docs.aws.amazon.com/firehose/latest/dev/">Amazon Kinesis Data Firehose Developer Guide</a>.</p>
+<p>For information about the pricing for Resolver query logging, see <a href="http://aws.amazon.com/cloudwatch/pricing/">Amazon CloudWatch pricing</a>.</p>
+<p>CloudWatch Logs charges apply when using flow logs, even when logs are published directly to Amazon S3. For more information, see <a href="http://aws.amazon.com/cloudwatch/pricing/"><em>Deliver Logs to S3</em> at Amazon CloudWatch pricing</a>.</p>
+</body>
+</html>

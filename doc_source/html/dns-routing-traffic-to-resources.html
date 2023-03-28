@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>dns-routing-traffic-to-resources</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="routing-traffic-to-your-resources">Routing traffic to your resources<a name="dns-routing-traffic-to-resources"></a></h1>
+<p>When users request your website or web application, for example, by entering the name of your domain in a web browser, Amazon Route 53 helps to route users to your resources, such as an Amazon S3 bucket or a web server in your data center. To configure Route 53 to route traffic to your resources, you do the following:</p>
+<ol type="1">
+<li><p>Create a hosted zone. You can create either a public hosted zone or a private hosted zone:<br />
+<strong>Public hosted zone</strong><br />
+Create a public hosted zone if you want to route internet traffic to your resources, for example, so your customers can view the company website that you’re hosting on EC2 instances. For more information, see <a href="AboutHZWorkingWith.html">Working with public hosted zones</a>.<br />
+<strong>Private hosted zone</strong><br />
+Create a private hosted zone if you want to route traffic within an Amazon VPC. For more information, see <a href="hosted-zones-private.html">Working with private hosted zones</a>.</p></li>
+<li><p>Create records in the hosted zone. Records define where you want to route traffic for each domain name or subdomain name. For example, to route traffic for www.example.com to a web server in your data center, you typically create a www.example.com record in the example.com hosted zone.</p>
+<p>For more information, see the following topics:</p>
+<ul>
+<li><a href="rrsets-working-with.html">Working with records</a></li>
+<li><a href="dns-routing-traffic-for-subdomains.html">Routing traffic for subdomains</a></li>
+<li><a href="routing-to-aws-resources.html">Routing internet traffic to your AWS resources</a></li>
+</ul></li>
+</ol>
+</body>
+</html>

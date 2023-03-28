@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>TutorialTransitionToLBR</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="transitioning-to-latency-based-routing-in-amazon-route-53">Transitioning to latency-based routing in Amazon Route 53<a name="TutorialTransitionToLBR"></a></h1>
+<p>With latency-based routing, Amazon Route 53 can direct your users to the lowest-latency AWS endpoint available. For example, you might associate a DNS name like <code>www.example.com</code> with an ELB Classic, Application, or Network Load Balancer, or with Amazon EC2 instances or Elastic IP addresses that are hosted in the US East (Ohio) and Europe (Ireland) regions. The Route 53 DNS servers decide, based on network conditions of the past couple of weeks, which instances in which regions should serve particular users. A user in London will likely be directed to the Europe (Ireland) instance, a user in Chicago will likely be directed to the US East (Ohio) instance, and so on. Route 53 supports latency-based routing for A, AAAA, TXT, and CNAME records, as well as aliases to A and AAAA records.</p>
+<p><strong>Note</strong><br />
+Data about the latency between users and your resources is based entirely on traffic between users and AWS data centers. If you aren’t using resources in an AWS Region, the actual latency between your users and your resources can vary significantly from AWS latency data. This is true even if your resources are located in the same city as an AWS Region.</p>
+<p>For a smooth, low-risk transition, you can combine weighted and latency records to gradually migrate from standard routing to latency-based routing with full control and rollback capability at each stage. Let’s consider an example in which <code>www.example.com</code> is currently hosted on an Amazon EC2 instance in the US East (Ohio) region. The instance has the Elastic IP address <code>W.W.W.W</code>. Suppose you want to continue routing traffic to the US East (Ohio) region when applicable while also beginning to direct users to additional Amazon EC2 instances in the US West (N. California) region (Elastic IP <code>X.X.X.X</code>) and in the Europe (Ireland) region (Elastic IP <code>Y.Y.Y.Y</code>). The Route 53 hosted zone for <code>example.com</code> already has a record for <code>www.example.com</code> that has a <strong>Type</strong> of A and a <strong>Value</strong> (an IP address) of <code>W.W.W.W</code>.</p>
+<p>When you’re finished with the following example, you’ll have two weighted alias records: + You’ll convert your existing record for <code>www.example.com</code> into a weighted alias record that continues to direct the majority of your traffic to your existing Amazon EC2 instance in the US East (Ohio) region. + You’ll create another weighted alias record that initially directs only a small portion of your traffic to your latency records, which route traffic to all three regions.</p>
+<p>By updating the weights in these weighted alias records, you can gradually shift from routing traffic only to the US East (Ohio) region to routing traffic to all three regions in which you have Amazon EC2 instances.<a name="TutorialTransitionToLBRProcedure"></a></p>
+<p><strong>To transition to latency-based routing</strong></p>
+<ol type="1">
+<li><p>Make a copy of the record for <code>www.example.com</code>, but use a new domain name, for example, <code>copy-www.example.com</code>. Give the new record the same <strong>Type</strong> (A) and <strong>Value</strong> (<code>W.W.W.W</code>) as the record for <code>www.example.com</code>.</p></li>
+<li><p>Update the existing A record for <code>www.example.com</code> to make it a weighted alias record:</p>
+<ul>
+<li>For <strong>Value/Route traffic to</strong>, choose <strong>Alias to another record in this hosted zone</strong>, and specify <code>copy-www.example.com</code>.</li>
+<li>For <strong>Weight</strong>, specify 100.</li>
+</ul>
+<p>When you’re finished with the update, Route 53 will continue to use this record to route all traffic to the resource that has an IP address of <code>W.W.W.W</code>.</p></li>
+<li><p>Create a latency record for each of your Amazon EC2 instances, for example:</p>
+<ul>
+<li>US East (Ohio), Elastic IP address <code>W.W.W.W</code></li>
+<li>US West (N. California), Elastic IP address <code>X.X.X.X</code></li>
+<li>Europe (Ireland), Elastic IP address <code>Y.Y.Y.Y</code></li>
+</ul>
+<p>Give all of the latency records the same domain name, for example, <code>www-lbr.example.com</code> and the same type, A.</p>
+<p>When you’re finished creating the latency records, Route 53 will continue to route traffic using the record that you updated in Step 2.</p>
+<p>You can use <code>www-lbr.example.com</code> for validation testing, for example, to ensure that each endpoint can accept requests.</p></li>
+<li><p>Let’s now add the <code>www-lbr.example.com</code> latency record into the <code>www.example.com</code> weighted record and begin routing limited traffic to the corresponding Amazon EC2 instances. This means that the Amazon EC2 instance in the US East (Ohio) region will be getting traffic from both weighted records.</p>
+<p>Create another weighted alias record for <code>www.example.com</code>:</p>
+<ul>
+<li>For <strong>Value/Route traffic to</strong>, choose <strong>Alias to another record in this hosted zone</strong>, and specify <code>www-lbr.example.com.</code></li>
+<li>For <strong>Weight</strong>, specify 1.</li>
+</ul>
+<p>When you finish and your changes are synchronized to Route 53 servers, Route 53 will begin to route a tiny fraction of your traffic (1/101) to the Amazon EC2 instances for which you created latency records in Step 3.</p></li>
+<li><p>As you develop confidence that your endpoints are adequately scaled for the incoming traffic, adjust the weights accordingly. For example, if you want 10% of your requests to be based on latency-based routing, change the weights to 90 and 10, respectively.</p></li>
+</ol>
+<p>For more information about creating latency records, see <a href="resource-record-sets-creating.html">Creating records by using the Amazon Route 53 console</a>.</p>
+</body>
+</html>

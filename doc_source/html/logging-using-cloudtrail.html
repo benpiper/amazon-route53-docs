@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>logging-using-cloudtrail</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="logging-amazon-route-53-api-calls-with-aws-cloudtrail">Logging Amazon Route 53 API calls with AWS CloudTrail<a name="logging-using-cloudtrail"></a></h1>
+<p>Route 53 is integrated with AWS CloudTrail, a service that provides a record of actions taken by a user, role, or an AWS service in Route 53. CloudTrail captures all API calls for Route 53 as events, including calls from the Route 53 console and from code calls to the Route 53 APIs. If you create a trail, you can enable continuous delivery of CloudTrail events to an Amazon S3 bucket, including events for Route 53. If you don’t configure a trail, you can still view the most recent events in the CloudTrail console in <strong>Event history</strong>. Using the information collected by CloudTrail, you can determine the request that was made to Route 53, the IP address that the request was made from, who made the request, when it was made, and additional details.</p>
+<p><strong>Topics</strong> + <a href="#route-53-info-in-cloudtrail">Route 53 information in CloudTrail</a> + <a href="#route-53-events-in-cloudtrail-event-history">Viewing Route 53 events in event history</a> + <a href="#understanding-route-53-entries-in-cloudtrail">Understanding Route 53 log file entries</a></p>
+<h2 id="route-53-information-in-cloudtrail">Route 53 information in CloudTrail<a name="route-53-info-in-cloudtrail"></a></h2>
+<p>CloudTrail is enabled on your AWS account when you create the account. When activity occurs in Route 53, that activity is recorded in a CloudTrail event along with other AWS service events in <strong>Event history</strong>. You can view, search, and download recent events in your AWS account. For more information, see <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/view-cloudtrail-events.html">Viewing events with CloudTrail event history</a>.</p>
+<p>For an ongoing record of events in your AWS account, including events for Route 53, create a trail. A trail enables CloudTrail to deliver log files to an Amazon S3 bucket. By default, when you create a trail in the console, the trail applies to all regions. The trail logs events from all regions in the AWS partition and delivers the log files to the Amazon S3 bucket that you specify. Additionally, you can configure other AWS services to further analyze and act upon the event data collected in CloudTrail logs. For more information, see: + <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-create-and-update-a-trail.html">Overview for creating a trail</a> + <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-aws-service-specific-topics.html#cloudtrail-aws-service-specific-topics-integrations">CloudTrail supported services and integrations</a> + <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/getting_notifications_top_level.html">Configuring Amazon SNS notifications for CloudTrail</a> + <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html">Receiving CloudTrail log files from multiple Regions</a> and <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-receive-logs-from-multiple-accounts.html">Receiving CloudTrail log files from multiple accounts</a></p>
+<p>All Route 53 actions are logged by CloudTrail and are documented in the <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/">Amazon Route 53 API Reference</a>. For example, calls to the <code>CreateHostedZone</code>, <code>CreateHealthCheck</code>, and <code>RegisterDomain</code> actions generate entries in the CloudTrail log files.</p>
+<p>Every event or log entry contains information about who generated the request. The identity information helps you determine the following: + Whether the request was made with root or IAM user credentials. + Whether the request was made with temporary security credentials for a role or federated user. + Whether the request was made by another AWS service.</p>
+<p>For more information, see the <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-event-reference-user-identity.html">CloudTrail userIdentity element</a>.</p>
+<h2 id="viewing-route-53-events-in-event-history">Viewing Route 53 events in event history<a name="route-53-events-in-cloudtrail-event-history"></a></h2>
+<p>CloudTrail lets you view recent events in <strong>Event history</strong>. To view events for Route 53 API requests, you must choose <strong>US East (N. Virginia)</strong> in the region selector at the top of the console. For more information, see <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/view-cloudtrail-events.html">Viewing events with CloudTrail event history</a> in the <em>AWS CloudTrail User Guide</em>.</p>
+<h2 id="understanding-route-53-log-file-entries">Understanding Route 53 log file entries<a name="understanding-route-53-entries-in-cloudtrail"></a></h2>
+<p>A trail is a configuration that enables delivery of events as log files to an Amazon S3 bucket that you specify. CloudTrail log files contain one or more log entries. An event represents a single request from any source and includes information about the requested action, the date and time of the action, request parameters, and so on. CloudTrail log files are not an ordered stack trace of the public API calls, so they do not appear in any specific order.</p>
+<p>The <code>eventName</code> element identifies the action that occurred. (In CloudTrail logs, the first letter is lowercase for domain registration actions even though it’s uppercase in the names of the actions. For example, <code>UpdateDomainContact</code> appears as <code>updateDomainContact</code> in the logs). CloudTrail supports all Route 53 API actions. The following example shows a CloudTrail log entry that demonstrates the following actions: + List the hosted zones that are associated with an AWS account + Create a health check + Create two records + Delete a hosted zone + Update information for a registered domain + Create a Route 53 Resolver outbound endpoint</p>
+<pre><code>{
+    &quot;Records&quot;: [
+        {
+            &quot;apiVersion&quot;: &quot;2013-04-01&quot;,
+            &quot;awsRegion&quot;: &quot;us-east-1&quot;,
+            &quot;eventID&quot;: &quot;1cdbea14-e162-43bb-8853-f9f86d4739ca&quot;,
+            &quot;eventName&quot;: &quot;ListHostedZones&quot;,
+            &quot;eventSource&quot;: &quot;route53.amazonaws.com&quot;,
+            &quot;eventTime&quot;: &quot;2015-01-16T00:41:48Z&quot;,
+            &quot;eventType&quot;: &quot;AwsApiCall&quot;,
+            &quot;eventVersion&quot;: &quot;1.02&quot;,
+            &quot;recipientAccountId&quot;: &quot;444455556666&quot;,
+            &quot;requestID&quot;: &quot;741e0df7-9d18-11e4-b752-f9c6311f3510&quot;,
+            &quot;requestParameters&quot;: null,
+            &quot;responseElements&quot;: null,
+            &quot;sourceIPAddress&quot;: &quot;192.0.2.92&quot;,
+            &quot;userAgent&quot;: &quot;Apache-HttpClient/4.3 (java 1.5)&quot;,
+            &quot;userIdentity&quot;: {
+                &quot;accessKeyId&quot;: &quot;AKIAIOSFODNN7EXAMPLE&quot;,
+                &quot;accountId&quot;: &quot;111122223333&quot;,
+                &quot;arn&quot;: &quot;arn:aws:iam::111122223333:user/smithj&quot;,
+                &quot;principalId&quot;: &quot;A1B2C3D4E5F6G7EXAMPLE&quot;,
+                &quot;type&quot;: &quot;IAMUser&quot;,
+                &quot;userName&quot;: &quot;smithj&quot;
+            }
+        },
+        {
+            &quot;apiVersion&quot;: &quot;2013-04-01&quot;,
+            &quot;awsRegion&quot;: &quot;us-east-1&quot;,
+            &quot;eventID&quot;: &quot;45ec906a-1325-4f61-b133-3ef1012b0cbc&quot;,
+            &quot;eventName&quot;: &quot;CreateHealthCheck&quot;,
+            &quot;eventSource&quot;: &quot;route53.amazonaws.com&quot;,
+            &quot;eventTime&quot;: &quot;2018-01-16T00:41:57Z&quot;,
+            &quot;eventType&quot;: &quot;AwsApiCall&quot;,
+            &quot;eventVersion&quot;: &quot;1.02&quot;,
+            &quot;recipientAccountId&quot;: &quot;444455556666&quot;,
+            &quot;requestID&quot;: &quot;79915168-9d18-11e4-b752-f9c6311f3510&quot;,
+            &quot;requestParameters&quot;: {
+                &quot;callerReference&quot;: &quot;2014-05-06 64832&quot;,
+                &quot;healthCheckConfig&quot;: {
+                    &quot;iPAddress&quot;: &quot;192.0.2.249&quot;,
+                    &quot;port&quot;: 80,
+                    &quot;type&quot;: &quot;TCP&quot;
+                }
+            },
+            &quot;responseElements&quot;: {
+                &quot;healthCheck&quot;: {
+                    &quot;callerReference&quot;: &quot;2014-05-06 64847&quot;,
+                    &quot;healthCheckConfig&quot;: {
+                        &quot;failureThreshold&quot;: 3,
+                        &quot;iPAddress&quot;: &quot;192.0.2.249&quot;,
+                        &quot;port&quot;: 80,
+                        &quot;requestInterval&quot;: 30,
+                        &quot;type&quot;: &quot;TCP&quot;
+                    },
+                    &quot;healthCheckVersion&quot;: 1,
+                    &quot;id&quot;: &quot;b3c9cbc6-cd18-43bc-93f8-9e557example&quot;
+                },
+                &quot;location&quot;: &quot;https://route53.amazonaws.com/2013-04-01/healthcheck/b3c9cbc6-cd18-43bc-93f8-9e557example&quot;
+            },
+            &quot;sourceIPAddress&quot;: &quot;192.0.2.92&quot;,
+            &quot;userAgent&quot;: &quot;Apache-HttpClient/4.3 (java 1.5)&quot;,
+            &quot;userIdentity&quot;: {
+                &quot;accessKeyId&quot;: &quot;AKIAIOSFODNN7EXAMPLE&quot;,
+                &quot;accountId&quot;: &quot;111122223333&quot;,
+                &quot;arn&quot;: &quot;arn:aws:iam::111122223333:user/smithj&quot;,
+                &quot;principalId&quot;: &quot;A1B2C3D4E5F6G7EXAMPLE&quot;,
+                &quot;type&quot;: &quot;IAMUser&quot;,
+                &quot;userName&quot;: &quot;smithj&quot;
+            }
+        },
+        {
+            &quot;additionalEventData&quot;: {
+                &quot;Note&quot;: &quot;Do not use to reconstruct hosted zone&quot;
+            },
+            &quot;apiVersion&quot;: &quot;2013-04-01&quot;,
+            &quot;awsRegion&quot;: &quot;us-east-1&quot;,
+            &quot;eventID&quot;: &quot;883b14d9-2f84-4005-8bc5-c7bf0cebc116&quot;,
+            &quot;eventName&quot;: &quot;ChangeResourceRecordSets&quot;,
+            &quot;eventSource&quot;: &quot;route53.amazonaws.com&quot;,
+            &quot;eventTime&quot;: &quot;2018-01-16T00:41:43Z&quot;,
+            &quot;eventType&quot;: &quot;AwsApiCall&quot;,
+            &quot;eventVersion&quot;: &quot;1.02&quot;,
+            &quot;recipientAccountId&quot;: &quot;444455556666&quot;,
+            &quot;requestID&quot;: &quot;7081d4c6-9d18-11e4-b752-f9c6311f3510&quot;,
+            &quot;requestParameters&quot;: {
+                &quot;changeBatch&quot;: {
+                    &quot;changes&quot;: [
+                        {
+                            &quot;action&quot;: &quot;CREATE&quot;,
+                            &quot;resourceRecordSet&quot;: {
+                                &quot;name&quot;: &quot;prod.example.com.&quot;,
+                                &quot;resourceRecords&quot;: [
+                                    {
+                                        &quot;value&quot;: &quot;192.0.1.1&quot;
+                                    },
+                                    {
+                                        &quot;value&quot;: &quot;192.0.1.2&quot;
+                                    },
+                                    {
+                                        &quot;value&quot;: &quot;192.0.1.3&quot;
+                                    },
+                                    {
+                                        &quot;value&quot;: &quot;192.0.1.4&quot;
+                                    }
+                                ],
+                                &quot;tTL&quot;: 300,
+                                &quot;type&quot;: &quot;A&quot;
+                            }
+                        },
+                        {
+                            &quot;action&quot;: &quot;CREATE&quot;,
+                            &quot;resourceRecordSet&quot;: {
+                                &quot;name&quot;: &quot;test.example.com.&quot;,
+                                &quot;resourceRecords&quot;: [
+                                    {
+                                        &quot;value&quot;: &quot;192.0.1.1&quot;
+                                    },
+                                    {
+                                        &quot;value&quot;: &quot;192.0.1.2&quot;
+                                    },
+                                    {
+                                        &quot;value&quot;: &quot;192.0.1.3&quot;
+                                    },
+                                    {
+                                        &quot;value&quot;: &quot;192.0.1.4&quot;
+                                    }
+                                ],
+                                &quot;tTL&quot;: 300,
+                                &quot;type&quot;: &quot;A&quot;
+                            }
+                        }
+                    ],
+                    &quot;comment&quot;: &quot;Adding subdomains&quot;
+                },
+                &quot;hostedZoneId&quot;: &quot;Z1PA6795UKMFR9&quot;
+            },
+            &quot;responseElements&quot;: {
+                &quot;changeInfo&quot;: {
+                    &quot;comment&quot;: &quot;Adding subdomains&quot;,
+                    &quot;id&quot;: &quot;/change/C156SRE0X2ZB10&quot;,
+                    &quot;status&quot;: &quot;PENDING&quot;,
+                    &quot;submittedAt&quot;: &quot;Jan 16, 2018 12:41:43 AM&quot;
+                }
+            },
+            &quot;sourceIPAddress&quot;: &quot;192.0.2.92&quot;,
+            &quot;userAgent&quot;: &quot;Apache-HttpClient/4.3 (java 1.5)&quot;,
+            &quot;userIdentity&quot;: {
+                &quot;accessKeyId&quot;: &quot;AKIAIOSFODNN7EXAMPLE&quot;,
+                &quot;accountId&quot;: &quot;111122223333&quot;,
+                &quot;arn&quot;: &quot;arn:aws:iam::111122223333:user/smithj&quot;,
+                &quot;principalId&quot;: &quot;A1B2C3D4E5F6G7EXAMPLE&quot;,
+                &quot;type&quot;: &quot;IAMUser&quot;,
+                &quot;userName&quot;: &quot;smithj&quot;
+            }
+        },
+        {
+            &quot;apiVersion&quot;: &quot;2013-04-01&quot;,
+            &quot;awsRegion&quot;: &quot;us-east-1&quot;,
+            &quot;eventID&quot;: &quot;0cb87544-ebee-40a9-9812-e9dda1962cb2&quot;,
+            &quot;eventName&quot;: &quot;DeleteHostedZone&quot;,
+            &quot;eventSource&quot;: &quot;route53.amazonaws.com&quot;,
+            &quot;eventTime&quot;: &quot;2018-01-16T00:41:37Z&quot;,
+            &quot;eventType&quot;: &quot;AwsApiCall&quot;,
+            &quot;eventVersion&quot;: &quot;1.02&quot;,
+            &quot;recipientAccountId&quot;: &quot;444455556666&quot;,
+            &quot;requestID&quot;: &quot;6d5d149f-9d18-11e4-b752-f9c6311f3510&quot;,
+            &quot;requestParameters&quot;: {
+                &quot;id&quot;: &quot;Z1PA6795UKMFR9&quot;
+            },
+            &quot;responseElements&quot;: {
+                &quot;changeInfo&quot;: {
+                    &quot;id&quot;: &quot;/change/C1SIJYUYIKVJWP&quot;,
+                    &quot;status&quot;: &quot;PENDING&quot;,
+                    &quot;submittedAt&quot;: &quot;Jan 16, 2018 12:41:36 AM&quot;
+                }
+            },
+            &quot;sourceIPAddress&quot;: &quot;192.0.2.92&quot;,
+            &quot;userAgent&quot;: &quot;Apache-HttpClient/4.3 (java 1.5)&quot;,
+            &quot;userIdentity&quot;: {
+                &quot;accessKeyId&quot;: &quot;AKIAIOSFODNN7EXAMPLE&quot;,
+                &quot;accountId&quot;: &quot;111122223333&quot;,
+                &quot;arn&quot;: &quot;arn:aws:iam::111122223333:user/smithj&quot;,
+                &quot;principalId&quot;: &quot;A1B2C3D4E5F6G7EXAMPLE&quot;,
+                &quot;type&quot;: &quot;IAMUser&quot;,
+                &quot;userName&quot;: &quot;smithj&quot;
+            }
+        },
+        {
+            &quot;eventVersion&quot;: &quot;1.05&quot;,
+            &quot;userIdentity&quot;: {
+                &quot;type&quot;: &quot;IAMUser&quot;,
+                &quot;principalId&quot;: &quot;A1B2C3D4E5F6G7EXAMPLE&quot;,
+                &quot;arn&quot;: &quot;arn:aws:iam::111122223333:user/smithj&quot;,
+                &quot;accountId&quot;: &quot;111122223333&quot;,
+                &quot;accessKeyId&quot;: &quot;AKIAIOSFODNN7EXAMPLE&quot;,
+                &quot;userName&quot;: &quot;smithj&quot;,
+                &quot;sessionContext&quot;: {
+                    &quot;attributes&quot;: {
+                        &quot;mfaAuthenticated&quot;: &quot;false&quot;,
+                        &quot;creationDate&quot;: &quot;2018-11-01T19:43:59Z&quot;
+                    }
+                },
+                &quot;invokedBy&quot;: &quot;test&quot;
+            },
+            &quot;eventTime&quot;: &quot;2018-11-01T19:49:36Z&quot;,
+            &quot;eventSource&quot;: &quot;route53domains.amazonaws.com&quot;,
+            &quot;eventName&quot;: &quot;updateDomainContact&quot;,
+            &quot;awsRegion&quot;: &quot;us-west-2&quot;,
+            &quot;sourceIPAddress&quot;: &quot;192.0.2.92&quot;,
+            &quot;userAgent&quot;: &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:52.0) Gecko/20100101 Firefox/52.0&quot;,
+            &quot;requestParameters&quot;: {
+                &quot;domainName&quot;: {
+                    &quot;name&quot;: &quot;example.com&quot;
+                }
+            },
+            &quot;responseElements&quot;: {
+                &quot;requestId&quot;: &quot;034e222b-a3d5-4bec-8ff9-35877ff02187&quot;
+            },
+            &quot;additionalEventData&quot;: &quot;Personally-identifying contact information is not logged in the request&quot;,
+            &quot;requestID&quot;: &quot;015b7313-bf3d-11e7-af12-cf75409087f6&quot;,
+            &quot;eventID&quot;: &quot;f34f3338-aaf4-446f-bf0e-f72323bac94d&quot;,
+            &quot;eventType&quot;: &quot;AwsApiCall&quot;,
+            &quot;recipientAccountId&quot;: &quot;444455556666&quot;
+        },
+        {
+            &quot;eventVersion&quot;: &quot;1.05&quot;,
+            &quot;userIdentity&quot;: {
+                &quot;type&quot;: &quot;IAMUser&quot;,
+                &quot;principalId&quot;: &quot;A1B2C3D4E5F6G7EXAMPLE&quot;,
+                &quot;arn&quot;: &quot;arn:aws:iam::111122223333:user/smithj&quot;,
+                &quot;accountId&quot;: &quot;111122223333&quot;,
+                &quot;accessKeyId&quot;: &quot;AKIAIOSFODNN7EXAMPLE&quot;,
+                &quot;sessionContext&quot;: {
+                    &quot;attributes&quot;: {
+                        &quot;mfaAuthenticated&quot;: &quot;false&quot;,
+                        &quot;creationDate&quot;: &quot;2018-11-01T14:33:09Z&quot;
+                    },
+                    &quot;sessionIssuer&quot;: {
+                        &quot;type&quot;: &quot;Role&quot;,
+                        &quot;principalId&quot;: &quot;AROAIUZEZLWWZOEXAMPLE&quot;,
+                        &quot;arn&quot;: &quot;arn:aws:iam::123456789012:role/Admin&quot;,
+                        &quot;accountId&quot;: &quot;123456789012&quot;,
+                        &quot;userName&quot;: &quot;Admin&quot;
+                    }
+                }
+            },
+            &quot;eventTime&quot;: &quot;2018-11-01T14:37:19Z&quot;,
+            &quot;eventSource&quot;: &quot;route53resolver.amazonaws.com&quot;,
+            &quot;eventName&quot;: &quot;CreateResolverEndpoint&quot;,
+            &quot;awsRegion&quot;: &quot;us-west-2&quot;,
+            &quot;sourceIPAddress&quot;: &quot;192.0.2.176&quot;,
+            &quot;userAgent&quot;: &quot;Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:52.0) Gecko/20100101 Firefox/52.0&quot;,
+            &quot;requestParameters&quot;: {
+                &quot;creatorRequestId&quot;: &quot;123456789012&quot;,
+                &quot;name&quot;: &quot;OutboundEndpointDemo&quot;,
+                &quot;securityGroupIds&quot;: [
+                    &quot;sg-05618b249example&quot;
+                ],
+                &quot;direction&quot;: &quot;OUTBOUND&quot;,
+                &quot;ipAddresses&quot;: [
+                    {
+                        &quot;subnetId&quot;: &quot;subnet-01cb0c4676example&quot;
+                    },
+                    {
+                        &quot;subnetId&quot;: &quot;subnet-0534819b32example&quot;
+                    }
+                ],
+                &quot;tags&quot;: []
+            },
+            &quot;responseElements&quot;: {
+                &quot;resolverEndpoint&quot;: {
+                    &quot;id&quot;: &quot;rslvr-out-1f4031f1f5example&quot;,
+                    &quot;creatorRequestId&quot;: &quot;123456789012&quot;,
+                    &quot;arn&quot;: &quot;arn:aws:route53resolver:us-west-2:123456789012:resolver-endpoint/rslvr-out-1f4031f1f5example&quot;,
+                    &quot;name&quot;: &quot;OutboundEndpointDemo&quot;,
+                    &quot;securityGroupIds&quot;: [
+                        &quot;sg-05618b249example&quot;
+                    ],
+                    &quot;direction&quot;: &quot;OUTBOUND&quot;,
+                    &quot;ipAddressCount&quot;: 2,
+                    &quot;hostVPCId&quot;: &quot;vpc-0de29124example&quot;,
+                    &quot;status&quot;: &quot;CREATING&quot;,
+                    &quot;statusMessage&quot;: &quot;[Trace id: 1-5bd1d51e-f2f3032eb75649f71example] Creating the Resolver Endpoint&quot;,
+                    &quot;creationTime&quot;: &quot;2018-11-01T14:37:19.045Z&quot;,
+                    &quot;modificationTime&quot;: &quot;2018-11-01T14:37:19.045Z&quot;
+                }
+            },
+            &quot;requestID&quot;: &quot;3f066d98-773f-4628-9cba-4ba6eexample&quot;,
+            &quot;eventID&quot;: &quot;cb05b4f9-9411-4507-813b-33cb0example&quot;,
+            &quot;eventType&quot;: &quot;AwsApiCall&quot;,
+            &quot;recipientAccountId&quot;: &quot;123456789012&quot;
+        }
+    ]
+}</code></pre>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resolver-dnssec-validation</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="enabling-dnssec-validation-in-amazon-route-53">Enabling DNSSEC validation in Amazon Route 53<a name="resolver-dnssec-validation"></a></h1>
+<p>When you enable DNSSEC validation for a virtual private cloud (VPC) in Amazon Route 53, DNSSEC signatures are cryptographically checked to ensure that the response was not tampered with. You enable DNSSEC validation on your VPC detail page.</p>
+<p>DNSSEC validation only applies to public signed names in Amazon Route 53, and not to forwarded zones.</p>
+<p><strong>Important</strong><br />
+Enabling DNSSEC validation can impact DNS resolution for public DNS records from AWS resources in a VPC, which could result in an outage. Be aware that enabling or disabling DNSSEC validation can take several minutes.</p>
+<p><strong>Note</strong><br />
+At this time, the Amazon Route 53 Resolver in your VPC (aka AmazonProvidedDNS) ignores the DO (DNSSEC OK) EDNS header bit and the CD (Checking Disabled) bit in the DNS query. If you have configured DNSSEC, this means that while the Route 53 Resolver does perform DNSSEC validation, it doesn’t return DNSSEC records nor set the AD bit in the response. Therefore, performing your own DNSSEC validation is not currently supported by the Route 53 Resolver. If you need to do this you will have to perform your own recursive DNS resolution.<a name="resolver-dnssec-validation-procedure"></a></p>
+<p><strong>To enable DNSSEC validation for a VPC</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, under <strong>Resolver</strong>, choose <strong>VPCs</strong>.</p></li>
+<li><p>Under <strong>DNSSEC validation</strong>, select the checkbox. If the checkbox is already selected, you can clear it to disable DNSSEC validation.</p>
+<p>Be aware that enabling or disabling DNSSEC validation can take several minutes.</p></li>
+</ol>
+</body>
+</html>

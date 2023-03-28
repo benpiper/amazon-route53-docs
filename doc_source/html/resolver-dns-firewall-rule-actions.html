@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resolver-dns-firewall-rule-actions</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="rule-actions-in-dns-firewall">Rule actions in DNS Firewall<a name="resolver-dns-firewall-rule-actions"></a></h1>
+<p>When DNS Firewall finds a match between a DNS query and a domain specification in a rule, it applies the action that’s specified in the rule to the query.</p>
+<p>You are required to specify one of the following options in each rule that you create: + <strong>Allow</strong> – Stop inspecting the query and permit it to go through. + <strong>Alert</strong> – Stop inspecting the query, permit it to go through, and log an alert for the query in the Route 53 Resolver logs. + <strong>Block</strong> – Discontinue inspection of the query, block it from going to its intended destination, and log the block action for the query in the Route 53 Resolver logs.</p>
+<p>Reply with the configured block response, from the following: + <strong>NODATA</strong> – Respond indicating that the query was successful, but no response is available for it. + <strong>NXDOMAIN</strong>– Respond indicating that the query’s domain name doesn’t exist. + <strong>OVERRIDE</strong>– Provide a custom override in the response. This option requires the following additional settings: + <strong>Record value</strong> – The custom DNS record to send back in response to the query. + <strong>Record type</strong>– The DNS record’s type. This determines the format of the record value. This must be <code>CNAME</code>. + <strong>Time to live in seconds</strong>– The recommended amount of time for the DNS resolver or web browser to cache the override record and use it in response to this query, if it is received again. By default, this is zero, and the record isn’t cached.</p>
+<p>For more information about the query logs configuration and the contents, see <a href="resolver-query-logs.html">Resolver query logging</a> and <a href="resolver-query-logs-format.html">Values that appear in Resolver query logs</a>.</p>
+<p><strong>Use Alert to test blocking rules</strong><br />
+When you first create a blocking rule, you can test it by configuring it with the action set to Alert. You can then look at the number of queries that the rule alerts on to see how many would be blocked if you set the action to Block.</p>
+</body>
+</html>

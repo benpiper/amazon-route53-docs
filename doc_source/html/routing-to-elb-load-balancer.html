@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>routing-to-elb-load-balancer</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="routing-traffic-to-an-elb-load-balancer">Routing traffic to an ELB load balancer<a name="routing-to-elb-load-balancer"></a></h1>
+<p>If you host a website on multiple Amazon EC2 instances, you can distribute traffic to your website across the instances by using an Elastic Load Balancing (ELB) load balancer. The ELB service automatically scales the load balancer as traffic to your website changes over time. The load balancer also can monitor the health of its registered instances and route domain traffic only to healthy instances.</p>
+<p>To route domain traffic to an ELB load balancer, use Amazon Route 53 to create an <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resource-record-sets-choosing-alias-non-alias.html">alias record</a> that points to your load balancer. An alias record is a Route 53 extension to DNS. It’s similar to a CNAME record, but you can create an alias record both for the root domain, such as example.com, and for subdomains, such as www.example.com. (You can create CNAME records only for subdomains.)</p>
+<p><strong>Note</strong><br />
+Route 53 doesn’t charge for alias queries to ELB load balancers or other AWS resources.</p>
+<h2 id="prerequisites">Prerequisites<a name="routing-to-elb-load-balancer-prereqs"></a></h2>
+<p>To get started, you need the following: + An ELB load balancer. You can use an ELB Classic, Application, or Network Load Balancer. For information about creating a load balancer, see <a href="https://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/load-balancer-getting-started.html">Getting started with Elastic Load Balancing</a> in the <em>Elastic Load Balancing User Guide</em>.</p>
+<p>Give the load balancer a name that will help you remember what it’s for later. The name that you specify when you create a load balancer is the name that you’ll choose when you create an alias record in the Route 53 console. + A registered domain name. You can use Route 53 as your domain registrar, or you can use a different registrar. + Route 53 as the DNS service for the domain. If you register your domain name by using Route 53, we automatically configure Route 53 as the DNS service for the domain.</p>
+<p>For information about using Route 53 as the DNS service provider for your domain, see <a href="MigratingDNS.html">Making Amazon Route 53 the DNS service for an existing domainMaking Route 53 the DNS service for an existing domain</a>.</p>
+<h2 id="configuring-amazon-route-53-to-route-traffic-to-an-elb-load-balancer">Configuring Amazon Route 53 to route traffic to an ELB load balancer<a name="routing-to-elb-load-balancer-configuring"></a></h2>
+<p>To configure Amazon Route 53 to route traffic to an ELB load balancer, perform the following procedure.<a name="routing-to-elb-load-balancer-procedure"></a></p>
+<p><strong>To route traffic to an ELB load balancer</strong></p>
+<ol type="1">
+<li><p>If you created the Route 53 hosted zone and ELB load balancer using the same account, skip to step 2.</p>
+<p>If you created the hosted zone and the ELB load balancer using different accounts, perform the procedure <a href="resource-record-sets-creating.html#resource-record-sets-elb-dns-name-procedure">Getting the DNS name for an ELB load balancer</a> to get the DNS name for the load balancer.</p></li>
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Hosted zones</strong>.</p></li>
+<li><p>Choose the name of the hosted zone that has the domain name that you want to use to route traffic to your load balancer.</p></li>
+<li><p>Choose <strong>Create record</strong>.</p></li>
+<li><p>Specify the following values:<br />
+<strong>Routing policy</strong><br />
+Choose the applicable routing policy. For more information, see <a href="routing-policy.html">Choosing a routing policy</a>.<br />
+<strong>Record name</strong><br />
+Enter the domain or subdomain name that you want to use to route traffic to your ELB load balancer. The default value is the name of the hosted zone.<br />
+For example, if the name of the hosted zone is example.com and you want to use acme.example.com to route traffic to your load balancer, enter <strong>acme</strong>.<br />
+<strong>Alias</strong><br />
+If you are using the <strong>Quick create</strong> record creation method, turn on <strong>Alias</strong>.<br />
+<strong>Value/Route traffic to</strong><br />
+Choose <strong>Alias to Application and Classic Load Balancer </strong>or <strong>Alias to Network Load Balancer</strong>, then choose the Region that the endpoint is from.<br />
+If you created the hosted zone and the ELB load balancer using the same AWS account, choose the name that you assigned to the load balancer when you created it.<br />
+If you created the hosted zone and the ELB load balancer using different accounts, enter the value that you got in step 1 of this procedure.<br />
+The console prepends <strong>dualstack.</strong> to the DNS name of the application and Classic Load Balancer from the same AWS account only. When a client, such as a web browser, requests the IP address for your domain name (example.com) or subdomain name (www.example.com), the client can request an IPv4 address (an A record), an IPv6 address (an AAAA record), or both IPv4 and IPv6 addresses (in separate requests with IPv4 first). The <strong>dualstack.</strong> designation allows Route 53 to respond with the appropriate IP address for your load balancer based on which IP address format the client requested. You will need to prepend <strong>dualstack.</strong> for Application and Classic Load Balancer from the different account.<br />
+<strong>Record type</strong><br />
+Choose <strong>A – IPv4 address</strong>.<br />
+<strong>Evaluate target health</strong><br />
+If you want Route 53 to route traffic based on the health of your resources, choose <strong>Yes</strong>. For more information about checking the health of your resources, see <a href="dns-failover.html">Creating Amazon Route 53 health checks and configuring DNS failover</a>.</p></li>
+<li><p>Choose <strong>Create records</strong>.</p>
+<p>Changes generally propagate to all Route 53 servers within 60 seconds. When propagation is done, you’ll be able to route traffic to your load balancer by using the name of the alias record that you created in this procedure.</p></li>
+</ol>
+</body>
+</html>

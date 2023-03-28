@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>hosted-zone-private-disassociate-vpcs</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="disassociating-vpcs-from-a-private-hosted-zone">Disassociating VPCs from a private hosted zone<a name="hosted-zone-private-disassociate-vpcs"></a></h1>
+<p>You can use the Amazon Route 53 console to disassociate VPCs from a private hosted zone. This causes Route 53 to stop routing traffic using records in the hosted zone for DNS queries that originate in the VPC. For example, if the example.com hosted zone is associated with a VPC and you disassociate the hosted zone from that VPC, Route 53 stops resolving DNS queries for example.com or any of the other records in the example.com hosted zone.</p>
+<p><strong>Note</strong><br />
+You can’t disassociate the last VPC from a private hosted zone. If you want to disassociate that VPC, you must first associate another VPC with the hosted zone.</p>
+<p><strong>To disassociate VPCs from a private hosted zone</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Hosted zones</strong>.</p></li>
+<li><p>Choose the radio button for the private hosted zone that you want to disassociate one or more VPCs from.</p></li>
+<li><p>Choose <strong>Edit</strong>.</p></li>
+<li><p>Choose <strong>Remove VPC</strong> next to the VPC that you want to disassociate from this hosted zone.</p></li>
+<li><p>Choose <strong>Save changes</strong>.</p></li>
+</ol>
+</body>
+</html>

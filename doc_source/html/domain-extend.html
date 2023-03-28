@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>domain-extend</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="extending-the-registration-period-for-a-domain">Extending the registration period for a domain<a name="domain-extend"></a></h1>
+<p>When you register a domain with Amazon Route 53 or you transfer domain registration to Route 53, we configure the domain to renew automatically. The automatic renewal period is typically one year, although the registries for some top-level domains (TLDs) have longer renewal periods.</p>
+<p>Note the following:</p>
+<p><strong>Maximum renewal period</strong><br />
+All generic TLDs and many country-code TLDs let you extend domain registration for longer periods, typically up to ten years in one-year increments. To determine whether you can extend the registration period for your domain, see <a href="registrar-tld-list.html">Domains that you can register with Amazon Route 53</a>. If longer registration periods are allowed, perform the following procedure.</p>
+<p><strong>Restrictions on when you can renew or extend a domain registration</strong><br />
+Some TLD registries have restrictions on when you can renew or extend a domain registration, for example, the last two months before the domain expires. Even if the registry allows extending the registration period for a domain, they might not allow it at the current number of days before the domain expires.</p>
+<p><strong>AWS credits</strong><br />
+You can’t use AWS credits to pay the fee for extending the registration period for a domain.<a name="domain-extend-procedure"></a></p>
+<p><strong>To extend the registration period for your domain</strong></p>
+<ol type="1">
+<li><p>Open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Registered Domains</strong>.</p></li>
+<li><p>Choose the name of the domain for which you want to extend the registration period.</p>
+<p>The <strong>Expires on</strong> field lists the current expiration date for the domain. If the registry for the TLD allows extending the registration period, an <strong>extend</strong> link appears on the right side of the expiration date.</p></li>
+<li><p>Choose <strong>extend</strong>.</p></li>
+<li><p>In the <strong>Extend registration for</strong> list, choose the number of years that you want to extend the registration for.</p>
+<p>The list shows all the current options based on the current expiration date and the maximum registration period allowed by the registry for this domain. The <strong>New expiration date</strong> field shows the expiration date with that number of years applied.</p></li>
+<li><p>Choose <strong>Extend domain registration</strong>.</p>
+<p>When we receive confirmation from the registry that they’ve updated your expiration date, we send you an email to confirm that we’ve changed the expiration date.</p></li>
+<li><p><strong>AISPL (India) customers only</strong>: If your contact address is in India, your user agreement is with Amazon Internet Services Pvt. Ltd (AISPL), a local AWS seller in India. To extend the registration for a domain, perform the following steps to pay the fee for the extension.</p>
+<ol type="1">
+<li><p>Go to the <a href="https://console.aws.amazon.com/billing/home#/paymenthistory">Orders and Invoices</a> page in the AWS Management Console.</p></li>
+<li><p>In the <strong>Payments Due</strong> section, find the applicable invoice.</p></li>
+<li><p>In the <strong>Actions</strong> column, choose <strong>Verify and Pay</strong>.</p>
+<p>After you pay the invoice, we complete the extension and send the applicable emails. <strong>Important</strong><br />
+If you don’t pay the invoice within five days, the invoice is canceled. To extend the domain registration after an invoice is canceled, resubmit the request.</p></li>
+</ol>
+<p>For more information, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/edit-aispl-payment-method.html">Managing your payments in India</a> in the <em>AWS Billing User Guide</em>.</p></li>
+<li><p>If you encounter issues while extending the registration period for a domain, you can contact AWS Support for free. For more information, see <a href="domain-contact-support.html">Contacting AWS Support about domain registration issues</a>.</p></li>
+</ol>
+</body>
+</html>

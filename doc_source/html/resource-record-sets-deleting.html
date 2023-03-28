@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resource-record-sets-deleting</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="deleting-records">Deleting records<a name="resource-record-sets-deleting"></a></h1>
+<p>The following procedure explains how to delete records using the Route 53 console. For information about how to delete records using the Route 53 API, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_ChangeResourceRecordSets.html">ChangeResourceRecordSets</a> in the <em>Amazon Route 53 API Reference</em>.</p>
+<p><strong>Note</strong><br />
+Your changes to records take time to propagate to the Route 53 DNS servers. Currently, the only way to verify that changes have propagated is to use the <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_GetChange.html">GetChange</a> API action. Changes generally propagate to all Route 53 name servers within 60 seconds.<a name="resource-record-sets-deleting-procedure"></a></p>
+<p><strong>To delete records</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>On the Hosted Zones page, choose the row for the hosted zone that contains records that you want to delete.</p></li>
+<li><p>In the list of records, select the record that you want to delete.</p>
+<p>To select multiple, consecutive records, choose the first row, hold the <strong>Shift</strong> key, and choose the last row. To select multiple, nonconsecutive records, choose the first row, hold the <strong>Ctrl</strong> key, and choose additional rows.</p>
+<p>You can’t delete the records that have a value of <strong>NS</strong> or <strong>SOA</strong> for <strong>Type</strong>.</p></li>
+<li><p>Choose <strong>Delete</strong>.</p></li>
+<li><p>Choose <strong>Delete</strong> to close the dialog box.</p></li>
+</ol>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>dns-failover-types</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="active-active-and-active-passive-failover">Active-active and active-passive failover<a name="dns-failover-types"></a></h1>
+<p>You can use Route 53 health checking to configure active-active and active-passive failover configurations. You configure active-active failover using any <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy.html">routing policy</a> (or combination of routing policies) other than failover, and you configure active-passive failover using the failover routing policy.</p>
+<p><strong>Topics</strong> + <a href="#dns-failover-types-active-active">Active-active failover</a> + <a href="#dns-failover-types-active-passive">Active-passive failover</a></p>
+<h2 id="active-active-failover">Active-active failover<a name="dns-failover-types-active-active"></a></h2>
+<p>Use this failover configuration when you want all of your resources to be available the majority of the time. When a resource becomes unavailable, Route 53 can detect that it’s unhealthy and stop including it when responding to queries.</p>
+<p>In active-active failover, all the records that have the same name, the same type (such as A or AAAA), and the same routing policy (such as weighted or latency) are active unless Route 53 considers them unhealthy. Route 53 can respond to a DNS query using any healthy record.</p>
+<h2 id="active-passive-failover">Active-passive failover<a name="dns-failover-types-active-passive"></a></h2>
+<p>Use an active-passive failover configuration when you want a primary resource or group of resources to be available the majority of the time and you want a secondary resource or group of resources to be on standby in case all the primary resources become unavailable. When responding to queries, Route 53 includes only the healthy primary resources. If all the primary resources are unhealthy, Route 53 begins to include only the healthy secondary resources in response to DNS queries.</p>
+<p><strong>Topics</strong> + <a href="#dns-failover-types-active-passive-one-resource">Configuring active-passive failover with one primary and one secondary resource</a> + <a href="#dns-failover-types-active-passive-multiple-resources">Configuring active-passive failover with multiple primary and secondary resources</a> + <a href="#dns-failover-types-active-passive-weighted">Configuring active-passive failover with weighted records</a></p>
+<h3 id="configuring-active-passive-failover-with-one-primary-and-one-secondary-resource">Configuring active-passive failover with one primary and one secondary resource<a name="dns-failover-types-active-passive-one-resource"></a></h3>
+<p>To create an active-passive failover configuration with one primary record and one secondary record, you just create the records and specify <strong>Failover</strong> for the routing policy. When the primary resource is healthy, Route 53 responds to DNS queries using the primary record. When the primary resource is unhealthy, Route 53 responds to DNS queries using the secondary record.</p>
+<h3 id="configuring-active-passive-failover-with-multiple-primary-and-secondary-resources">Configuring active-passive failover with multiple primary and secondary resources<a name="dns-failover-types-active-passive-multiple-resources"></a></h3>
+<p>You can also associate multiple resources with the primary record, the secondary record, or both. In this configuration, Route 53 considers the primary failover record to be healthy as long as at least one of the associated resources is healthy. For more information, see <a href="health-checks-how-route-53-chooses-records.html">How Amazon Route 53 chooses records when health checking is configuredHow Route 53 chooses records when health checking is configured</a>.</p>
+<p>To configure active-passive failover with multiple resources for the primary or secondary record, perform the following tasks.</p>
+<ol type="1">
+<li><p>Create a health check for each resource that you want to route traffic to, such as an EC2 instance or a web server in your data center. <strong>Note</strong><br />
+If you’re routing traffic to any AWS resources that you can create <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resource-record-sets-choosing-alias-non-alias.html">alias records</a> for, don’t create health checks for those resources. When you create the alias records, you set <strong>Evaluate Target Health</strong> to <strong>Yes</strong> instead.</p>
+<p>For more information, see <a href="health-checks-creating.html">Creating and updating health checks</a>.</p></li>
+<li><p>Create records for your primary resources, and specify the following values:</p>
+<ul>
+<li><p>Give each record the same name, type, and routing policy. For example, you might create three weighted A records that are all named failover-primary.example.com.</p></li>
+<li><p>If you’re using AWS resources that you can create alias records for, specify <strong>Yes</strong> for <strong>Evaluate Target Health.</strong></p>
+<p>If you’re using resources that you can’t create alias records for, associate the applicable health check from step 1 with each record.</p></li>
+</ul>
+<p>For more information, see <a href="resource-record-sets-creating.html">Creating records by using the Amazon Route 53 console</a>.</p></li>
+<li><p>Create records for your secondary resources, if applicable, and specify the following values:</p>
+<ul>
+<li><p>Give each record the same name, type, and routing policy. For example, you might create three weighted A records that are all named failover-secondary.example.com.</p></li>
+<li><p>If you’re using AWS resources that you can create alias records for, specify <strong>Yes</strong> for <strong>Evaluate Target Health.</strong></p>
+<p>If you’re using resources that you can’t create alias records for, associate the applicable health check from step 1 with each record. <strong>Note</strong><br />
+Some customers use a web server as their primary resource and an Amazon S3 bucket that is configured as a website endpoint as their secondary resource. The S3 bucket contains a simple “temporarily unavailable” message. If you’re using that configuration, you can skip this step and just create a failover alias record for the secondary resource in step 4.</p></li>
+</ul></li>
+<li><p>Create two failover alias records, one primary and one secondary, and specify the following values:<br />
+<strong>Primary record</strong></p>
+<ul>
+<li><strong>Name</strong> – Specify the domain name (example.com) or the subdomain name (www.example.com) that you want Route 53 to route traffic for.</li>
+<li><strong>Alias</strong> – Specify <strong>Yes</strong>.</li>
+<li><strong>Alias Target</strong> – Specify the name of the records that you created in step 2.</li>
+<li><strong>Routing Policy</strong> – Specify <strong>Failover</strong>.</li>
+<li><strong>Failover Record Type</strong> – Specify <strong>Primary</strong>.</li>
+<li><strong>Evaluate Target Health</strong> – Specify <strong>Yes</strong>.</li>
+<li><strong>Associate with Health Check</strong> – Specify <strong>No</strong>.<br />
+<strong>Secondary record</strong><br />
+</li>
+<li><strong>Name</strong> – Specify the same name that you specified for the primary record.</li>
+<li><strong>Alias</strong> – Specify <strong>Yes</strong>.</li>
+<li><strong>Alias Target</strong> – If you created records for your secondary resource in step 3, specify the name of the records. If you’re using an Amazon S3 bucket for the secondary resource, specify the DNS name of the website endpoint.</li>
+<li><strong>Routing Policy</strong> – Specify <strong>Failover</strong>.</li>
+<li><strong>Failover Record Type</strong> – Specify <strong>Secondary</strong>.</li>
+<li><strong>Evaluate Target Health</strong> – Specify <strong>Yes</strong>.</li>
+<li><strong>Associate with Health Check</strong> – Specify <strong>No</strong>.</li>
+</ul></li>
+</ol>
+<h3 id="configuring-active-passive-failover-with-weighted-records">Configuring active-passive failover with weighted records<a name="dns-failover-types-active-passive-weighted"></a></h3>
+<p>You can also use weighted records for active-passive failover, with caveats. If you specify nonzero weights for some records and zero weights for other records, Route 53 responds to DNS queries using only healthy records that have nonzero weights. If all the records that have a weight greater than 0 are unhealthy, then Route 53 responds to queries using the zero-weighted records.</p>
+<p><strong>Note</strong><br />
+All the records with nonzero weights must be unhealthy before Route 53 starts to respond to DNS queries using records that have weights of zero. This can make your web application or website unreliable if the last healthy resource, such as a web server, can’t handle all the traffic when other resources are unavailable.</p>
+</body>
+</html>

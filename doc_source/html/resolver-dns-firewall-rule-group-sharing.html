@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resolver-dns-firewall-rule-group-sharing</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="sharing-route-53-resolver-dns-firewall-rule-groups-between-aws-accounts">Sharing Route 53 Resolver DNS Firewall rule groups between AWS accounts<a name="resolver-dns-firewall-rule-group-sharing"></a></h1>
+<p>You can share DNS Firewall rule groups between AWS accounts. To share rule groups, you use AWS Resource Access Manager (AWS RAM). The DNS Firewall console integrates with the AWS RAM console. For more information about AWS RAM, see the <a href="https://docs.aws.amazon.com/ram/latest/userguide/what-is.html">Resource Access Manager User Guide</a>.</p>
+<p>Note the following:</p>
+<p><strong>Associating shared rule groups with VPCs</strong><br />
+If another AWS account has shared a rule group with your account, you can associate it with your VPCs the same way that you associate rule groups that you’ve created. For more information, see <a href="resolver-dns-firewall-vpc-associating-rule-group.html">Managing associations between your VPC and Route 53 Resolver DNS Firewall rule group</a>.</p>
+<p><strong>Deleting or unsharing a shared rule group</strong><br />
+If you share a rule group with other accounts and then either delete the rule group or stop sharing it, DNS Firewall removes all associations that the other accounts created between the rule group and their VPCs.</p>
+<p><strong>Maximum settings for rule groups and associations</strong><br />
+Shared rule groups and their associations with VPCs are included in the counts for the accounts with which the rule groups are shared.<br />
+For current DNS Firewall quotas, see <a href="DNSLimitations.html#limits-api-entities-resolver-dns-firewall">Quotas on Route 53 Resolver DNS Firewall</a>.</p>
+<p><strong>Permissions</strong><br />
+To share a rule group with another AWS account, you must have permission to use the <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_PutFirewallRuleGroupPolicy.html">PutFirewallRuleGroupPolicy</a> action.</p>
+<p><strong>Restrictions on the AWS account that a rule group is shared with</strong><br />
+The account that a rule group is shared with can’t change or delete the rule group.</p>
+<p><strong>Tagging</strong><br />
+Only the account that created a rule group can add, delete, or see tags on the rule group.</p>
+<p>To view the current sharing status of a rule group (including the account that shared the rule group or the account that a rule group is shared with), and to share rule groups with another account, perform the following procedure.</p>
+<p><strong>To view sharing status and share rule groups with another AWS account</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Rule groups</strong>.</p></li>
+<li><p>On the navigation bar, choose the Region where you created the rule group.</p>
+<p>The <strong>Sharing status</strong> column shows the current sharing status of rule groups that were created by the current account or that are shared with the current account:</p>
+<ul>
+<li><strong>Not shared</strong>: The current AWS account created the rule group, and the rule group is not shared with any other accounts.</li>
+<li><strong>Shared by me</strong>: The current account created the rule group and shared it with one or more accounts.</li>
+<li><strong>Shared with me</strong>: Another account created the rule group and shared it with the current account.</li>
+</ul></li>
+<li><p>Choose the name of the rule group that you want to display sharing information for or that you want to share with another account.</p>
+<p>On the <strong>Rule group: <em>rule group name</em></strong> page, the value under <strong>Owner</strong> displays the ID of the account that created the rule group. That’s the current account unless the value of <strong>Sharing status</strong> is <strong>Shared with me</strong>. In that case, <strong>Owner</strong> is the account that created the rule group and shared it with the current account.</p></li>
+<li><p>Choose <strong>Share</strong> to view additional information or to share the rule group with another account. A page in the AWS RAM console appears, depending on the value of <strong>Sharing status</strong>:</p>
+<ul>
+<li><strong>Not shared</strong>: The <strong>Create resource share</strong> page appears. For information about how to share the rule group with another account, organizational unit (OU), or organization, go to the step that follows this one.</li>
+<li><strong>Shared by me</strong>: The <strong>Shared resources</strong> page shows the rule groups and other resources that are owned by the current account and shared with other accounts.</li>
+<li><strong>Shared with me</strong>: The <strong>Shared resources</strong> page shows the rule groups and other resources that are owned by other accounts and shared with the current account.</li>
+</ul></li>
+<li><p>To share a rule group with another AWS account, OU, or organization, specify the following values. <strong>Note</strong><br />
+You can’t update sharing settings. To change any of the following settings, you must reshare a rule group with the new settings and then remove the old sharing settings.<br />
+<strong>Description</strong><br />
+Enter a short description that helps you remember why you shared the rule group.<br />
+<strong>Resources</strong><br />
+Choose the check box for the rule group that you want to share.<br />
+<strong>Principals</strong><br />
+Enter the AWS account number, OU name, or organization name.<br />
+<strong>Tags</strong><br />
+Specify one or more keys and the corresponding values. For example, you might specify <strong>Cost center</strong> for <strong>Key</strong> and specify <strong>456</strong> for <strong>Value</strong>.<br />
+These are the tags that AWS Billing and Cost Management provides for organizing your AWS bill; you can use also tags for other purposes. For more information about using tags for cost allocation, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html">Using cost allocation tags</a> in the <em>AWS Billing User Guide</em>.</p></li>
+</ol>
+</body>
+</html>

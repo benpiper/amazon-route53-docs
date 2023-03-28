@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>dns-failover-using-old-apis</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="using-health-checks-with-amazon-route-53-api-versions-earlier-than-2012-12-12">Using health checks with Amazon Route 53 API versions earlier than 2012-12-12<a name="dns-failover-using-old-apis"></a></h1>
+<p>Health checks are supported starting with the 2012-12-12 version of the Amazon Route 53 API. If a hosted zone contains records that health checks are configured for, we recommend that you use only the 2012-12-12 API or later. Note the following restrictions on using health checks with earlier API versions. + The <code>ChangeResourceRecordSets</code> action cannot create or delete records that include the <code>EvaluateTargetHealth</code>, <code>Failover</code>, or <code>HealthCheckId</code> elements. + The <code>ListResourceRecordSets</code> action can list records that include these elements, but the elements are not included in the output. Instead, the <code>Value</code> element of the response contains a message that says the record includes an unsupported attribute.</p>
+</body>
+</html>

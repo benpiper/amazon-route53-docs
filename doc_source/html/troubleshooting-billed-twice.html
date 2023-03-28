@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>troubleshooting-billed-twice</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="i-was-billed-twice-for-the-same-hosted-zone">I was billed twice for the same hosted zone<a name="troubleshooting-billed-twice"></a></h1>
+<p>We don’t bill you if you delete a hosted zone within 12 hours after you create it. After 12 hours, we immediately charge the standard monthly fee for a hosted zone. The monthly charge for a hosted zone is not prorated for partial months. (The same charge applies for the hosted zone that we automatically create when you register a domain.)</p>
+<p>If you create a hosted zone on the last day of the month (for example, January 31), the charge for January might appear on the February invoice, along with the charge for February. Note that Amazon Route 53 uses Coordinated Universal Time (UTC) as the time zone to determine when a hosted zone was created.</p>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resolver-forwarding-inbound-queries</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="forwarding-inbound-dns-queries-to-your-vpcs">Forwarding inbound DNS queries to your VPCs<a name="resolver-forwarding-inbound-queries"></a></h1>
+<p>To forward DNS queries from your network to Resolver, you create an inbound endpoint. An inbound endpoint specifies the IP addresses (from the range of IP addresses available to your VPC) that you want DNS resolvers on your network to forward DNS queries to. Those IP addresses aren’t public IP addresses, so for each inbound endpoint, you need to connect your VPC to your network using either an AWS Direct Connect connection or a VPN connection.</p>
+<p><strong>Topics</strong> + <a href="#resolver-forwarding-inbound-queries-configuring">Configuring inbound forwarding</a> + <a href="#resolver-forwarding-inbound-queries-values">Values that you specify when you create or edit inbound endpoints</a></p>
+<h2 id="configuring-inbound-forwarding">Configuring inbound forwarding<a name="resolver-forwarding-inbound-queries-configuring"></a></h2>
+<p>To create an inbound endpoint, perform the following procedure.<a name="resolver-forwarding-inbound-queries-configuring-procedure"></a></p>
+<p><strong>To create an inbound endpoint</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Inbound endpoints</strong>.</p></li>
+<li><p>On the navigation bar, choose the Region where you want to create an inbound endpoint.</p></li>
+<li><p>Choose <strong>Create inbound endpoint</strong>.</p></li>
+<li><p>Enter the applicable values. For more information, see <a href="#resolver-forwarding-inbound-queries-values">Values that you specify when you create or edit inbound endpoints</a>.</p></li>
+<li><p>Choose <strong>Create</strong>.</p></li>
+<li><p>Configure DNS resolvers on your network to forward the applicable DNS queries to the IP addresses for your inbound endpoint. For more information, refer to the documentation for your DNS application.</p></li>
+</ol>
+<h2 id="values-that-you-specify-when-you-create-or-edit-inbound-endpoints">Values that you specify when you create or edit inbound endpoints<a name="resolver-forwarding-inbound-queries-values"></a></h2>
+<p>When you create or edit an inbound endpoint, you specify the following values:</p>
+<p><strong>Endpoint name</strong><br />
+A friendly name that lets you easily find an inbound endpoint on the dashboard.</p>
+<p><strong>VPC in the <em>region-name</em> Region</strong><br />
+All inbound DNS queries from your network pass through this VPC on the way to Resolver.</p>
+<p><strong>Security group for this endpoint</strong><br />
+The ID of one or more security groups that you want to use to control access to this VPC. The security group that you specify must include one or more inbound rules. Inbound rules must allow TCP and UDP access on port 53.<br />
+For more information, see <a href="https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html">Security groups for your VPC</a> in the <em>Amazon VPC User Guide</em>.</p>
+<p><strong>IP addresses</strong><br />
+The IP addresses that you want DNS resolvers on your network to forward DNS queries to. We require you to specify a minimum of two IP addresses for redundancy. Note the following:<br />
+<strong>Multiple Availability Zones</strong><br />
+We recommend that you specify IP addresses in at least two Availability Zones. You can optionally specify additional IP addresses in those or other Availability Zones.<br />
+<strong>IP addresses and Amazon VPC elastic network interfaces</strong><br />
+For each combination of Availability Zone, Subnet, and IP address that you specify, Resolver creates an Amazon VPC elastic network interface. For the current maximum number of DNS queries per second per IP address in an endpoint, see <a href="DNSLimitations.html#limits-api-entities-resolver">Quotas on Route 53 Resolver</a>. For information about pricing for each elastic network interface, see “Amazon Route 53” on the <a href="https://aws.amazon.com/route53/pricing/">Amazon Route 53 pricing page</a>. Resolver endpoint has a private IP address. These IP addresses will not change through the course of an endpoint’s life. For each IP address, specify the following values. Each IP address must be in an Availability Zone in the VPC that you specified in <strong>VPC in the <em>region-name</em> Region</strong>.<br />
+<strong>Availability Zone</strong><br />
+The Availability Zone that you want DNS queries to pass through on the way to your VPC. The Availability Zone that you specify must be configured with a subnet.<br />
+<strong>Subnet</strong><br />
+The subnet that contains the IP address that you want to forward DNS queries to. The subnet must have an available IP address.<br />
+Specify the subnet for an IPv4 address. IPv6 is not supported.<br />
+<strong>IP address</strong><br />
+The IP address that you want to forward DNS queries to.<br />
+Choose whether you want Resolver to choose an IP address for you from among the available IP addresses in the specified subnet, or you want to specify the IP address yourself.<br />
+If you choose to specify the IP address yourself, enter an IPv4 address. IPv6 is not supported.</p>
+<p><strong>Tags</strong><br />
+Specify one or more keys and the corresponding values. For example, you might specify <strong>Cost center</strong> for <strong>Key</strong> and specify <strong>456</strong> for <strong>Value</strong>.<br />
+These are the tags that AWS Billing and Cost Management provides for organizing your AWS bill; you can use also tags for other purposes. For more information about using tags for cost allocation, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html">Using cost allocation tags</a> in the <em>AWS Billing User Guide</em>.</p>
+</body>
+</html>

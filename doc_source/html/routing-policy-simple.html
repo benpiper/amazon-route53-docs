@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>routing-policy-simple</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="simple-routing">Simple routing<a name="routing-policy-simple"></a></h1>
+<p>Simple routing lets you configure standard DNS records, with no special Route 53 routing such as weighted or latency. With simple routing, you typically route traffic to a single resource, for example, to a web server for your website.</p>
+<p>If you choose the simple routing policy in the Route 53 console, you can’t create multiple records that have the same name and type, but you can specify multiple values in the same record, such as multiple IP addresses. (If you choose the simple routing policy for an alias record, you can specify only one AWS resource or one record in the current hosted zone.) If you specify multiple values in a record, Route 53 returns all values to the recursive resolver in random order, and the resolver returns the values to the client (such as a web browser) that submitted the DNS query. The client then chooses a value and resubmits the query. With simple routing policy, although you can specify multiple IP addresses, these IP addresses are not health checked.</p>
+<p>For information about values that you specify when you use the simple routing policy to create records, see the following topics: + <a href="resource-record-sets-values-basic.html">Values specific for simple records</a> + <a href="resource-record-sets-values-alias.html">Values specific for simple alias records</a> + <a href="resource-record-sets-values-shared.html">Values that are common for all routing policies</a> + <a href="resource-record-sets-values-alias-common.html">Values that are common for alias records for all routing policies</a></p>
+</body>
+</html>

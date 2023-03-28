@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>hosted-zone-private-considerations</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="considerations-when-working-with-a-private-hosted-zone">Considerations when working with a private hosted zone<a name="hosted-zone-private-considerations"></a></h1>
+<p>When using private hosted zones, note the following considerations. + <a href="#hosted-zone-private-considerations-vpc-settings">Amazon VPC settings</a> + <a href="#hosted-zone-private-considerations-health-checks">Route 53 health checks</a> + <a href="#hosted-zone-private-considerations-routing-policies">Supported routing policies for records in a private hosted zone</a> + <a href="#hosted-zone-private-considerations-split-view-dns">Split-view DNS</a> + <a href="#hosted-zone-private-considerations-public-private-overlapping">Public and private hosted zones that have overlapping namespaces</a> + <a href="#hosted-zone-private-considerations-private-overlapping">Private hosted zones that have overlapping namespaces</a> + <a href="#hosted-zone-private-considerations-resolver-rules">Private hosted zones and Route 53 Resolver rules</a> + <a href="#hosted-zone-private-considerations-delegating-subdomain">Delegating responsibility for a subdomain</a> + <a href="#hosted-zone-private-considerations-custom-dns">Custom DNS servers</a> + <a href="#hosted-zone-private-considerations-required-permissions">Required IAM permissions</a></p>
+<p><strong>Amazon VPC settings</strong><br />
+To use private hosted zones, you must set the following Amazon VPC settings to <code>true</code>:<br />
++ <code>enableDnsHostnames</code> + <code>enableDnsSupport</code> For more information, see <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html#vpc-dns-updating">Updating DNS support for your VPC</a> in the <em>Amazon VPC User Guide</em>.</p>
+<p><strong>Route 53 health checks</strong><br />
+In a private hosted zone, you can associate Route 53 health checks only with failover, multivalue answer, weighted, latency and, geolocation records. For information about associating health checks with failover records, see <a href="dns-failover-private-hosted-zones.html">Configuring failover in a private hosted zone</a>.</p>
+<p><strong>Supported routing policies for records in a private hosted zone</strong><br />
+You can use the following routing policies when you create records in a private hosted zone:<br />
++ <a href="routing-policy-simple.html">Simple routing</a> + <a href="routing-policy-failover.html">Failover routing</a> + <a href="routing-policy-multivalue.html">Multivalue answer routing</a> + <a href="routing-policy-weighted.html">Weighted routing</a> + <a href="routing-policy-latency.html">Latency-based routing</a> + <a href="routing-policy-geo.html">Geolocation routing</a> Creating records in a private hosted zone using other routing policies is not supported.</p>
+<p><strong>Split-view DNS</strong><br />
+You can use Route 53 to configure split-view DNS, also known as split-horizon DNS. In split-view DNS, you use the same domain name (example.com) for internal uses (accounting.example.com) and external uses, such as your public website (www.example.com). You might also want to use the same subdomain name internally and externally, but serve different content or require different authentication for internal and external users.<br />
+To configure split-view DNS, you perform the following steps:</p>
+<ol type="1">
+<li><p>Create public and private hosted zones that have the same name. (Split-view DNS still works if you’re using another DNS service for the public hosted zone.)</p></li>
+<li><p>Associate one or more Amazon VPCs with the private hosted zone. Route 53 Resolver uses the private hosted zone to route DNS queries in the specified VPCs.</p></li>
+<li><p>Create records in each hosted zone. Records in the public hosted zone control how internet traffic is routed, and records in the private hosted zone control how traffic is routed in your Amazon VPCs. If you need to perform name resolution of both your VPC and on-premises workloads, you can use Route 53 Resolver. For more information, see <a href="resolver.html">What is Amazon Route 53 Resolver?</a>.</p></li>
+</ol>
+<p><strong>Public and private hosted zones that have overlapping namespaces</strong><br />
+If you have private and public hosted zones that have overlapping namespaces, such as example.com and accounting.example.com, Resolver routes traffic based on the most specific match. When users are logged into an EC2 instance in an Amazon VPC that you have associated with the private hosted zone, here’s how Route 53 Resolver handles DNS queries:</p>
+<ol type="1">
+<li><p>Resolver evaluates whether the name of the private hosted zone matches the domain name in the request, such as accounting.example.com. A match is defined as either of the following:</p>
+<ul>
+<li><p>An identical match</p></li>
+<li><p>The name of the private hosted zone is a parent of the domain name in the request. For example, suppose the domain name in the request is the following:</p>
+<p><strong>seattle.accounting.example.com</strong></p>
+<p>The following hosted zones match because they’re parents of seattle.accounting.example.com:</p>
+<ul>
+<li><strong>accounting.example.com</strong></li>
+<li><strong>example.com</strong></li>
+</ul></li>
+</ul>
+<p>If there’s no matching private hosted zone, then Resolver forwards the request to a public DNS resolver, and your request is resolved as a regular DNS query.</p></li>
+<li><p>If there’s a private hosted zone name that matches the domain name in the request, the hosted zone is searched for a record that matches the domain name and DNS type in the request, such as an A record for accounting.example.com. <strong>Note</strong><br />
+If there’s a matching private hosted zone but there’s no record that matches the domain name and type in the request, Resolver doesn’t forward the request to a public DNS resolver. Instead, it returns NXDOMAIN (non-existent domain) to the client.</p></li>
+</ol>
+<p><strong>Private hosted zones that have overlapping namespaces</strong><br />
+If you have two or more private hosted zones that have overlapping namespaces, such as example.com and accounting.example.com, Resolver routes traffic based on the most specific match.<br />
+If you have a private hosted zone (example.com) and a Route 53 Resolver rule that routes traffic to your network for the same domain name, the Resolver rule takes precedence. See <a href="#hosted-zone-private-considerations-resolver-rules">Private hosted zones and Route 53 Resolver rules</a>. When users are logged into an EC2 instance in an Amazon VPC that you have associated with all of the private hosted zones, here’s how Resolver handles DNS queries:</p>
+<ol type="1">
+<li><p>Resolver evaluates whether the domain name in the request, such as accounting.example.com, matches the name of one of the private hosted zones.</p></li>
+<li><p>If there is no hosted zone that exactly matches the domain name in the request, Resolver checks for a hosted zone that has a name that is the parent of the domain name in the request. For example, suppose the domain name in the request is the following:</p>
+<p><code>seattle.accounting.example.com</code></p>
+<p>The following hosted zones match because they’re parents of <code>seattle.accounting.example.com</code>:</p>
+<ul>
+<li><code>accounting.example.com</code></li>
+<li><code>example.com</code></li>
+</ul>
+<p>Resolver chooses <code>accounting.example.com</code> because it’s more specific than <code>example.com</code>.</p></li>
+<li><p>Resolver searches the <code>accounting.example.com</code> hosted zone for a record that matches the domain name and DNS type in the request, such as an A record for <code>seattle.accounting.example.com</code>.</p>
+<p>If there’s no record that matches the domain name and type in the request, Resolver returns NXDOMAIN (non-existent domain) to the client.</p></li>
+</ol>
+<p><strong>Private hosted zones and Route 53 Resolver rules</strong><br />
+If you have a private hosted zone (example.com) and a Resolver rule that routes traffic to your network for the same domain name, the Resolver rule takes precedence.<br />
+For example, suppose you have the following configuration:<br />
++ You have a private hosted zone called example.com, and you associate it with a VPC. + You create a Route 53 Resolver rule that forwards traffic for example.com to your network, and you associate the rule with the same VPC. In this configuration, the Resolver rule takes precedence over the private hosted zone. DNS queries are forwarded to your network instead of being resolved based on the records in the private hosted zone.</p>
+<p><strong>Delegating responsibility for a subdomain</strong><br />
+You cannot create NS records in a private hosted zone to delegate responsibility for a subdomain.</p>
+<p><strong>Custom DNS servers</strong><br />
+If you have configured custom DNS servers on Amazon EC2 instances in your VPC, you must configure those DNS servers to route your private DNS queries to the IP address of the Amazon-provided DNS servers for your VPC. This IP address is the IP address at the base of the VPC network range “plus two.” For example, if the CIDR range for your VPC is 10.0.0.0/16, the IP address of the DNS server is 10.0.0.2.<br />
+If you want to route DNS queries between VPCs and your network, you can use Resolver. For more information, see <a href="resolver.html">What is Amazon Route 53 Resolver?</a>.</p>
+<p><strong>Required IAM permissions</strong><br />
+To create private hosted zones, you need to grant IAM permissions for Amazon EC2 actions in addition to permissions for Route 53 actions. For more information, see <a href="https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazonroute53.html">Actions, resources, and condition keys for Route 53</a> in the <em>Service Authorization Reference</em>.</p>
+</body>
+</html>

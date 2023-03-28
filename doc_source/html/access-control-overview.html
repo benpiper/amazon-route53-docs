@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>access-control-overview</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="overview-of-managing-access-permissions-to-your-amazon-route-53-resources">Overview of managing access permissions to your Amazon Route 53 resources<a name="access-control-overview"></a></h1>
+<p>Every AWS resource is owned by an AWS account, and permissions to create or access a resource are governed by permissions policies.</p>
+<p><strong>Note</strong><br />
+An <em>account administrator</em> (or administrator user) is a user that has administrator privileges. For more information about administrators, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html">IAM best practices</a> in the <em>IAM User Guide</em>.</p>
+<p>When you grant permissions, you decide who gets the permissions, the resources they get permissions for, and the actions that they get permissions to perform.</p>
+<p><strong>Topics</strong> + <a href="#access-control-resources">ARNs for Amazon Route 53 resources</a> + <a href="#access-control-owner">Understanding resource ownership</a> + <a href="#access-control-manage-access-intro">Managing access to resources</a> + <a href="#access-control-specify-r53-actions">Specifying policy elements: Resources, actions, effects, and principals</a> + <a href="#specifying-conditions">Specifying conditions in a policy</a></p>
+<h2 id="arns-for-amazon-route-53-resources">ARNs for Amazon Route 53 resources<a name="access-control-resources"></a></h2>
+<p>Amazon Route 53 supports a variety of resource types for DNS, health checking, and domain registration. In a policy, you can grant or deny access to the following resources by using <code>*</code> for the ARN: + Health checks + Hosted zones + Reusable delegation sets + Status of a resource record set change batch (API only) + Traffic policies (traffic flow) + Traffic policy instances (traffic flow)</p>
+<p>Not all Route 53 resources support permissions. You can’t grant or deny access to the following resources: + Domains + Individual records + Tags for domains + Tags for health checks + Tags for hosted zones</p>
+<p>Route 53 provides API actions to work with each of these types of resources. For more information, see the <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/">Amazon Route 53 API Reference</a>. For a list of actions and the ARN that you specify to grant or deny permission to use each action, see <a href="r53-api-permissions-ref.html">Amazon Route 53 API permissions: Actions, resources, and conditions reference</a>.</p>
+<h2 id="understanding-resource-ownership">Understanding resource ownership<a name="access-control-owner"></a></h2>
+<p>An AWS account owns the resources that are created in the account, regardless of who created the resources. Specifically, the resource owner is the AWS account of the principal entity (that is, the root account, an IAM user, or an IAM role) that authenticates the resource creation request.</p>
+<p>The following examples illustrate how this works: + If you use the root account credentials of your AWS account to create a hosted zone, your AWS account is the owner of the resource. + If you create an IAM user in your AWS account and grant permissions to create a hosted zone to that user, the user can create a hosted zone. However, your AWS account, to which the user belongs, owns the hosted zone resource. + If you create an IAM role in your AWS account with permissions to create a hosted zone, anyone who can assume the role can create a hosted zone. Your AWS account, to which the role belongs, owns the hosted zone resource.</p>
+<h2 id="managing-access-to-resources">Managing access to resources<a name="access-control-manage-access-intro"></a></h2>
+<p>A <em>permissions policy</em> specifies who has access to what. This section explains the options for creating permissions policies for Amazon Route 53. For general information about IAM policy syntax and descriptions, see the <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies.html">AWS IAM Policy Reference</a> in the <em>IAM User Guide</em>.</p>
+<p>Policies attached to an IAM identity are referred to as <em>identity-based</em> policies (IAM policies), and policies attached to a resource are referred to as <em>resource-based</em> policies. Route 53 supports only identity-based policies (IAM policies).</p>
+<p><strong>Topics</strong> + <a href="#access-control-manage-access-intro-iam-policies">Identity-based policies (IAM policies)</a> + <a href="#access-control-manage-access-intro-resource-policies">Resource-based policies</a></p>
+<h3 id="identity-based-policies-iam-policies">Identity-based policies (IAM policies)<a name="access-control-manage-access-intro-iam-policies"></a></h3>
+<p>You can attach policies to IAM identities. For example, you can do the following: + <strong>Attach a permissions policy to a user or a group in your account</strong> – An account administrator can use a permissions policy that is associated with a particular user to grant permissions for that user to create Amazon Route 53 resources. + <strong>Attach a permissions policy to a role (grant cross-account permissions)</strong> – You can grant permission to perform Route 53 actions to a user that was created by another AWS account. To do so, you attach a permissions policy to an IAM role, and then you allow the user in the other account to assume the role. The following example explains how this works for two AWS accounts, account A and account B:</p>
+<ol type="1">
+<li><p>Account A administrator creates an IAM role and attaches to the role a permissions policy that grants permissions to create or access resources that are owned by account A.</p></li>
+<li><p>Account A administrator attaches a trust policy to the role. The trust policy identifies account B as the principal that can assume the role.</p></li>
+<li><p>Account B administrator can then delegate permissions to assume the role to users or groups in Account B. This allows users in account B to create or access resources in account A.</p></li>
+</ol>
+<p>For more information about how to delegate permissions to users in another AWS account, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access.html">Access management</a> in the <em>IAM User Guide</em>.</p>
+<p>The following example policy allows a user to perform the <code>CreateHostedZone</code> action to create a public hosted zone for any AWS account:</p>
+<pre><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: [
+                &quot;route53:CreateHostedZone&quot;
+            ],
+            &quot;Resource&quot;:&quot;*&quot;
+        }
+    ]
+}</code></pre>
+<p>If you want the policy to also apply to private hosted zones, you need to grant permissions to use the Route 53 <code>AssociateVPCWithHostedZone</code> action and two Amazon EC2 actions, <code>DescribeVpcs</code> and <code>DescribeRegion</code>, as shown in the following example:</p>
+<pre><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: [
+                &quot;route53:CreateHostedZone&quot;,
+                &quot;route53:AssociateVPCWithHostedZone&quot;
+            ],
+            &quot;Resource&quot;:&quot;*&quot;
+        },
+        {
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: [
+                &quot;ec2:DescribeVpcs&quot;,
+                &quot;ec2:DescribeRegion&quot;
+            ],
+            &quot;Resource&quot;:&quot;*&quot;
+        },
+    ]
+}</code></pre>
+<p>For more information about attaching policies to identities for Route 53, see <a href="access-control-managing-permissions.html">Using identity-based policies (IAM policies) for Amazon Route 53</a>. For more information about users, groups, roles, and permissions, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id.html">Identities (users, groups, and roles)</a> in the <em>IAM User Guide</em>.</p>
+<h3 id="resource-based-policies">Resource-based policies<a name="access-control-manage-access-intro-resource-policies"></a></h3>
+<p>Other services, such as Amazon S3, also support attaching permissions policies to resources. For example, you can attach a policy to an S3 bucket to manage access permissions to that bucket. Amazon Route 53 doesn’t support attaching policies to resources. </p>
+<h2 id="specifying-policy-elements-resources-actions-effects-and-principals">Specifying policy elements: Resources, actions, effects, and principals<a name="access-control-specify-r53-actions"></a></h2>
+<p>Amazon Route 53 includes API actions (see the <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/">Amazon Route 53 API Reference</a>) that you can use on each Route 53 resource (see <a href="#access-control-resources">ARNs for Amazon Route 53 resources</a>). You can grant a user or a federated user permissions to perform any or all of these actions. Note that some API actions, such as registering a domain, require permissions to perform more than one action.</p>
+<p>The following are the basic policy elements: + <strong>Resource</strong> – You use an Amazon Resource Name (ARN) to identify the resource that the policy applies to. For more information, see <a href="#access-control-resources">ARNs for Amazon Route 53 resources</a>. + <strong>Action</strong> – You use action keywords to identify resource operations that you want to allow or deny. For example, depending on the specified <code>Effect</code>, the <code>route53:CreateHostedZone</code> permission allows or denies a user the ability to perform the Route 53 <code>CreateHostedZone</code> action. + <strong>Effect</strong> – You specify the effect, either allow or deny, when a user tries to perform the action on the specified resource. If you don’t explicitly grant access to an action, access is implicitly denied. You can also explicitly deny access to a resource, which you might do to make sure that a user cannot access it, even if a different policy grants access. + <strong>Principal</strong> – In identity-based policies (IAM policies), the user that the policy is attached to is the implicit principal. For resource-based policies, you specify the user, account, service, or other entity that you want to receive permissions (applies to resource-based policies only). Route 53 doesn’t support resource-based policies.</p>
+<p>For more information about IAM policy syntax and descriptions, see the <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies.html">AWS IAM Policy Reference</a> in the <em>IAM User Guide</em>.</p>
+<p>For a table showing all of the Route 53 API operations and the resources that they apply to, see <a href="r53-api-permissions-ref.html">Amazon Route 53 API permissions: Actions, resources, and conditions reference</a>.</p>
+<h2 id="specifying-conditions-in-a-policy">Specifying conditions in a policy<a name="specifying-conditions"></a></h2>
+<p>When you grant permissions, you can use the IAM policy language to specify when a policy should take effect. For example, you might want a policy to be applied only after a specific date. For more information about specifying conditions in a policy language, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements_condition.html">IAM JSON policy elements: Condition</a> in the <em>IAM User Guide</em>.</p>
+<p>To express conditions, you use predefined condition keys. There are no condition keys specific to Route 53. However, there are AWS wide condition keys that you can use as needed. For a complete list of AWS wide keys, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html#AvailableKeys">Available keys for conditions</a> in the <em>IAM User Guide</em>.</p>
+</body>
+</html>

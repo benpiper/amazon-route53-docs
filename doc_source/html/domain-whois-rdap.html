@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>domain-whois-rdap</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="viewing-information-about-domains-that-are-registered-with-amazon-registrar">Viewing information about domains that are registered with Amazon Registrar<a name="domain-whois-rdap"></a></h1>
+<p>You can view information about domains that were registered using Route 53 and for which Amazon Registrar is the registrar. This information includes details such as when the domain was originally registered and contact information for the domain owner and for the technical and administrative contacts.</p>
+<p>Note the following:</p>
+<p><strong>Emailing domain contacts when privacy protection is enabled</strong><br />
+If privacy protection is enabled for the domain, contact information for the registrant, technical, and administrative contacts is replaced with contact information for the Amazon Registrar privacy service. For example, if the example.com domain is registered with Amazon Registrar and if privacy protection is enabled, the value of <strong>Registrant Email</strong> in the response to a WHOIS query would be similar to owner1234@example.com.whoisprivacyservice.org or owner1234@example.com.identity-protect.org.<br />
+To contact one or more domain contacts when privacy protection is enabled, send an email to the corresponding email addresses. We automatically forward your email to the applicable contact.</p>
+<p><strong>Reporting abuse</strong><br />
+To report any illegal activity or violation of the <a href="http://aws.amazon.com/route53/amazon-registrar-policies/#acceptable-use-policy">Acceptable Use Policy</a>, including inappropriate content, phishing, malware, or spam, send an email to abuse@amazon.com.<a name="domain-whois-rdap-procedure"></a></p>
+<p><strong>To view information about domains that are registered with Amazon Registrar</strong></p>
+<ol type="1">
+<li>In a web browser, go to one of the following websites. Both websites display the same information, they just use different protocols and display the information in different formats:
+<ul>
+<li><strong>WHOIS:</strong> <a href="https://registrar.amazon.com/whois">https://registrar.amazon.com/whois</a></li>
+<li><strong>RDAP:</strong> <a href="https://registrar.amazon.com/rdap">https://registrar.amazon.com/rdap</a></li>
+</ul></li>
+<li>Enter the name of the domain that you want to view information about, and choose <strong>Search</strong>.</li>
+</ol>
+</body>
+</html>

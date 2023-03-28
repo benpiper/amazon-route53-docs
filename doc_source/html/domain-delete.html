@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>domain-delete</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="deleting-a-domain-name-registration">Deleting a domain name registration<a name="domain-delete"></a></h1>
+<p>For most top-level domains (TLDs), you can delete the registration if you no longer want it. If the registry allows you to delete the registration, perform the procedure in this topic.</p>
+<p>Note the following:</p>
+<p><strong>The registration fee is not refundable</strong><br />
+If you delete a domain name registration before the registration is scheduled to expire, AWS does not refund the registration fee.</p>
+<p><strong>TLDs that allow you to delete a domain registration</strong><br />
+To determine whether you can delete the registration for your domain, see <a href="registrar-tld-list.html">Domains that you can register with Amazon Route 53</a>. If the section for your TLD doesn’t include a “Deletion of domain registration” subsection, you can delete the domain. Before you delete the domain, make sure you have disabled the domain lock. For more information about disabling the domain lock, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_domains_DisableDomainTransferLock.html">DisableDomainTransferLock</a>.</p>
+<p><strong>What if you can’t delete a domain registration?</strong><br />
+If the registry for your domain doesn’t allow you to delete a domain name registration, you must wait for the domain to expire. To ensure that the domain isn’t automatically renewed, disable automatic renewal for the domain. When the <strong>Expires on</strong> date passes, Route 53 automatically deletes the registration for the domain. For information about how to change the automatic renewal setting, see <a href="domain-enable-disable-auto-renewal.html">Enabling or disabling automatic renewal for a domain</a>.</p>
+<p><strong>Delay before a domain is deleted and available to register again</strong><br />
+Almost all registries prevent anyone from immediately registering a domain that has just expired. The typical delay is one to three months, depending on the TLD. For more information, see the “Deadlines for renewing and restoring domains” section for your TLD in <a href="registrar-tld-list.html">Domains that you can register with Amazon Route 53</a>.<br />
+Don’t delete a domain and expect to reregister it if you just want to transfer the domain between AWS accounts or transfer the domain to another registrar. See the applicable documentation instead:<br />
++ <a href="domain-transfer-between-aws-accounts.html">Transferring a domain to a different AWS account</a> + <a href="domain-transfer-from-route-53.html">Transferring a domain from Amazon Route 53 to another registrar</a><a name="domain-delete-procedure"></a></p>
+<p><strong>To delete a domain name registration</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Registered Domains</strong>.</p></li>
+<li><p>Choose the name of your domain.</p>
+<p>If you want to delete a .com.uk, .me.uk, .org.uk, or .uk domain, see <a href="#domain-delete-uk-procedure">To delete .com.uk, .me.uk, .org.uk, and .uk domain name registrations</a>.</p></li>
+<li><p>Choose <strong>Delete Domain</strong>.</p></li>
+<li><p>If the registry for your TLD allows deleting a domain name registration, choose <strong>Delete Domain</strong>.</p>
+<p>We send an email to the registrant for the domain to verify that the registrant wants to delete the domain. (This is an ICANN requirement.) The email comes from one of the following email addresses:</p>
+<ul>
+<li>noreply@registrar.amazon.com – for TLDs registered by Amazon Registrar.</li>
+<li>noreply@domainnameverification.net – for TLDs registered by our registrar associate, Gandi.</li>
+</ul>
+<p>To determine who the registrar is for your TLD, see <a href="registrar-tld-list.html">Domains that you can register with Amazon Route 53</a>.</p></li>
+<li><p>When you receive the verification email, choose the link in the email, and either approve or reject the request to delete the domain. <strong>Important</strong><br />
+The registrant contact must follow the instructions in the email, or we must cancel the deletion request after five days as required by ICANN.</p>
+<p>You’ll receive another email when your domain has been deleted. To determine the current status of your request, see <a href="domain-view-status.html">Viewing the status of a domain registration</a>.</p></li>
+<li><p>Delete the records in the hosted zone for the deleted domain, and then delete the hosted zone. After you delete the hosted zone, Route 53 stops billing you the monthly charge for a hosted zone. For more information, see the following documentation:</p>
+<ul>
+<li><a href="resource-record-sets-deleting.html">Deleting records</a></li>
+<li><a href="DeleteHostedZone.html">Deleting a public hosted zone</a></li>
+<li><a href="https://aws.amazon.com/route53/pricing">Route 53 Pricing</a></li>
+</ul></li>
+<li><p>If you encounter issues while deleting a domain name registration, you can contact AWS Support for free. For more information, see <a href="domain-contact-support.html">Contacting AWS Support about domain registration issues</a>.<a name="domain-delete-uk-procedure"></a></p></li>
+</ol>
+<p><strong>To delete .com.uk, .me.uk, .org.uk, and .uk domain name registrations</strong></p>
+<p>If you want to delete a .com.uk, .me.uk, .org.uk, or .uk domain, you create an account with Nominet, the registry for .uk domains. For more information, see “Cancelling your domain name” on the Nominet website, <a href="https://www.nominet.uk/domain-support/">https://www.nominet.uk/domain-support/</a>. <strong>Important</strong><br />
+If you delete (cancel) a .uk domain name, it’s deleted by the end of the day and becomes available for anyone to register. If you just want to transfer the domain, do not delete it.</p>
+<p>Here’s an overview of the process:</p>
+<ol type="1">
+<li><p>On the Nominet website, follow the instructions for logging in for the first time. See <a href="https://secure.nominet.org.uk/auth/login.html">https://secure.nominet.org.uk/auth/login.html</a>. Nominet sends you an email with instructions for creating a password.</p></li>
+<li><p>Follow the instructions in the email that you receive from Nominet.</p></li>
+<li><p>Log in to the Nominet website, and follow the instructions for canceling (deleting) a domain name.</p></li>
+</ol>
+</body>
+</html>

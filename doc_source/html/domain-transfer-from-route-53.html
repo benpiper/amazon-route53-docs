@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>domain-transfer-from-route-53</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="transferring-a-domain-from-amazon-route-53-to-another-registrar">Transferring a domain from Amazon Route 53 to another registrar<a name="domain-transfer-from-route-53"></a></h1>
+<p>When you transfer a domain from Amazon Route 53 to another registrar, you get some information from Route 53 and provide it to the new registrar. The new registrar will do the rest.</p>
+<p><strong>Important</strong><br />
+If you’re currently using Route 53 as your DNS service provider and you also want to transfer DNS service to another provider, be aware that the following Route 53 features don’t have direct parallels with features provided by other DNS service providers. You’ll need to work with the new DNS service provider to determine how to achieve comparable functionality:<br />
+Alias records. For more information, see <a href="resource-record-sets-choosing-alias-non-alias.html">Choosing between alias and non-alias records</a>. Routing policies other than the simple routing policy. For more information, see <a href="routing-policy.html">Choosing a routing policy</a>. Health checks that are associated with records. For more information, see <a href="dns-failover-configuring.html">Configuring DNS failover</a>.</p>
+<p>Most domain registrars enforce requirements on transferring a domain to another registrar. The primary purpose of these requirements is to prevent the owners of fraudulent domains from repeatedly transferring the domains to different registrars. Requirements vary, but the following requirements are typical: + You must have registered the domain with the current registrar or transferred registration for the domain to the current registrar at least 60 days ago. + If the registration for a domain name expired and had to be restored, it must have been restored at least 60 days ago. + The domain cannot have any of the following domain name status codes: + pendingDelete + pendingTransfer + redemptionPeriod + clientTransferProhibited</p>
+<p>For a current list of domain name status codes and an explanation of what each code means, go to the <a href="https://www.icann.org/">ICANN website</a> and search for <strong>epp status codes</strong>. (Search on the ICANN website; web searches sometimes return an old version of the document.)</p>
+<p><strong>Note</strong><br />
+If you want to transfer your domain to another domain registrar but the AWS account that the domain is registered with is closed, suspended, or terminated, you can contact AWS Support for help. Domains cannot be transferred within the first 14 days of registration. For more information, see <a href="domain-contact-support.html">Contacting AWS Support about domain registration issues</a>.<a name="domain-transfer-from-route-53-procedure"></a></p>
+<p><strong>To transfer a domain from Route 53 to another registrar</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Registered Domains</strong>.</p></li>
+<li><p>Choose the name of the domain that you want to transfer to another registrar.</p></li>
+<li><p>On the <strong>Registered domains &gt; </strong> <em>domain name</em> page, check the value of <strong>Domain name status code</strong>. If it is one of the following values, you can’t currently transfer the domain:</p>
+<ul>
+<li>pendingDelete</li>
+<li>pendingTransfer</li>
+<li>redemptionPeriod</li>
+<li>clientTransferProhibited</li>
+<li>serverTransferProhibited</li>
+</ul>
+<p>For a current list of domain name status codes and an explanation of what each code means, go to the <a href="https://www.icann.org/">ICANN website</a> and search for <strong>epp status codes</strong>. (Search on the ICANN website; web searches sometimes return an old version of the document.)</p>
+<p>If the value of <strong>Domain name status code</strong> is <strong>serverTransferProhibited</strong>, you can contact AWS Support for free to learn what you must do so you can transfer the domain. For more information, see <a href="domain-contact-support.html">Contacting AWS Support about domain registration issues</a>.</p></li>
+<li><p>If the value of <strong>Transfer lock</strong> is <strong>Enabled</strong>, choose <strong>Disable.</strong></p></li>
+<li><p>Choose <strong>Save</strong>.</p></li>
+<li><p><em>All domains except .co.za, .es, .jp, .ru, .uk, .co.uk, .me.uk, and .org.uk domains</em> – On the <strong>Registered Domains &gt;</strong> <em>domain name</em> page, at <strong>Authorization Code</strong>, choose <strong>Get code</strong> and make note of the authorization code. You’ll provide this value to your registrar later in this procedure.</p>
+<p><em>.co.za, .es, .jp, .ru, .uk, .co.uk, .me.uk, and .org.uk domains</em> – Do the following:<br />
+<strong>.co.za domains</strong><br />
+You don’t need to get an authorization code to transfer a .co.za domain to another registrar.<br />
+<strong>.es domains</strong><br />
+You don’t need to get an authorization code to transfer a .es domain to another registrar.<br />
+<strong>.jp domains</strong><br />
+You don’t need to get an authorization code to initiate the transfer at your new registrar, but you’ll need one to confirm the transfer.<br />
+<strong>.ru domains</strong><br />
+Get the authorization code from the registry for .ru domains at <a href="https://www.nic.ru/en/auth/recovery/">https://www.nic.ru/en/auth/recovery/</a>:</p>
+<ol type="1">
+<li><p>Choose the option to recover credentials by domain name.</p></li>
+<li><p>Enter your domain name, and choose <strong>Continue</strong>.</p></li>
+<li><p>Follow the on-screen prompts to get access to the RU-CENTER admin page.</p></li>
+<li><p>In the <strong>Manage your account</strong> section, choose <strong>Domain transfer</strong>.</p></li>
+<li><p>Confirm the transfer with REGRU-RU.<br />
+<strong>.uk, .co.uk, .me.uk, and .org.uk domains</strong><br />
+Change the IPS tag to the value for the new registrar:</p></li>
+<li><p>Go to the <a href="http://www.nominet.uk/registrar-list/">Find a Registrar</a> page on the Nominet website, and find the IPS tag for the new registrar. (Nominet is the registry for .uk, .co.uk, .me.uk, and .org.uk domains.)</p></li>
+<li><p>On the <strong>Registered Domains &gt;</strong> <em>domain name</em> page, at <strong>IPS Tag</strong>, choose <strong>Change IPS Tag</strong>, and specify the value that you got in step 7a.</p></li>
+<li><p>Choose <strong>Update</strong>.</p></li>
+</ol></li>
+<li><p>If you’re not currently using Route 53 as the DNS service provider for your domain, skip to step 10.</p>
+<p>If you are currently using Route 53 as the DNS service provider for the domain, perform the following steps:</p>
+<ol type="1">
+<li><p>Choose <strong>Hosted Zones.</strong></p></li>
+<li><p>Choose the name of the hosted zone for your domain. The domain and the hosted zone have the same name.</p></li>
+<li><p><em>If you want to continue using Route 53 as the DNS service provider for the domain:</em> Get the names of the four name servers that Route 53 assigned to your hosted zone. For more information, see <a href="GetInfoAboutHostedZone.html">Getting the name servers for a public hosted zone</a>.</p>
+<p><em>If you do not want to continue using Route 53 as the DNS service provider for the domain:</em> Make note of the settings for all of your records except the NS and SOA records. For Route 53–specific features such as alias records, you’ll need to work with your new DNS service provider to determine how to achieve comparable functionality.</p></li>
+</ol></li>
+<li><p>If you’re transferring DNS service to another provider, use the methods that are provided by the new DNS service to perform the following tasks:</p>
+<ul>
+<li>Create a hosted zone</li>
+<li>Create records that reproduce the functionality of your Route 53 records</li>
+<li>Get the name servers that the new DNS service assigned to your hosted zone</li>
+</ul></li>
+<li><p>Use the process that is provided by the new registrar to request a transfer of the domain.</p>
+<p><em>All domains except .co.za, .es, .jp, .uk, .co.uk, .me.uk, and .org.uk domains</em> – You’ll be prompted to enter the authorization code that you got from the Route 53 console in step 7 of this procedure.</p></li>
+<li><p>If you still want to use Route 53 as your DNS service provider, use the process that is provided by the new registrar to specify the names of the Route 53 name servers that you got in step 8. If you want to use another DNS service provider, specify the names of the name servers that the new provider gave you when you created a new hosted zone in step 9.</p></li>
+<li><p>Respond to the confirmation email:<br />
+<strong>All domains except .jp domains</strong><br />
+Route 53 sends a confirmation email to the email address for the registrant contact for the domain:</p>
+<ul>
+<li>If you don’t respond to the email, the transfer happens automatically on the specified date.</li>
+<li>If you want the transfer to happen sooner or you want to cancel the transfer, choose the link in the email to go to the Route 53 website, and choose the applicable option.<br />
+<strong>.jp domains</strong><br />
+Route 53 sends a confirmation email to the email address for the registrant contact for the domain from address <em>noreply@domainnameverification.net</em> with a link to confirm the transfer:<br />
+</li>
+<li>If you don’t respond to the email, the transfer is canceled on the specified date.</li>
+<li>If you want the transfer to happen sooner or you want to cancel the transfer, choose the link in the email to go to the Route 53 website, and choose the applicable option. You will be required to provide the domain authorization code that you obtained in step 7. In addition you might receive an email from WIXI.jp. You can ignore this email.</li>
+</ul></li>
+<li><p>If the registrar that you’re transferring the domain to reports that the transfer failed, contact that registrar for more information. When you transfer a domain to another registrar, all status updates go to the new registrar, so Route 53 has no information about why a transfer failed.</p>
+<p>If the new registrar reports that the transfer failed because the authorization code that you got from Route 53 isn’t valid, open a case with AWS Support. (You don’t need a support contract, and there’s no fee.) For more information, see <a href="domain-contact-support.html">Contacting AWS Support about domain registration issues</a>.</p></li>
+<li><p>If you transferred DNS service to another DNS service provider, you can delete the records in the hosted zone and delete the hosted zone after DNS resolvers stop responding to DNS queries with the names of Route 53 name servers. This typically takes two days, the amount of time that DNS resolvers commonly cache the names of name servers for a domain. <strong>Important</strong><br />
+If you delete the hosted zone while DNS resolvers are still responding to DNS queries with the names of Route 53 name servers, your domain will become unavailable on the internet.</p>
+<p>After you delete the hosted zone, Route 53 will stop billing you the monthly charge for a hosted zone. For more information, see the following documentation:</p>
+<ul>
+<li><a href="resource-record-sets-deleting.html">Deleting records</a></li>
+<li><a href="DeleteHostedZone.html">Deleting a public hosted zone</a></li>
+<li><a href="https://aws.amazon.com/route53/pricing">Route 53 Pricing</a></li>
+</ul></li>
+</ol>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>dns-configuring-dnssec-cmk-requirements</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="working-with-customer-managed-keys-for-dnssec">Working with customer managed keys for DNSSEC<a name="dns-configuring-dnssec-cmk-requirements"></a></h1>
+<p>When you enable DNSSEC signing in Amazon Route 53, Route 53 creates a key-signing key (KSK) for you. To create a KSK, Route 53 must use a customer managed key in AWS Key Management Service that supports DNSSEC. This section describes the details and requirements for the customer managed key that are helpful to know as you work with DNSSEC.</p>
+<p>Keep the following in mind when you work with customer managed keys for DNSSEC: + The customer managed key that you use with DNSSEC signing must be in the US East (N. Virginia) Region. + The customer managed key must be an <a href="https://docs.aws.amazon.com/kms/latest/developerguide/symm-asymm-concepts.html#asymmetric-cmks">asymmetric customer managed key</a> with an <a href="https://docs.aws.amazon.com/kms/latest/developerguide/symm-asymm-choose.html#key-spec-ecc">ECC_NIST_P256 key spec</a>. These customer managed keys are used only for signing and verification. For help creating an asymmetric customer managed key, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html#create-asymmetric-cmk">Creating asymmetric customer managed keys</a> in the AWS Key Management Service Developer Guide. For help finding the cryptographic configuration of an existing customer managed key, see <a href="https://docs.aws.amazon.com/kms/latest/developerguide/symm-asymm-crypto-config.html">Viewing the cryptographic configuration of customer managed keys</a> in the AWS Key Management Service Developer Guide. + If you create a customer managed key yourself to use with DNSSEC in Route 53, you must include specific key policy statements that give Route 53 the required permissions. Route 53 must be able to access your customer managed key so that it can create a KSK for you. For more information, see <a href="access-control-managing-permissions.html#KMS-key-policy-for-DNSSEC">Route 53 customer managed key permissions required for DNSSEC signing</a>. + Route 53 can create a customer managed key for you in AWS KMS to use with DNSSEC signing without additional AWS KMS permissions. However, you must have specific permissions if you want to edit the key after it’s created. The specific permissions that you must have are the following: <code>kms:UpdateKeyDescription</code>, <code>kms:UpdateAlias</code>, and <code>kms:PutKeyPolicy</code>. + Be aware that separate charges apply for each customer managed key that you have, whether you create the customer managed key or Route 53 creates it for you. For more information, see <a href="https://aws.amazon.com/kms/pricing/">AWS Key Management Service pricing</a>.</p>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>find-your-registrar</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="finding-your-registrar-and-other-information-about-your-domain">Finding your registrar and other information about your domain<a name="find-your-registrar"></a></h1>
+<p>To view domain information by using the <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_domains_GetDomainDetail.html">GetDomainDetail</a> API, you can use any of the SDKs or AWS CLI. For more information, see <a href="https://docs.aws.amazon.com/cli/latest/reference/route53domains/get-domain-detail.html">get-domain-detail</a>.<a name="find-your-registrar-getdomaindetail-procedure"></a></p>
+<p><strong>To view information about domains with <code>get-domain-detail</code> CLI</strong> + Use the following CLI:</p>
+<pre><code>aws route53domains get-domain-detail \
+    --region us-east-1 \
+    --domain-name example.com</code></pre>
+<p><strong>Note</strong><br />
+This command only runs in us-east-1 AWS Region.</p>
+<p>All the information about your domain will be listed in the output, including the registrar, registration date, privacy setting, etc.</p>
+</body>
+</html>

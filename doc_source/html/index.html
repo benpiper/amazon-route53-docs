@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>index</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="amazon-route-53-developer-guide">Amazon Route 53 Developer Guide</h1>
+<table style="width:8%;">
+<colgroup>
+<col style="width: 8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>*****Copyright © Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Amazon’s trademarks and trade dress may not be used in connection with any product or service that is not Amazon’s, in any manner that is likely to cause confusion among customers, or in any manner that disparages or discredits Amazon. All other trademarks not owned by Amazon are the property of their respective owners, who may or may not be affiliated with, connected to, or sponsored by Amazon.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="contents">Contents</h2>
+<ul>
+<li><a href="Welcome.html">What is Amazon Route 53?</a>
+<ul>
+<li><a href="welcome-domain-registration.html">How domain registration works</a></li>
+<li><a href="welcome-dns-service.html">How internet traffic is routed to your website or web application</a></li>
+<li><a href="welcome-health-checks.html">How Amazon Route 53 checks the health of your resources</a></li>
+<li><a href="route-53-concepts.html">Amazon Route 53 concepts</a></li>
+<li><a href="welcome-how-to-get-started.html">How to get started with Amazon Route 53</a></li>
+<li><a href="welcome-related-services.html">Related services</a></li>
+<li><a href="welcome-accessing-route-53.html">Accessing Amazon Route 53</a></li>
+<li><a href="IAMRoute53.html">AWS Identity and Access Management</a></li>
+<li><a href="Route53Pricing.html">Amazon Route 53 pricing and billing</a></li>
+</ul></li>
+<li><a href="setting-up-route-53.html">Setting up Amazon Route 53</a></li>
+<li><a href="getting-started.html">Getting started with Amazon Route 53</a>
+<ul>
+<li><a href="getting-started-s3.html">Use your domain for a static website in an Amazon S3 bucket</a></li>
+<li><a href="getting-started-cloudfront-overview.html">Use an Amazon CloudFront distribution to serve a static website</a></li>
+</ul></li>
+<li><a href="integration-with-other-services.html">Integration with other services</a></li>
+<li><a href="DomainNameFormat.html">DNS domain name format</a></li>
+<li><a href="registrar.html">Registering domain names using Amazon Route 53</a>
+<ul>
+<li><a href="domain-register-update.html">Registering domains</a>
+<ul>
+<li><a href="domain-register.html">Registering a new domain</a></li>
+<li><a href="domain-register-values-specify.html">Values that you specify when you register or transfer a domain</a></li>
+<li><a href="domain-register-values-returned.html">Values that Amazon Route 53 returns when you register a domain</a></li>
+<li><a href="domain-view-status.html">Viewing the status of a domain registration</a></li>
+</ul></li>
+<li><a href="domain-update-settings.html">Updating settings for a domain</a>
+<ul>
+<li><a href="domain-update-contacts.html">Updating contact information and ownership for a domain</a></li>
+<li><a href="domain-privacy-protection.html">Enabling or disabling privacy protection for contact information for a domain</a></li>
+<li><a href="domain-enable-disable-auto-renewal.html">Enabling or disabling automatic renewal for a domain</a></li>
+<li><a href="domain-lock.html">Locking a domain to prevent unauthorized transfer to another registrar</a></li>
+<li><a href="domain-extend.html">Extending the registration period for a domain</a></li>
+<li><a href="domain-name-servers-glue-records.html">Adding or changing name servers and glue records for a domain</a></li>
+</ul></li>
+<li><a href="domain-renew.html">Renewing registration for a domain</a></li>
+<li><a href="domain-restore-expired.html">Restoring an expired or deleted domain</a></li>
+<li><a href="domain-replace-hosted-zone.html">Replacing the hosted zone for a domain that is registered with Route 53</a></li>
+<li><a href="domain-transfer.html">Transferring domains</a>
+<ul>
+<li><a href="domain-transfer-to-route-53.html">Transferring registration for a domain to Amazon Route 53</a></li>
+<li><a href="domain-transfer-to-route-53-status.html">Viewing the status of a domain transfer</a></li>
+<li><a href="domain-transfer-to-route-53-expiration.html">How transferring a domain to Amazon Route 53 affects the expiration date for your domain registration</a></li>
+<li><a href="domain-transfer-between-aws-accounts.html">Transferring a domain to a different AWS account</a></li>
+<li><a href="domain-transfer-from-route-53.html">Transferring a domain from Amazon Route 53 to another registrar</a></li>
+</ul></li>
+<li><a href="domain-click-email-link.html">Resending authorization and confirmation emails</a></li>
+<li><a href="domain-configure-dnssec.html">Configuring DNSSEC for a domain</a></li>
+<li><a href="find-your-registrar.html">Finding your registrar and other information about your domain</a>
+<ul>
+<li><a href="domain-whois-rdap.html">Viewing information about domains that are registered with Amazon Registrar</a></li>
+</ul></li>
+<li><a href="domain-delete.html">Deleting a domain name registration</a></li>
+<li><a href="domain-contact-support.html">Contacting AWS Support about domain registration issues</a></li>
+<li><a href="domain-billing-report.html">Downloading a domain billing report</a></li>
+<li><a href="registrar-tld-list.html">Domains that you can register with Amazon Route 53</a>
+<ul>
+<li><a href="registrar-tld-list-generic.html">Generic top-level domains</a>
+<ul>
+<li><a href="ac-xref.html">.ac</a></li>
+<li><a href="academy.html">.academy</a></li>
+<li><a href="accountants.html">.accountants</a></li>
+<li><a href="adult.html">.adult</a></li>
+<li><a href="agency.html">.agency</a></li>
+<li><a href="apartments.html">.apartments</a></li>
+<li><a href="associates.html">.associates</a></li>
+<li><a href="auction.html">.auction</a></li>
+<li><a href="audio.html">.audio</a></li>
+<li><a href="band.html">.band</a></li>
+<li><a href="bargains.html">.bargains</a></li>
+<li><a href="bike.html">.bike</a></li>
+<li><a href="bingo.html">.bingo</a></li>
+<li><a href="biz.html">.biz</a></li>
+<li><a href="black.html">.black</a></li>
+<li><a href="blue.html">.blue</a></li>
+<li><a href="boutique.html">.boutique</a></li>
+<li><a href="builders.html">.builders</a></li>
+<li><a href="business.html">.business</a></li>
+<li><a href="buzz.html">.buzz</a></li>
+<li><a href="cab.html">.cab</a></li>
+<li><a href="cafe.html">.cafe</a></li>
+<li><a href="camera.html">.camera</a></li>
+<li><a href="camp.html">.camp</a></li>
+<li><a href="capital.html">.capital</a></li>
+<li><a href="cards.html">.cards</a></li>
+<li><a href="care.html">.care</a></li>
+<li><a href="careers.html">.careers</a></li>
+<li><a href="cash.html">.cash</a></li>
+<li><a href="casino.html">.casino</a></li>
+<li><a href="catering.html">.catering</a></li>
+<li><a href="cc-xref.html">.cc</a></li>
+<li><a href="center.html">.center</a></li>
+<li><a href="ceo.html">.ceo</a></li>
+<li><a href="chat.html">.chat</a></li>
+<li><a href="cheap.html">.cheap</a></li>
+<li><a href="church.html">.church</a></li>
+<li><a href="city.html">.city</a></li>
+<li><a href="claims.html">.claims</a></li>
+<li><a href="cleaning.html">.cleaning</a></li>
+<li><a href="click.html">.click</a></li>
+<li><a href="clinic.html">.clinic</a></li>
+<li><a href="clothing.html">.clothing</a></li>
+<li><a href="cloud.html">.cloud</a></li>
+<li><a href="club.html">.club</a></li>
+<li><a href="coach.html">.coach</a></li>
+<li><a href="codes.html">.codes</a></li>
+<li><a href="coffee.html">.coffee</a></li>
+<li><a href="college.html">.college</a></li>
+<li><a href="com.html">.com</a></li>
+<li><a href="community.html">.community</a></li>
+<li><a href="company.html">.company</a></li>
+<li><a href="computer.html">.computer</a></li>
+<li><a href="condos.html">.condos</a></li>
+<li><a href="construction.html">.construction</a></li>
+<li><a href="consulting.html">.consulting</a></li>
+<li><a href="contractors.html">.contractors</a></li>
+<li><a href="cool.html">.cool</a></li>
+<li><a href="coupons.html">.coupons</a></li>
+<li><a href="credit.html">.credit</a></li>
+<li><a href="creditcard.html">.creditcard</a></li>
+<li><a href="cruises.html">.cruises</a></li>
+<li><a href="dance.html">.dance</a></li>
+<li><a href="dating.html">.dating</a></li>
+<li><a href="deals.html">.deals</a></li>
+<li><a href="delivery.html">.delivery</a></li>
+<li><a href="democrat.html">.democrat</a></li>
+<li><a href="dental.html">.dental</a></li>
+<li><a href="diamonds.html">.diamonds</a></li>
+<li><a href="diet.html">.diet</a></li>
+<li><a href="digital.html">.digital</a></li>
+<li><a href="direct.html">.direct</a></li>
+<li><a href="directory.html">.directory</a></li>
+<li><a href="discount.html">.discount</a></li>
+<li><a href="dog.html">.dog</a></li>
+<li><a href="domains.html">.domains</a></li>
+<li><a href="education.html">.education</a></li>
+<li><a href="email.html">.email</a></li>
+<li><a href="energy.html">.energy</a></li>
+<li><a href="engineering.html">.engineering</a></li>
+<li><a href="enterprises.html">.enterprises</a></li>
+<li><a href="equipment.html">.equipment</a></li>
+<li><a href="estate.html">.estate</a></li>
+<li><a href="events.html">.events</a></li>
+<li><a href="exchange.html">.exchange</a></li>
+<li><a href="expert.html">.expert</a></li>
+<li><a href="exposed.html">.exposed</a></li>
+<li><a href="express.html">.express</a></li>
+<li><a href="fail.html">.fail</a></li>
+<li><a href="farm.html">.farm</a></li>
+<li><a href="finance.html">.finance</a></li>
+<li><a href="financial.html">.financial</a></li>
+<li><a href="fish.html">.fish</a></li>
+<li><a href="fitness.html">.fitness</a></li>
+<li><a href="flights.html">.flights</a></li>
+<li><a href="florist.html">.florist</a></li>
+<li><a href="flowers.html">.flowers</a></li>
+<li><a href="fm-xref.html">.fm</a></li>
+<li><a href="football.html">.football</a></li>
+<li><a href="forsale.html">.forsale</a></li>
+<li><a href="foundation.html">.foundation</a></li>
+<li><a href="fund.html">.fund</a></li>
+<li><a href="furniture.html">.furniture</a></li>
+<li><a href="futbol.html">.futbol</a></li>
+<li><a href="fyi.html">.fyi</a></li>
+<li><a href="gallery.html">.gallery</a></li>
+<li><a href="gift.html">.gift</a></li>
+<li><a href="gifts.html">.gifts</a></li>
+<li><a href="glass.html">.glass</a></li>
+<li><a href="global.html">.global</a></li>
+<li><a href="gold.html">.gold</a></li>
+<li><a href="golf.html">.golf</a></li>
+<li><a href="graphics.html">.graphics</a></li>
+<li><a href="gratis.html">.gratis</a></li>
+<li><a href="green.html">.green</a></li>
+<li><a href="gripe.html">.gripe</a></li>
+<li><a href="guide.html">.guide</a></li>
+<li><a href="guitars.html">.guitars</a></li>
+<li><a href="guru.html">.guru</a></li>
+<li><a href="haus.html">.haus</a></li>
+<li><a href="healthcare.html">.healthcare</a></li>
+<li><a href="help.html">.help</a></li>
+<li><a href="hiv.html">.hiv</a></li>
+<li><a href="hockey.html">.hockey</a></li>
+<li><a href="holdings.html">.holdings</a></li>
+<li><a href="holiday.html">.holiday</a></li>
+<li><a href="host.html">.host</a></li>
+<li><a href="hosting.html">.hosting</a></li>
+<li><a href="house.html">.house</a></li>
+<li><a href="im-xref.html">.im</a></li>
+<li><a href="immo.html">.immo</a></li>
+<li><a href="immobilien.html">.immobilien</a></li>
+<li><a href="industries.html">.industries</a></li>
+<li><a href="info.html">.info</a></li>
+<li><a href="ink.html">.ink</a></li>
+<li><a href="institute.html">.institute</a></li>
+<li><a href="insure.html">.insure</a></li>
+<li><a href="international.html">.international</a></li>
+<li><a href="investments.html">.investments</a></li>
+<li><a href="io-xref.html">.io</a></li>
+<li><a href="irish.html">.irish</a></li>
+<li><a href="jewelry.html">.jewelry</a></li>
+<li><a href="juegos.html">.juegos</a></li>
+<li><a href="kaufen.html">.kaufen</a></li>
+<li><a href="kim.html">.kim</a></li>
+<li><a href="kitchen.html">.kitchen</a></li>
+<li><a href="kiwi.html">.kiwi</a></li>
+<li><a href="land.html">.land</a></li>
+<li><a href="lease.html">.lease</a></li>
+<li><a href="legal.html">.legal</a></li>
+<li><a href="lgbt.html">.lgbt</a></li>
+<li><a href="life.html">.life</a></li>
+<li><a href="lighting.html">.lighting</a></li>
+<li><a href="limited.html">.limited</a></li>
+<li><a href="limo.html">.limo</a></li>
+<li><a href="link.html">.link</a></li>
+<li><a href="live.html">.live</a></li>
+<li><a href="loan.html">.loan</a></li>
+<li><a href="loans.html">.loans</a></li>
+<li><a href="lol.html">.lol</a></li>
+<li><a href="maison.html">.maison</a></li>
+<li><a href="management.html">.management</a></li>
+<li><a href="marketing.html">.marketing</a></li>
+<li><a href="mba.html">.mba</a></li>
+<li><a href="media.html">.media</a></li>
+<li><a href="memorial.html">.memorial</a></li>
+<li><a href="mobi.html">.mobi</a></li>
+<li><a href="moda.html">.moda</a></li>
+<li><a href="money.html">.money</a></li>
+<li><a href="mortgage.html">.mortgage</a></li>
+<li><a href="movie.html">.movie</a></li>
+<li><a href="name.html">.name</a></li>
+<li><a href="net.html">.net</a></li>
+<li><a href="network.html">.network</a></li>
+<li><a href="news.html">.news</a></li>
+<li><a href="ninja.html">.ninja</a></li>
+<li><a href="onl.html">.onl</a></li>
+<li><a href="online.html">.online</a></li>
+<li><a href="org.html">.org</a></li>
+<li><a href="partners.html">.partners</a></li>
+<li><a href="parts.html">.parts</a></li>
+<li><a href="photo.html">.photo</a></li>
+<li><a href="photography.html">.photography</a></li>
+<li><a href="photos.html">.photos</a></li>
+<li><a href="pics.html">.pics</a></li>
+<li><a href="pictures.html">.pictures</a></li>
+<li><a href="pink.html">.pink</a></li>
+<li><a href="pizza.html">.pizza</a></li>
+<li><a href="place.html">.place</a></li>
+<li><a href="plumbing.html">.plumbing</a></li>
+<li><a href="plus.html">.plus</a></li>
+<li><a href="poker.html">.poker</a></li>
+<li><a href="porn.html">.porn</a></li>
+<li><a href="pro.html">.pro</a></li>
+<li><a href="productions.html">.productions</a></li>
+<li><a href="properties.html">.properties</a></li>
+<li><a href="property.html">.property</a></li>
+<li><a href="pub.html">.pub</a></li>
+<li><a href="qpon.html">.qpon</a></li>
+<li><a href="recipes.html">.recipes</a></li>
+<li><a href="red.html">.red</a></li>
+<li><a href="reise.html">.reise</a></li>
+<li><a href="reisen.html">.reisen</a></li>
+<li><a href="rentals.html">.rentals</a></li>
+<li><a href="repair.html">.repair</a></li>
+<li><a href="report.html">.report</a></li>
+<li><a href="republican.html">.republican</a></li>
+<li><a href="restaurant.html">.restaurant</a></li>
+<li><a href="reviews.html">.reviews</a></li>
+<li><a href="rip.html">.rip</a></li>
+<li><a href="rocks.html">.rocks</a></li>
+<li><a href="run.html">.run</a></li>
+<li><a href="sale.html">.sale</a></li>
+<li><a href="sarl.html">.sarl</a></li>
+<li><a href="school.html">.school</a></li>
+<li><a href="schule.html">.schule</a></li>
+<li><a href="services.html">.services</a></li>
+<li><a href="sex.html">.sex</a></li>
+<li><a href="sexy.html">.sexy</a></li>
+<li><a href="shiksha.html">.shiksha</a></li>
+<li><a href="shoes.html">.shoes</a></li>
+<li><a href="show.html">.show</a></li>
+<li><a href="singles.html">.singles</a></li>
+<li><a href="soccer.html">.soccer</a></li>
+<li><a href="social.html">.social</a></li>
+<li><a href="solar.html">.solar</a></li>
+<li><a href="solutions.html">.solutions</a></li>
+<li><a href="studio.html">.studio</a></li>
+<li><a href="style.html">.style</a></li>
+<li><a href="sucks.html">.sucks</a></li>
+<li><a href="supplies.html">.supplies</a></li>
+<li><a href="supply.html">.supply</a></li>
+<li><a href="support.html">.support</a></li>
+<li><a href="surgery.html">.surgery</a></li>
+<li><a href="systems.html">.systems</a></li>
+<li><a href="tattoo.html">.tattoo</a></li>
+<li><a href="tax.html">.tax</a></li>
+<li><a href="taxi.html">.taxi</a></li>
+<li><a href="team.html">.team</a></li>
+<li><a href="technology.html">.technology</a></li>
+<li><a href="tennis.html">.tennis</a></li>
+<li><a href="theater.html">.theater</a></li>
+<li><a href="tienda.html">.tienda</a></li>
+<li><a href="tips.html">.tips</a></li>
+<li><a href="tires.html">.tires</a></li>
+<li><a href="today.html">.today</a></li>
+<li><a href="tools.html">.tools</a></li>
+<li><a href="tours.html">.tours</a></li>
+<li><a href="town.html">.town</a></li>
+<li><a href="toys.html">.toys</a></li>
+<li><a href="trade.html">.trade</a></li>
+<li><a href="training.html">.training</a></li>
+<li><a href="tv.html">.tv</a></li>
+<li><a href="university.html">.university</a></li>
+<li><a href="uno.html">.uno</a></li>
+<li><a href="vacations.html">.vacations</a></li>
+<li><a href="vegas.html">.vegas</a></li>
+<li><a href="ventures.html">.ventures</a></li>
+<li><a href="vg-xref.html">.vg</a></li>
+<li><a href="viajes.html">.viajes</a></li>
+<li><a href="video.html">.video</a></li>
+<li><a href="villas.html">.villas</a></li>
+<li><a href="vision.html">.vision</a></li>
+<li><a href="voyage.html">.voyage</a></li>
+<li><a href="watch.html">.watch</a></li>
+<li><a href="website.html">.website</a></li>
+<li><a href="wiki.html">.wiki</a></li>
+<li><a href="works.html">.works</a></li>
+<li><a href="world.html">.world</a></li>
+<li><a href="wtf.html">.wtf</a></li>
+<li><a href="xyz.html">.xyz</a></li>
+<li><a href="zone.html">.zone</a></li>
+</ul></li>
+<li><a href="registrar-tld-list-geographic.html">Geographic top-level domains</a>
+<ul>
+<li><a href="registrar-tld-list-africa.html">Africa</a>
+<ul>
+<li><a href="ac.html">.ac (Ascension Island)</a></li>
+<li><a href="co.za.html">.co.za (South Africa)</a></li>
+<li><a href="sh.html">.sh (Saint Helena)</a></li>
+</ul></li>
+<li><a href="registrar-tld-list-americas.html">Americas</a>
+<ul>
+<li><a href="ca.html">.ca (Canada)</a></li>
+<li><a href="cl.html">.cl (Chile)</a></li>
+<li><a href="co.html">.co (Colombia)</a></li>
+<li><a href="com.ar.html">.com.ar (Argentina)</a></li>
+<li><a href="com.br.html">.com.br (Brazil)</a></li>
+<li><a href="com.mx.html">.com.mx (Mexico)</a></li>
+<li><a href="mx.html">.mx (Mexico)</a></li>
+<li><a href="us.html">.us (United States)</a></li>
+<li><a href="vc.html">.vc (Saint Vincent and the Grenadines)</a></li>
+<li><a href="vg.html">.vg (British Virgin Islands)</a></li>
+</ul></li>
+<li><a href="registrar-tld-list-asiaoceania.html">Asia/Oceania</a>
+<ul>
+<li><a href="au.html">.au (Australia)</a></li>
+<li><a href="cc.html">.cc (Cocos (Keeling) Islands)</a></li>
+<li><a href="co.nz.html">.co.nz (New Zealand)</a></li>
+<li><a href="com.au.html">.com.au (Australia)</a></li>
+<li><a href="com.sg.html">.com.sg (Republic of Singapore)</a></li>
+<li><a href="fm.html">.fm (Federated States of Micronesia)</a></li>
+<li><a href="in.html">.in (India)</a></li>
+<li><a href="jp.html">.jp (Japan)</a></li>
+<li><a href="io.html">.io (British Indian Ocean Territory)</a></li>
+<li><a href="net.au.html">.net.au (Australia)</a></li>
+<li><a href="net.nz.html">.net.nz (New Zealand)</a></li>
+<li><a href="org.nz.html">.org.nz (New Zealand)</a></li>
+<li><a href="qa.html">.qa (Qatar)</a></li>
+<li><a href="ru.html">.ru (Russian Federation)</a></li>
+<li><a href="sg.html">.sg (Republic of Singapore)</a></li>
+</ul></li>
+<li><a href="registrar-tld-list-europe.html">Europe</a>
+<ul>
+<li><a href="be.html">.be (Belgium)</a></li>
+<li><a href="berlin.html">.berlin (city of Berlin in Germany)</a></li>
+<li><a href="ch.html">.ch (Switzerland)</a></li>
+<li><a href="co.uk.html">.co.uk (United Kingdom)</a></li>
+<li><a href="cz.html">.cz (Czech Republic)</a></li>
+<li><a href="de.html">.de (Germany)</a></li>
+<li><a href="es.html">.es (Spain)</a></li>
+<li><a href="eu.html">.eu (European Union)</a></li>
+<li><a href="fi.html">.fi (Finland)</a></li>
+<li><a href="fr.html">.fr (France)</a></li>
+<li><a href="gg.html">.gg (Guernsey)</a></li>
+<li><a href="im.html">.im (Isle of Man)</a></li>
+<li><a href="it.html">.it (Italy)</a></li>
+<li><a href="me.html">.me (Montenegro)</a></li>
+<li><a href="me.uk.html">.me.uk (United Kingdom)</a></li>
+<li><a href="nl.html">.nl (the Netherlands)</a></li>
+<li><a href="org.uk.html">.org.uk (United Kingdom)</a></li>
+<li><a href="ruhr.html">.ruhr (Ruhr region, western part of Germany)</a></li>
+<li><a href="se.html">.se (Sweden)</a></li>
+<li><a href="uk.html">.uk (United Kingdom)</a></li>
+<li><a href="wien.html">.wien (city of Vienna in Austria)</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><a href="dns-configuring.html">Configuring Amazon Route 53 as your DNS service</a>
+<ul>
+<li><a href="MigratingDNS.html">Making Amazon Route 53 the DNS service for an existing domain</a>
+<ul>
+<li><a href="migrate-dns-domain-in-use.html">Making Route 53 the DNS service for a domain that’s in use</a></li>
+<li><a href="migrate-dns-domain-inactive.html">Making Route 53 the DNS service for an inactive domain</a></li>
+</ul></li>
+<li><a href="dns-configuring-new-domain.html">Configuring DNS routing for a new domain</a></li>
+<li><a href="dns-routing-traffic-to-resources.html">Routing traffic to your resources</a>
+<ul>
+<li><a href="dns-routing-traffic-for-subdomains.html">Routing traffic for subdomains</a></li>
+</ul></li>
+<li><a href="hosted-zones-working-with.html">Working with hosted zones</a>
+<ul>
+<li><a href="AboutHZWorkingWith.html">Working with public hosted zones</a>
+<ul>
+<li><a href="hosted-zone-public-considerations.html">Considerations when working with public hosted zones</a></li>
+<li><a href="CreatingHostedZone.html">Creating a public hosted zone</a></li>
+<li><a href="GetInfoAboutHostedZone.html">Getting the name servers for a public hosted zone</a></li>
+<li><a href="ListInfoOnHostedZone.html">Listing public hosted zones</a></li>
+<li><a href="hosted-zone-public-viewing-query-metrics.html">Viewing DNS query metrics for a public hosted zone</a></li>
+<li><a href="DeleteHostedZone.html">Deleting a public hosted zone</a></li>
+<li><a href="dns-test.html">Checking DNS responses from Route 53</a></li>
+<li><a href="white-label-name-servers.html">Configuring white-label name servers</a></li>
+<li><a href="SOA-NSrecords.html">NS and SOA records that Amazon Route 53 creates for a public hosted zone</a></li>
+</ul></li>
+<li><a href="hosted-zones-private.html">Working with private hosted zones</a>
+<ul>
+<li><a href="hosted-zone-private-considerations.html">Considerations when working with a private hosted zone</a></li>
+<li><a href="hosted-zone-private-creating.html">Creating a private hosted zone</a></li>
+<li><a href="hosted-zone-private-listing.html">Listing private hosted zones</a></li>
+<li><a href="hosted-zone-private-associate-vpcs.html">Associating more VPCs with a private hosted zone</a></li>
+<li><a href="hosted-zone-private-associate-vpcs-different-accounts.html">Associating an Amazon VPC and a private hosted zone that you created with different AWS accounts</a></li>
+<li><a href="hosted-zone-private-disassociate-vpcs.html">Disassociating VPCs from a private hosted zone</a></li>
+<li><a href="hosted-zone-private-deleting.html">Deleting a private hosted zone</a></li>
+</ul></li>
+<li><a href="hosted-zones-migrating.html">Migrating a hosted zone to a different AWS account</a></li>
+</ul></li>
+<li><a href="rrsets-working-with.html">Working with records</a>
+<ul>
+<li><a href="routing-policy.html">Choosing a routing policy</a>
+<ul>
+<li><a href="routing-policy-simple.html">Simple routing</a></li>
+<li><a href="routing-policy-failover.html">Failover routing</a></li>
+<li><a href="routing-policy-geo.html">Geolocation routing</a>
+<ul>
+<li><a href="routing-policy-geo-phz.html">Geolocation routing in private hosted zones</a></li>
+</ul></li>
+<li><a href="routing-policy-geoproximity.html">Geoproximity routing (traffic flow only)</a></li>
+<li><a href="routing-policy-latency.html">Latency-based routing</a>
+<ul>
+<li><a href="routing-policy-latency-phz.html">Latency-based routing in private hosted zones</a></li>
+</ul></li>
+<li><a href="routing-policy-ipbased.html">IP-based routing</a>
+<ul>
+<li><a href="resource-record-sets-creating-cidr-collection.html">Creating a CIDR collection with CIDR locations and blocks</a></li>
+<li><a href="resource-record-sets-working-with-cidr-locations.html">Working with CIDR locations and blocks</a></li>
+<li><a href="resource-record-sets-delete-cidr-collection.html">Deleting a CIDR collection</a></li>
+<li><a href="resource-record-sets-move-geolocation-to-cidr.html">Moving a geolocation to IP-based routing</a></li>
+</ul></li>
+<li><a href="routing-policy-multivalue.html">Multivalue answer routing</a></li>
+<li><a href="routing-policy-weighted.html">Weighted routing</a></li>
+<li><a href="routing-policy-edns0.html">How Amazon Route 53 uses EDNS0 to estimate the location of a user</a></li>
+</ul></li>
+<li><a href="resource-record-sets-choosing-alias-non-alias.html">Choosing between alias and non-alias records</a></li>
+<li><a href="ResourceRecordTypes.html">Supported DNS record types</a></li>
+<li><a href="resource-record-sets-creating.html">Creating records by using the Amazon Route 53 console</a></li>
+<li><a href="resource-record-sets-permissions.html">Resource record set permissions</a></li>
+<li><a href="resource-record-sets-values.html">Values that you specify when you create or edit Amazon Route 53 records</a>
+<ul>
+<li><a href="resource-record-sets-values-shared.html">Values that are common for all routing policies</a></li>
+<li><a href="resource-record-sets-values-alias-common.html">Values that are common for alias records for all routing policies</a></li>
+<li><a href="resource-record-sets-values-basic.html">Values specific for simple records</a></li>
+<li><a href="resource-record-sets-values-alias.html">Values specific for simple alias records</a></li>
+<li><a href="resource-record-sets-values-failover.html">Values specific for failover records</a></li>
+<li><a href="resource-record-sets-values-failover-alias.html">Values specific for failover alias records</a></li>
+<li><a href="resource-record-sets-values-geo.html">Values specific for geolocation records</a></li>
+<li><a href="resource-record-sets-values-geo-alias.html">Values specific for geolocation alias records</a></li>
+<li><a href="resource-record-sets-values-latency.html">Values specific for latency records</a></li>
+<li><a href="resource-record-sets-values-latency-alias.html">Values specific for latency alias records</a></li>
+<li><a href="resource-record-sets-values-ipbased.html">Values specific for IP-based records</a></li>
+<li><a href="resource-record-sets-values-ipbased-alias.html">Values specific for IP-based alias records</a></li>
+<li><a href="resource-record-sets-values-multivalue.html">Values specific for multivalue answer records</a></li>
+<li><a href="resource-record-sets-values-weighted.html">Values specific for weighted records</a></li>
+<li><a href="resource-record-sets-values-weighted-alias.html">Values specific for weighted alias records</a></li>
+</ul></li>
+<li><a href="resource-record-sets-creating-import.html">Creating records by importing a zone file</a></li>
+<li><a href="resource-record-sets-editing.html">Editing records</a></li>
+<li><a href="resource-record-sets-deleting.html">Deleting records</a></li>
+<li><a href="resource-record-sets-listing.html">Listing records</a></li>
+</ul></li>
+<li><a href="traffic-flow.html">Using traffic flow to route DNS traffic</a>
+<ul>
+<li><a href="traffic-policies.html">Creating and managing traffic policies</a></li>
+<li><a href="traffic-policy-records.html">Creating and managing policy records</a></li>
+</ul></li>
+<li><a href="dns-configuring-dnssec.html">Configuring DNSSEC signing in Amazon Route 53</a>
+<ul>
+<li><a href="dns-configuring-dnssec-enable-signing.html">Enabling DNSSEC signing and establishing a chain of trust</a></li>
+<li><a href="dns-configuring-dnssec-disable.html">Disabling DNSSEC signing</a></li>
+<li><a href="dns-configuring-dnssec-cmk-requirements.html">Working with customer managed keys for DNSSEC</a></li>
+<li><a href="dns-configuring-dnssec-ksk.html">Working with key-signing keys (KSKs)</a></li>
+<li><a href="dns-configuring-dnssec-zsk-management.html">KMS key and ZSK management in Route 53</a></li>
+<li><a href="dns-configuring-dnssec-proof-of-nonexistence.html">DNSSEC proofs of nonexistence in Route 53</a></li>
+<li><a href="dns-configuring-dnssec-troubleshoot.html">Troubleshooting DNSSEC signing</a></li>
+</ul></li>
+<li><a href="autonaming.html">Using AWS Cloud Map to create records and health checks</a></li>
+<li><a href="DNSBehavior.html">DNS constraints and behaviors</a></li>
+</ul></li>
+<li><a href="resolver.html">What is Amazon Route 53 Resolver?</a>
+<ul>
+<li><a href="resolver-overview-DSN-queries-to-vpc.html">Resolving DNS queries between VPCs and your network</a></li>
+<li><a href="resolver-getting-started.html">Getting started with Route 53 Resolver</a></li>
+<li><a href="resolver-forwarding-inbound-queries.html">Forwarding inbound DNS queries to your VPCs</a></li>
+<li><a href="resolver-forwarding-outbound-queries.html">Forwarding outbound DNS queries to your network</a></li>
+<li><a href="resolver-forwarding-inbound-queries-managing.html">Managing inbound endpoints</a></li>
+<li><a href="resolver-forwarding-outbound-queries-managing.html">Managing outbound endpoints</a></li>
+<li><a href="resolver-rules-managing.html">Managing forwarding rules</a>
+<ul>
+<li><a href="resolver-automatic-forwarding-rules-reverse-dns.html">Forwarding rules for reverse DNS queries in Resolver</a></li>
+</ul></li>
+<li><a href="resolver-dnssec-validation.html">Enabling DNSSEC validation in Amazon Route 53</a></li>
+</ul></li>
+<li><a href="routing-to-aws-resources.html">Routing internet traffic to your AWS resources</a>
+<ul>
+<li><a href="routing-to-api-gateway.html">Routing traffic to an Amazon API Gateway API by using your domain name</a></li>
+<li><a href="routing-to-cloudfront-distribution.html">Routing traffic to an Amazon CloudFront distribution by using your domain name</a></li>
+<li><a href="routing-to-ec2-instance.html">Routing traffic to an Amazon EC2 instance</a></li>
+<li><a href="routing-to-app-runner.html">Routing traffic to an AWS App Runner service</a></li>
+<li><a href="routing-to-beanstalk-environment.html">Routing traffic to an AWS Elastic Beanstalk environment</a></li>
+<li><a href="routing-to-elb-load-balancer.html">Routing traffic to an ELB load balancer</a></li>
+<li><a href="RoutingToS3Bucket.html">Routing traffic to a website that is hosted in an Amazon S3 bucket</a></li>
+<li><a href="routing-to-vpc-interface-endpoint.html">Routing traffic to an Amazon Virtual Private Cloud interface endpoint by using your domain name</a></li>
+<li><a href="routing-to-workmail.html">Routing traffic to Amazon WorkMail</a></li>
+<li><a href="routing-to-additional-aws-resources.html">Routing traffic to other AWS resources</a></li>
+</ul></li>
+<li><a href="dns-failover.html">Creating Amazon Route 53 health checks and configuring DNS failover</a>
+<ul>
+<li><a href="health-checks-types.html">Types of Amazon Route 53 health checks</a></li>
+<li><a href="dns-failover-determining-health-of-endpoints.html">How Amazon Route 53 determines whether a health check is healthy</a></li>
+<li><a href="health-checks-creating-deleting.html">Creating, updating, and deleting health checks</a>
+<ul>
+<li><a href="health-checks-creating.html">Creating and updating health checks</a></li>
+<li><a href="health-checks-creating-values.html">Values that you specify when you create or update health checks</a></li>
+<li><a href="health-checks-creating-values-displayed.html">Values that Amazon Route 53 displays when you create a health check</a></li>
+<li><a href="health-checks-updating-cloudwatch-alarm-settings.html">Updating health checks when you change CloudWatch alarm settings (health checks that monitor a CloudWatch alarm only)</a></li>
+<li><a href="health-checks-deleting.html">Deleting health checks</a></li>
+<li><a href="health-checks-updating-deleting-tasks.html">Updating or deleting health checks when DNS failover is configured</a></li>
+<li><a href="dns-failover-router-firewall-rules.html">Configuring router and firewall rules for Amazon Route 53 health checks</a></li>
+</ul></li>
+<li><a href="health-checks-monitor-view-status.html">Monitoring health check status and getting notifications</a>
+<ul>
+<li><a href="health-checks-view-status.html">Viewing health check status and the reason for health check failures</a></li>
+<li><a href="monitoring-health-check-latency.html">Monitoring the latency between health checkers and your endpoint</a></li>
+<li><a href="monitoring-health-checks.html">Monitoring health checks using CloudWatch</a></li>
+</ul></li>
+<li><a href="dns-failover-configuring.html">Configuring DNS failover</a>
+<ul>
+<li><a href="dns-failover-how-to.html">Task list for configuring DNS failover</a></li>
+<li><a href="dns-failover-simple-configs.html">How health checks work in simple Amazon Route 53 configurations</a></li>
+<li><a href="dns-failover-complex-configs.html">How health checks work in complex Amazon Route 53 configurations</a></li>
+<li><a href="health-checks-how-route-53-chooses-records.html">How Amazon Route 53 chooses records when health checking is configured</a></li>
+<li><a href="dns-failover-types.html">Active-active and active-passive failover</a></li>
+<li><a href="dns-failover-private-hosted-zones.html">Configuring failover in a private hosted zone</a></li>
+<li><a href="dns-failover-problems.html">How Amazon Route 53 averts failover problems</a></li>
+</ul></li>
+<li><a href="health-checks-tagging.html">Naming and tagging health checks</a></li>
+<li><a href="dns-failover-using-old-apis.html">Using health checks with Amazon Route 53 API versions earlier than 2012-12-12</a></li>
+</ul></li>
+<li><a href="resolver-dns-firewall.html">Route 53 Resolver DNS Firewall</a>
+<ul>
+<li><a href="resolver-dns-firewall-overview.html">How Route 53 Resolver DNS Firewall works</a></li>
+<li><a href="resolver-dns-firewall-getting-started.html">Getting started with Route 53 Resolver DNS Firewall</a></li>
+<li><a href="resolver-dns-firewall-rule-groups.html">DNS Firewall rule groups and rules</a>
+<ul>
+<li><a href="resolver-dns-firewall-rule-group-settings.html">Rule group settings in DNS Firewall</a></li>
+<li><a href="resolver-dns-firewall-rule-settings.html">Rule settings in DNS Firewall</a></li>
+<li><a href="resolver-dns-firewall-rule-actions.html">Rule actions in DNS Firewall</a></li>
+<li><a href="resolver-dns-firewall-rule-group-managing.html">Managing rule groups and rules in DNS Firewall</a></li>
+</ul></li>
+<li><a href="resolver-dns-firewall-domain-lists.html">Route 53 Resolver DNS Firewall domain lists</a>
+<ul>
+<li><a href="resolver-dns-firewall-managed-domain-lists.html">Managed domain lists</a></li>
+<li><a href="resolver-dns-firewall-user-managed-domain-lists.html">Managing your own domain lists</a></li>
+<li><a href="firewall-resolver-query-logs-configuring.html">Configuring logging for DNS Firewall</a></li>
+</ul></li>
+<li><a href="resolver-dns-firewall-rule-group-sharing.html">Sharing Route 53 Resolver DNS Firewall rule groups between AWS accounts</a></li>
+<li><a href="resolver-dns-firewall-vpc-protections.html">Enabling Route 53 Resolver DNS Firewall protections for your VPC</a>
+<ul>
+<li><a href="resolver-dns-firewall-vpc-associating-rule-group.html">Managing associations between your VPC and Route 53 Resolver DNS Firewall rule group</a></li>
+<li><a href="resolver-dns-firewall-vpc-configuration.html">DNS Firewall VPC configuration</a></li>
+</ul></li>
+</ul></li>
+<li><a href="creating-resources-with-cloudformation.html">Creating Amazon Route 53 and Amazon Route 53 Resolver resources with AWS CloudFormation</a></li>
+<li><a href="security.html">Security in Amazon Route 53</a>
+<ul>
+<li><a href="data-protection.html">Data protection in Route 53</a>
+<ul>
+<li><a href="protection-from-dangling-dns.html">Protection from dangling delegation records in Route 53</a></li>
+</ul></li>
+<li><a href="auth-and-access-control.html">Identity and access management in Amazon Route 53</a>
+<ul>
+<li><a href="access-control-overview.html">Overview of managing access permissions to your Amazon Route 53 resources</a></li>
+<li><a href="access-control-managing-permissions.html">Using identity-based policies (IAM policies) for Amazon Route 53</a></li>
+<li><a href="using-service-linked-roles.html">Using Service-Linked Roles for Amazon Route 53 Resolver</a></li>
+<li><a href="security-iam-awsmanpol-route53.html">AWS managed policies for Amazon Route 53</a></li>
+<li><a href="specifying-rrset-conditions.html">Using IAM policy conditions for fine-grained access control to manage resource record sets</a></li>
+<li><a href="r53-api-permissions-ref.html">Amazon Route 53 API permissions: Actions, resources, and conditions reference</a></li>
+</ul></li>
+<li><a href="logging-monitoring.html">Logging and monitoring in Amazon Route 53</a></li>
+<li><a href="route-53-compliance.html">Compliance validation for Amazon Route 53</a></li>
+<li><a href="disaster-recovery-resiliency.html">Resilience in Amazon Route 53</a></li>
+<li><a href="infrastructure-security.html">Infrastructure security in Amazon Route 53</a></li>
+</ul></li>
+<li><a href="monitoring-overview.html">Monitoring Amazon Route 53</a>
+<ul>
+<li><a href="query-logs.html">Public DNS query logging</a></li>
+<li><a href="resolver-query-logs.html">Resolver query logging</a>
+<ul>
+<li><a href="resolver-query-logs-choosing-target-resource.html">AWS resources that you can send Resolver query logs to</a></li>
+<li><a href="resolver-query-logging-configurations-managing.html">Managing Resolver query logging configurations</a>
+<ul>
+<li><a href="resolver-query-logs-format.html">Values that appear in Resolver query logs</a></li>
+<li><a href="resolver-query-logs-example-json.html">Route 53 Resolver query log example</a>
+<ul>
+<li><a href="query-logging-configurations-managing-sharing.html">Sharing Resolver query logging configurations with other AWS accounts</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><a href="monitoring-domain-registrations.html">Monitoring domain registrations</a></li>
+<li><a href="monitoring-cloudwatch.html">Monitoring your resources with Amazon Route 53 health checks and Amazon CloudWatch</a></li>
+<li><a href="monitoring-hosted-zones-with-cloudwatch.html">Monitoring hosted zones using Amazon CloudWatch</a></li>
+<li><a href="monitoring-resolver-with-cloudwatch.html">Monitoring Route 53 Resolver endpoints with Amazon CloudWatch</a></li>
+<li><a href="monitoring-resolver-dns-firewall-with-cloudwatch.html">Monitoring Route 53 Resolver DNS Firewall rule groups with Amazon CloudWatch</a></li>
+<li><a href="logging-using-cloudtrail.html">Logging Amazon Route 53 API calls with AWS CloudTrail</a></li>
+</ul></li>
+<li><a href="troubleshooting-route-53.html">Troubleshooting Amazon Route 53</a>
+<ul>
+<li><a href="troubleshooting-domain-unavailable.html">My domain is unavailable on the internet</a></li>
+<li><a href="troubleshooting-domain-suspended.html">My domain is suspended (status is ClientHold)</a></li>
+<li><a href="troubleshooting-domain-transfer-failed.html">Transferring my domain to Amazon Route 53 failed</a></li>
+<li><a href="troubleshooting-new-dns-settings-not-in-effect.html">I changed DNS settings, but they haven’t taken effect</a></li>
+<li><a href="troubleshooting-server-not-found.html">My browser displays a “Server not found” error</a></li>
+<li><a href="troubleshooting-s3-bucket-website-hosting.html">I can’t route traffic to an Amazon S3 bucket that’s configured for website hosting</a></li>
+<li><a href="troubleshooting-billed-twice.html">I was billed twice for the same hosted zone</a></li>
+<li><a href="troubleshooting-account-closed.html">My AWS account is closed, suspended, or terminated, and my domain is registered with Route 53</a></li>
+</ul></li>
+<li><a href="route-53-ip-addresses.html">IP address ranges of Amazon Route 53 servers</a></li>
+<li><a href="tagging-resources.html">Tagging Amazon Route 53 resources</a></li>
+<li><a href="Tutorials.html">Tutorials</a>
+<ul>
+<li><a href="creating-migrating.html">Using Amazon Route 53 as the DNS service for subdomains without migrating the parent domain</a>
+<ul>
+<li><a href="CreatingNewSubdomain.html">Creating a subdomain that uses Amazon Route 53 as the DNS service without migrating the parent domain</a></li>
+<li><a href="MigratingSubdomain.html">Migrating DNS service for a subdomain to Amazon Route 53 without migrating the parent domain</a></li>
+</ul></li>
+<li><a href="TutorialTransitionToLBR.html">Transitioning to latency-based routing in Amazon Route 53</a></li>
+<li><a href="TutorialAddingLBRRegion.html">Adding another Region to your latency-based routing in Amazon Route 53</a></li>
+<li><a href="TutorialLBRMultipleEC2InRegion.html">Using latency and weighted records in Amazon Route 53 to route traffic to multiple Amazon EC2 instances in a Region</a></li>
+<li><a href="TutorialManagingOver100WRR.html">Managing over 100 weighted records in Amazon Route 53</a></li>
+<li><a href="TutorialWeightedFTMR.html">Weighting fault-tolerant multi-record answers in Amazon Route 53</a></li>
+</ul></li>
+<li><a href="best-practices.html">Best practices for Amazon Route 53</a>
+<ul>
+<li><a href="best-practices-dns.html">Best practices for Amazon Route 53 DNS</a></li>
+<li><a href="best-practices-resolver.html">Best practices for Resolver</a>
+<ul>
+<li><a href="best-practices-resolver-endpoints.html">Avoid loop configurations with Resolver endpoints</a></li>
+<li><a href="best-practices-resolver-endpoint-scaling.html">Resolver endpoint scaling</a></li>
+<li><a href="best-practices-resolver-endpoint-high-availability.html">High availability for Resolver endpoints</a></li>
+<li><a href="best-practices-resolver-zone-walking.html">DNS zone walking</a></li>
+</ul></li>
+<li><a href="best-practices-healthchecks.html">Best practices for Amazon Route 53 health checks</a>
+<ul>
+<li><a href="best-practices-healthcheck-monitoring-endpoints.html">Best practices for Elastic IP addresses for health checks</a></li>
+</ul></li>
+</ul></li>
+<li><a href="DNSLimitations.html">Quotas</a></li>
+<li><a href="Resources.html">Related information</a></li>
+<li><a href="History.html">Document history</a></li>
+<li><a href="glossary.html">AWS glossary</a></li>
+</ul>
+</body>
+</html>

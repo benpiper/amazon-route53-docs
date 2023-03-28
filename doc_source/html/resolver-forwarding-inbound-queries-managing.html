@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resolver-forwarding-inbound-queries-managing</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="managing-inbound-endpoints">Managing inbound endpoints<a name="resolver-forwarding-inbound-queries-managing"></a></h1>
+<p>To manage inbound endpoints, perform the applicable procedure.</p>
+<p><strong>Topics</strong> + <a href="#resolver-forwarding-inbound-queries-managing-viewing">Viewing and editing inbound endpoints</a> + <a href="#resolver-forwarding-inbound-queries-managing-viewing-status">Viewing the status for inbound endpoints</a> + <a href="#resolver-forwarding-inbound-queries-managing-deleting">Deleting inbound endpoints</a></p>
+<h2 id="viewing-and-editing-inbound-endpoints">Viewing and editing inbound endpoints<a name="resolver-forwarding-inbound-queries-managing-viewing"></a></h2>
+<p>To view and edit settings for an inbound endpoint, perform the following procedure.<a name="resolver-forwarding-inbound-queries-managing-viewing-procedure"></a></p>
+<p><strong>To view and edit settings for an inbound endpoint</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Inbound endpoints</strong>.</p></li>
+<li><p>On the navigation bar, choose the Region where you created the inbound endpoint.</p></li>
+<li><p>Choose the option for the endpoint that you want to view settings for or want to edit.</p></li>
+<li><p>Choose <strong>View details</strong> or <strong>Edit</strong>.</p>
+<p>For information about the values for inbound endpoints, see <a href="resolver-forwarding-inbound-queries.html#resolver-forwarding-inbound-queries-values">Values that you specify when you create or edit inbound endpoints</a>.</p></li>
+<li><p>If you chose <strong>Edit</strong>, enter the applicable values, and choose <strong>Save</strong>.</p></li>
+</ol>
+<h2 id="viewing-the-status-for-inbound-endpoints">Viewing the status for inbound endpoints<a name="resolver-forwarding-inbound-queries-managing-viewing-status"></a></h2>
+<p>To view the status for an inbound endpoint, perform the following procedure.<a name="resolver-forwarding-inbound-queries-managing-viewing-status-procedure"></a></p>
+<p><strong>To view the status for an inbound endpoint</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Inbound endpoints</strong>.</p></li>
+<li><p>On the navigation bar, choose the Region where you created the inbound endpoint. The <strong>Status</strong> column contains one of the following values:<br />
+<strong>Creating</strong><br />
+Resolver is creating and configuring one or more Amazon VPC network interfaces for this endpoint.<br />
+<strong>Operational</strong><br />
+The Amazon VPC network interfaces for this endpoint are correctly configured and able to pass inbound or outbound DNS queries between your network and Resolver.<br />
+<strong>Updating</strong><br />
+Resolver is associating or disassociating one or more network interfaces with this endpoint.<br />
+<strong>Auto recovering</strong><br />
+Resolver is trying to recover one or more of the network interfaces that are associated with this endpoint. During the recovery process, the endpoint functions with limited capacity because of the limit on the number of DNS queries per IP address (per network interface). For the current limit, see <a href="DNSLimitations.html#limits-api-entities-resolver">Quotas on Route 53 Resolver</a>.<br />
+<strong>Action needed</strong><br />
+This endpoint is unhealthy, and Resolver can’t automatically recover it. To resolve the problem, we recommend that you check each IP address that you associated with the endpoint. For each IP address that isn’t available, add another IP address and then delete the IP address that isn’t available. (An endpoint must always include at least two IP addresses.) A status of <strong>Action needed</strong> can have a variety of causes. Here are two common causes:</p>
+<ul>
+<li>One or more of the network interfaces that are associated with the endpoint were deleted using Amazon VPC.</li>
+<li>The network interface couldn’t be created for some reason that’s outside the control of Resolver.<br />
+<strong>Deleting</strong><br />
+Resolver is deleting this endpoint and the associated network interfaces.</li>
+</ul></li>
+</ol>
+<h2 id="deleting-inbound-endpoints">Deleting inbound endpoints<a name="resolver-forwarding-inbound-queries-managing-deleting"></a></h2>
+<p>To delete an inbound endpoint, perform the following procedure.</p>
+<p><strong>Important</strong><br />
+If you delete an inbound endpoint, DNS queries from your network are no longer forwarded to Resolver in the VPC that you specified in the endpoint. <a name="resolver-forwarding-inbound-queries-managing-deleting-procedure"></a></p>
+<p><strong>To delete an inbound endpoint</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Inbound endpoints</strong>.</p></li>
+<li><p>On the navigation bar, choose the Region where you created the inbound endpoint.</p></li>
+<li><p>Choose the option for the endpoint that you want to delete.</p></li>
+<li><p>Choose <strong>Delete</strong>.</p></li>
+<li><p>To confirm that you want to delete the endpoint, enter the name of the endpoint and choose <strong>Submit</strong>.</p></li>
+</ol>
+</body>
+</html>

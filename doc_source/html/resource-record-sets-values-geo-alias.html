@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resource-record-sets-values-geo-alias</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="values-specific-for-geolocation-alias-records">Values specific for geolocation alias records<a name="resource-record-sets-values-geo-alias"></a></h1>
+<p>When you create geolocation alias records, you specify the following values.</p>
+<p>For more information, see <a href="resource-record-sets-choosing-alias-non-alias.html">Choosing between alias and non-alias records</a>.</p>
+<p><strong>Topics</strong> + <a href="#rrsets-values-geo-alias-routing-policy">Routing policy</a> + <a href="#rrsets-values-geo-alias-name">Record name</a> + <a href="#rrsets-values-geo-alias-type">Record type</a> + <a href="#rrsets-values-geo-alias-alias-target">Value/Route traffic to</a> + <a href="#rrsets-values-geo-alias-location">Location</a> + <a href="#rrsets-values-geo-alias-sublocation">U.S. states</a> + <a href="#rrsets-values-geo-alias-associate-with-health-check">Health check</a> + <a href="#rrsets-values-geo-alias-evaluate-target-health">Evaluate target health</a> + <a href="#rrsets-values-geo-alias-set-id">Record ID</a></p>
+<h2 id="routing-policy">Routing policy<a name="rrsets-values-geo-alias-routing-policy"></a></h2>
+<p>Choose <strong>Geolocation</strong>.</p>
+<h2 id="record-name">Record name<a name="rrsets-values-geo-alias-name"></a></h2>
+<p>Enter the name of the domain or subdomain that you want to route traffic for. The default value is the name of the hosted zone.</p>
+<p><strong>Note</strong><br />
+If you’re creating a record that has the same name as the hosted zone, don’t enter a value (for example, an @ symbol) in the <strong>Record name</strong> field.</p>
+<p>Enter the same name for all of the records in the group of geolocation records.</p>
+<p>For more information about record names, see <a href="resource-record-sets-values-alias-common.html#rrsets-values-common-alias-name">Record name</a>.</p>
+<h2 id="record-type">Record type<a name="rrsets-values-geo-alias-type"></a></h2>
+<p>The DNS record type. For more information, see <a href="ResourceRecordTypes.html">Supported DNS record types</a>.</p>
+<p>Select the applicable value based on the AWS resource that you’re routing traffic to. Select the same value for all of the records in the group of geolocation records:</p>
+<p><strong>API Gateway custom regional API or edge-optimized API</strong><br />
+Select <strong>A — IPv4 address</strong>.</p>
+<p><strong>Amazon VPC interface endpoints</strong><br />
+Select <strong>A — IPv4 address</strong>.</p>
+<p><strong>CloudFront distribution</strong><br />
+Select <strong>A — IPv4 address</strong>.<br />
+If IPv6 is enabled for the distribution, create two records, one with a value of <strong>A — IPv4 address</strong> for <strong>Record type</strong>, and one with a value of <strong>AAAA — IPv6 address</strong>.</p>
+<p><strong>Elastic Beanstalk environment that has regionalized subdomains</strong><br />
+Select <strong>A — IPv4 address</strong></p>
+<p><strong>ELB load balancer</strong><br />
+Select <strong>A — IPv4 address</strong> or <strong>AAAA — IPv6 address</strong></p>
+<p><strong>Amazon S3 bucket</strong><br />
+Select <strong>A — IPv4 address</strong></p>
+<p><strong>Another record in this hosted zone</strong><br />
+Select the type of the record that you’re creating the alias for. All types are supported except <strong>NS</strong> and <strong>SOA</strong>.<br />
+If you’re creating an alias record that has the same name as the hosted zone (known as the <em>zone apex</em>), you can’t route traffic to a record for which the value of <strong>Record type</strong> is <strong>CNAME</strong>. This is because the alias record must have the same type as the record you’re routing traffic to, and creating a CNAME record for the zone apex isn’t supported even for an alias record.</p>
+<h2 id="valueroute-traffic-to">Value/Route traffic to<a name="rrsets-values-geo-alias-alias-target"></a></h2>
+<p>The value that you choose from the list or that you type in the field depends on the AWS resource that you’re routing traffic to.</p>
+<p>For information about what AWS resources you can target, see <a href="resource-record-sets-values-alias-common.html#rrsets-values-alias-common-target">Value/route traffic to</a>.</p>
+<p>For more information about how to configure Route 53 to route traffic to specific AWS resources, see <a href="routing-to-aws-resources.html">Routing internet traffic to your AWS resources</a>.</p>
+<h2 id="location">Location<a name="rrsets-values-geo-alias-location"></a></h2>
+<p>When you configure Route 53 to respond to DNS queries based on the location that the queries originated from, select the continent or country for which you want Route 53 to respond with the settings in this record. If you want Route 53 to respond to DNS queries for individual states in the United States, select <strong>United States</strong> from the <strong>Location</strong> list, and then select the state from the <strong>U.S. states</strong> list.</p>
+<p>For a private hosted zone, select the continent, country, or sub-division closest to the AWS Region that your resource is in. For example, if your resource is in us-east-1, you can specify North America, United States, or Virginia.</p>
+<p><strong>Important</strong><br />
+We recommend that you create one geolocation record that has a value of <strong>Default</strong> for <strong>Location</strong>. This covers geographic locations that you haven’t created records for and IP addresses that Route 53 can’t identify a location for. When you configure the default location, set the country code to an asterisk “*”.</p>
+<p>You can’t create non-geolocation records that have the same values for <strong>Record name</strong> and <strong>Record type</strong> as geolocation records.</p>
+<p>For more information, see <a href="routing-policy-geo.html">Geolocation routing</a>.</p>
+<p>Here are the countries that Amazon Route 53 associates with each continent. The country codes are from ISO 3166. For more information, see the Wikipedia article <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO 3166-1 alpha-2</a>:</p>
+<p><strong>Africa (AF)</strong><br />
+AO, BF, BI, BJ, BW, CD, CF, CG, CI, CM, CV, DJ, DZ, EG, ER, ET, GA, GH, GM, GN, GQ, GW, KE, KM, LR, LS, LY, MA, MG, ML, MR, MU, MW, MZ, NA, NE, NG, RE, RW, SC, SD, SH, SL, SN, SO, SS, ST, SZ, TD, TG, TN, TZ, UG, YT, ZA, ZM, ZW</p>
+<p><strong>Antarctica (AN)</strong><br />
+AQ, GS, TF</p>
+<p><strong>Asia (AS)</strong><br />
+AE, AF, AM, AZ, BD, BH, BN, BT, CC, CN, GE, HK, ID, IL, IN, IO, IQ, IR, JO, JP, KG, KH, KP, KR, KW, KZ, LA, LB, LK, MM, MN, MO, MV, MY, NP, OM, PH, PK, PS, QA, SA, SG, SY, TH, TJ, TM, TW, UZ, VN, YE</p>
+<p><strong>Europe (EU)</strong><br />
+AD, AL, AT, AX, BA, BE, BG, BY, CH, CY, CZ, DE, DK, EE, ES, FI, FO, FR, GB, GG, GI, GR, HR, HU, IE, IM, IS, IT, JE, LI, LT, LU, LV, MC, MD, ME, MK, MT, NL, NO, PL, PT, RO, RS, RU, SE, SI, SJ, SK, SM, TR, UA, VA, XK</p>
+<p><strong>North America (NA)</strong><br />
+AG, AI, AW, BB, BL, BM, BQ, BS, BZ, CA, CR, CU, CW, DM, DO, GD, GL, GP, GT, HN, HT, JM, KN, KY, LC, MF, MQ, MS, MX, NI, PA, PM, PR, SV, SX, TC, TT, US, VC, VG, VI</p>
+<p><strong>Oceania (OC)</strong><br />
+AS, AU, CK, FJ, FM, GU, KI, MH, MP, NC, NF, NR, NU, NZ, PF, PG, PN, PW, SB, TK, TL, TO, TV, UM, VU, WF, WS</p>
+<p><strong>South America (SA)</strong><br />
+AR, BO, BR, CL, CO, EC, FK, GF, GY, PE, PY, SR, UY, VE</p>
+<p><strong>Note</strong><br />
+Route 53 doesn’t support creating geolocation records for the following countries: Bouvet Island (BV), Christmas Island (CX), Western Sahara (EH), and Heard Island and McDonald Islands (HM). No data is available about IP addresses for these countries.</p>
+<h2 id="u.s.-states">U.S. states<a name="rrsets-values-geo-alias-sublocation"></a></h2>
+<p>When you configure Route 53 to respond to DNS queries based on the state of the United States that the queries originated from, select the state from the <strong>U.S. states</strong> list. United States territories (for example, Puerto Rico) are listed as countries in the <strong>Location</strong> list.</p>
+<p><strong>Important</strong><br />
+Some IP addresses are associated with the United States, but not with an individual state. If you create records for all of the states in the United States, we recommend that you also create a record for the United States to route queries for these unassociated IP addresses. If you don’t create a record for the United States, Route 53 responds to DNS queries from unassociated United States IP addresses with settings from the default geolocation record (if you created one) or with a “no answer” response.</p>
+<h2 id="health-check">Health check<a name="rrsets-values-geo-alias-associate-with-health-check"></a></h2>
+<p>Select a health check if you want Route 53 to check the health of a specified endpoint and to respond to DNS queries using this record only when the endpoint is healthy.</p>
+<p>Route 53 doesn’t check the health of the endpoint specified in the record, for example, the endpoint specified by the IP address in the <strong>Value</strong> field. When you select a health check for a record, Route 53 checks the health of the endpoint that you specified in the health check. For information about how Route 53 determines whether an endpoint is healthy, see <a href="dns-failover-determining-health-of-endpoints.html">How Amazon Route 53 determines whether a health check is healthyHow Route 53 determines whether a health check is healthy</a>.</p>
+<p>Associating a health check with a record is useful only when Route 53 is choosing between two or more records to respond to a DNS query, and you want Route 53 to base the choice in part on the status of a health check. Use health checks only in the following configurations: + You’re checking the health of all of the records in a group of records that have the same name, type, and routing policy (such as failover or weighted records), and you specify health check IDs for all the records. If the health check for a record specifies an endpoint that is not healthy, Route 53 stops responding to queries using the value for that record. + You select <strong>Yes</strong> for <strong>Evaluate target health</strong> for an alias record or the records in a group of failover alias, geolocation alias, latency alias, IP-based alias, or weighted alias record. If the alias records reference non-alias records in the same hosted zone, you must also specify health checks for the referenced records. If you associate a health check with an alias record and also select <strong>Yes</strong> for <strong>Evaluate Target Health</strong>, both must evaluate to true. For more information, see <a href="dns-failover-complex-configs.html#dns-failover-complex-configs-hc-alias">What happens when you associate a health check with an alias record?</a>.</p>
+<p>If your health checks specify the endpoint only by domain name, we recommend that you create a separate health check for each endpoint. For example, create a health check for each HTTP server that is serving content for www.example.com. For the value of <strong>Domain name</strong>, specify the domain name of the server (such as us-east-2-www.example.com), not the name of the records (example.com).</p>
+<p><strong>Important</strong><br />
+In this configuration, if you create a health check for which the value of <strong>Domain name</strong> matches the name of the records and then associate the health check with those records, health check results will be unpredictable.</p>
+<p>For geolocation records, if an endpoint is unhealthy, Route 53 looks for a record for the larger, associated geographic Region. For example, suppose you have records for a state in the United States, for the United States, for North America, and for all locations (<strong>Location</strong> is <strong>Default</strong>). If the endpoint for the state record is unhealthy, Route 53 checks the records for the United States, for North America, and for all locations, in that order, until it finds a record that has a healthy endpoint. If all applicable records are unhealthy, including the record for all locations, Route 53 responds to the DNS query using the value for the record for the smallest geographic region.</p>
+<h2 id="evaluate-target-health">Evaluate target health<a name="rrsets-values-geo-alias-evaluate-target-health"></a></h2>
+<p>Select <strong>Yes</strong> if you want Route 53 to determine whether to respond to DNS queries using this record by checking the health of the resource specified by <strong>Endpoint</strong>.</p>
+<p>Note the following:</p>
+<p><strong>API Gateway custom regional APIs and edge-optimized APIs</strong><br />
+There are no special requirements for setting <strong>Evaluate target health</strong> to <strong>Yes</strong> when the endpoint is an API Gateway custom Regional API or an edge-optimized API.</p>
+<p><strong>CloudFront distributions</strong><br />
+You can’t set <strong>Evaluate target health</strong> to <strong>Yes</strong> when the endpoint is a CloudFront distribution.</p>
+<p><strong>Elastic Beanstalk environments that have regionalized subdomains</strong><br />
+If you specify an Elastic Beanstalk environment in <strong>Endpoint</strong> and the environment contains an ELB load balancer, Elastic Load Balancing routes queries only to the healthy Amazon EC2 instances that are registered with the load balancer. (An environment automatically contains an ELB load balancer if it includes more than one Amazon EC2 instance.) If you set <strong>Evaluate target health</strong> to <strong>Yes</strong> and either no Amazon EC2 instances are healthy or the load balancer itself is unhealthy, Route 53 routes queries to other available resources that are healthy, if any.<br />
+If the environment contains a single Amazon EC2 instance, there are no special requirements.</p>
+<p><strong>ELB load balancers</strong><br />
+Health checking behavior depends on the type of load balancer:<br />
++ <strong>Classic Load Balancers</strong> – If you specify an ELB Classic Load Balancer in <strong>Endpoint</strong>, Elastic Load Balancing routes queries only to the healthy Amazon EC2 instances that are registered with the load balancer. If you set <strong>Evaluate target health</strong> to <strong>Yes</strong> and either no EC2 instances are healthy or the load balancer itself is unhealthy, Route 53 routes queries to other resources. + <strong>Application and Network Load Balancers</strong> – If you specify an ELB Application or Network Load Balancer and you set <strong>Evaluate target health</strong> to <strong>Yes</strong>, Route 53 routes queries to the load balancer based on the health of the target groups that are associated with the load balancer: + For an Application or Network Load Balancer to be considered healthy, every target group that contains targets must contain at least one healthy target. If any target group contains only unhealthy targets, the load balancer is considered unhealthy, and Route 53 routes queries to other resources. + A target group that has no registered targets is considered unhealthy. When you create a load balancer, you configure settings for Elastic Load Balancing health checks; they’re not Route 53 health checks, but they perform a similar function. Do not create Route 53 health checks for the EC2 instances that you register with an ELB load balancer.</p>
+<p><strong>S3 buckets</strong><br />
+There are no special requirements for setting <strong>Evaluate target health</strong> to <strong>Yes</strong> when the endpoint is an S3 bucket.</p>
+<p><strong>Amazon VPC interface endpoints</strong><br />
+There are no special requirements for setting <strong>Evaluate target health</strong> to <strong>Yes</strong> when the endpoint is an Amazon VPC interface endpoint.</p>
+<p><strong>Other records in the same hosted zone</strong><br />
+If the AWS resource that you specify in <strong>Endpoint</strong> is a record or a group of records (for example, a group of weighted records) but is not another alias record, we recommend that you associate a health check with all of the records in the endpoint. For more information, see <a href="dns-failover-complex-configs.html#dns-failover-complex-configs-hc-omitting">What happens when you omit health checks?</a>.</p>
+<h2 id="record-id">Record ID<a name="rrsets-values-geo-alias-set-id"></a></h2>
+<p>Enter a value that uniquely identifies this record in the group of geolocation records.</p>
+</body>
+</html>

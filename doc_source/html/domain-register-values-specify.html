@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>domain-register-values-specify</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="values-that-you-specify-when-you-register-or-transfer-a-domain">Values that you specify when you register or transfer a domain<a name="domain-register-values-specify"></a></h1>
+<p>When you register a domain or transfer domain registration to Amazon Route 53, you specify the values that are described in this topic.</p>
+<p><strong>Note</strong><br />
+If you’re registering more than one domain, Route 53 uses the values that you specify for all of the domains that are in your shopping cart.</p>
+<p>You can also change values for a domain that is currently registered with Route 53. Note the following: + If you change contact information for the domain, we send an email notification to the registrant contact about the change. This email comes from route53-dev-admin@amazon.com. For most changes, the registrant contact is not required to respond. + For changes to contact information that also constitute a change in ownership, we send the registrant contact an additional email. ICANN requires that the registrant contact confirm receiving the email. For more information, see <strong>First Name, Last Name</strong> and <strong>Organization</strong> later in this section.</p>
+<p>For more information about changing settings for an existing domain, see <a href="domain-update-settings.html">Updating settings for a domain</a>.</p>
+<p><strong>Values That You Specify</strong> + <a href="#same-contacts-field">My Registrant, Administrative, and Technical contacts are all the same</a> + <a href="#contact-type-field">Contact Type</a> + <a href="#first-last-field">First Name, Last Name</a> + <a href="#organization-field">Organization</a> + <a href="#email-field">Email</a> + <a href="#phone-field">Phone</a> + <a href="#address-1-field">Address 1</a> + <a href="#address-2-field">Address 2</a> + <a href="#country-field">Country</a> + <a href="#state-field">State</a> + <a href="#city-field">City</a> + <a href="#postal-code-field">Postal/Zip Code</a> + <a href="#tld-fields">Fields for selected top-level domains</a> + <a href="#privacy-field">Privacy Protection</a> + <a href="#auto-renew-field">Auto Renew (Only available when editing domain settings)</a></p>
+<p><strong>My Registrant, Administrative, and Technical contacts are all the same</strong><br />
+Specifies whether you want to use the same contact information for the registrant of the domain, the administrative contact, and the technical contact.</p>
+<p><strong>Contact Type</strong><br />
+Category for this contact. Note the following:<br />
++ If you choose an option other than <strong>Person</strong>, you must enter an organization name. + For some TLDs, the privacy protection available depends on the value that you choose for <strong>Contact Type</strong>. For the privacy protection settings for your TLD, see <a href="registrar-tld-list.html">Domains that you can register with Amazon Route 53</a>. + For .es domains, the value of <strong>Contact Type</strong> must be <strong>Person</strong> for all three contacts.</p>
+<p><strong>First Name, Last Name</strong><br />
+The first and last names of the contact.<br />
+For <strong>First Name</strong> and <strong>Last Name</strong>, we recommend that you specify the name on your official ID. For some changes to domain settings, you must provide proof of identity, and the name on your ID must match the name of the registrant contact for the domain. If you’re transferring a domain to Route 53 and the following are true, then you’re changing the owner of the domain:<br />
++ The contact type is <strong>Person</strong>. + You’re changing the <strong>First Name</strong> and/or <strong>Last Name</strong> fields for the registrant contact from the current settings. In that case, ICANN requires that we email the registrant contact to get approval. The email comes from one of the following email addresses:<br />
+****<br />
+<a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register-values-specify.html">[See the AWS documentation website for more details]</a> To determine who the registrar is for your TLD, see <a href="registrar-tld-list.html">Domains that you can register with Amazon Route 53</a>.<br />
+The registrant contact must follow the instructions in the email to confirm that the email was received, or we must suspend the domain as required by ICANN. When a domain is suspended, it’s not accessible on the internet. If you change the email address of the registrant contact, this email is sent to the former email address and the new email address for the registrant contact.<br />
+Some TLD registrars charge a fee for changing the domain owner. When you change one of these values, the Route 53 console displays a message that tells you whether there is a fee.</p>
+<p><strong>Organization</strong><br />
+The organization that is associated with the contact, if any. For the registrant and administrative contacts, this is typically the organization that is registering the domain. For the technical contact, this might be the organization that manages the domain.<br />
+When the contact type is any value except <strong>Person</strong> and you change the <strong>Organization</strong> field for the registrant contact, you change the owner of the domain. ICANN requires that we email the registrant contact to get approval. The email comes from one of the following email addresses:<br />
+****<br />
+<a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-register-values-specify.html">[See the AWS documentation website for more details]</a> To determine who the registrar is for your TLD, see <a href="registrar-tld-list.html">Domains that you can register with Amazon Route 53</a>.<br />
+If you change the email address of the registrant contact, this email is sent to the former email address and the new email address for the registrant contact.<br />
+Some TLD registrars charge a fee for changing the domain owner. When you change the value of <strong>Organization</strong>, the Route 53 console displays a message that tells you whether there is a fee.</p>
+<p><strong>Email</strong><br />
+The email address for the contact.<br />
+If you change the email address for the registrant contact, we send a notification email to the former email address and the new email address. This email comes from route53-dev-admin@amazon.com.</p>
+<p><strong>Phone</strong><br />
+The phone number for the contact:<br />
++ If you’re entering a phone number for locations in the United States or Canada, enter <strong>1</strong> in the first field and the 10-digit area code and phone number in the second field. + If you’re entering a phone number for any other location, enter the country code in the first field, and enter the rest of the phone number in the second field. For a list of phone country codes, see the Wikipedia article <a href="https://en.wikipedia.org/wiki/List_of_country_calling_codes">List of country calling codes</a>.</p>
+<p><strong>Address 1</strong><br />
+The street address for the contact.</p>
+<p><strong>Address 2</strong><br />
+Additional address information for the contact, for example, apartment number or mail stop.</p>
+<p><strong>Country</strong><br />
+The country for the contact.</p>
+<p><strong>State</strong><br />
+The state or province for the contact, if any.</p>
+<p><strong>City</strong><br />
+The city for the contact.</p>
+<p><strong>Postal/Zip Code</strong><br />
+The postal or zip code for the contact.</p>
+<p><strong>Fields for selected top-level domains</strong><br />
+The following top-level domains (TLDs) require that you specify additional values:<br />
++ .com.au and .net.au + .ca + .es + .fi + .fr + .it + .ru + .se + .sg + .co.uk, .me.uk, and .org.uk In addition, many TLDs require a VAT identification number.<br />
+For information about valid values, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_domains_ExtraParam.html">ExtraParam</a> in the <em>Amazon Route 53 API Reference</em>.</p>
+<p><strong>Privacy Protection</strong><br />
+Whether you want to conceal your contact information from WHOIS queries. If you select <strong>Hide contact information</strong>, WHOIS (“who is”) queries will return contact information for the registrar or the value “Protected by policy.”<br />
+You must specify the same privacy setting for the administrative, registrant, and technical contacts. If you select <strong>Don’t hide contact information</strong>, you’ll get more email spam at the email address that you specified.<br />
+Anyone can send a WHOIS query for a domain and get back all of the contact information for that domain. The WHOIS command is available in many operating systems, and it’s also available as a web application on many websites.<br />
+Although there are legitimate users for the contact information associated with your domain, the most common users are spammers, who target domain contacts with unwanted email and bogus offers. In general, we recommend that you choose <strong>Hide contact information</strong> for <strong>Privacy Protection</strong>. To enable or disable privacy protection for some domains, you must open a support case and request privacy protection.<br />
+For more information about privacy protection, see the following topics:<br />
++ <a href="domain-privacy-protection.html">Enabling or disabling privacy protection for contact information for a domain</a> + <a href="registrar-tld-list.html">Domains that you can register with Amazon Route 53</a></p>
+<p><strong>Auto Renew (Only available when editing domain settings)</strong><br />
+Whether you want Route 53 to automatically renew the domain before it expires. The registration fee is charged to your AWS account. For more information, see <a href="domain-renew.html">Renewing registration for a domain</a>.<br />
+If you disable automatic renewal, registration for the domain will not be renewed when the expiration date passes, and you might lose control of the domain name. The period during which you can renew a domain name varies by top-level domain (TLD). For an overview about renewing domains, see <a href="domain-renew.html">Renewing registration for a domain</a>. For information about extending domain registration for a specified number of years, see <a href="domain-extend.html">Extending the registration period for a domain</a>.</p>
+</body>
+</html>

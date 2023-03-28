@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>best-practices-resolver-endpoint-scaling</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="resolver-endpoint-scaling">Resolver endpoint scaling<a name="best-practices-resolver-endpoint-scaling"></a></h1>
+<p>Resolver endpoint security groups use connection tracking to gather information about traffic to and from the endpoints. Each endpoint interface has a maximum number of connections that can be tracked, and a high volume of DNS queries can exceed the connections and cause throttling and query loss. To reduce the number of connections that are tracked, implement security group rules that permit traffic based on the connection state of the traffic. For more information, see <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security-groups.html">Security groups</a> and <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/security-group-connection-tracking.html">Connection tracking</a> in <em>Amazon EC2 User Guide for Linux Instances </em>.</p>
+<p><strong>Inbound and Outbound Resolver security group recommendations</strong></p>
+<hr />
+<div class="line-block"><br />
+<br />
+<strong>Inbound rules</strong> |<br />
+— |<br />
+Protocol type | Port number | Source IP |<br />
+TCP | 53 | 0.0.0.0/0 |<br />
+UDP | 53 | 0.0.0.0/0 |<br />
+<strong>Outbound rules</strong> |<br />
+— |<br />
+Protocol type | Port number | Destination IP |<br />
+TCP | All | 0.0.0.0/0 |<br />
+UDP | All | 0.0.0.0/0 |</div>
+<p><strong>Inbound Resolver endpoints</strong></p>
+<p>For clients using an inbound resolver endpoint, the capacity of the elastic network interface will be impacted if you have over 40,000 unique IP address and port combinations generating the DNS traffic.</p>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>domain-transfer-to-route-53-status</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="viewing-the-status-of-a-domain-transfer">Viewing the status of a domain transfer<a name="domain-transfer-to-route-53-status"></a></h1>
+<p>After you initiate the transfer of a domain from another domain registrar to Amazon Route 53, you can track the status on the <strong>Pending requests</strong> page of the Route 53 console. The <strong>Status</strong> column includes a brief description of the current step. The following list includes the text in the console and a more detailed description of each step.</p>
+<p><strong>Note</strong><br />
+When you submit a transfer request, the initial status is <strong>Domain transfer request submitted</strong>, which indicates that we’ve received your request.</p>
+<p><strong>Determining whether the domain meets transfer requirements (step 1 of 14)</strong><br />
+We’re confirming that your domain’s status is eligible for transfer. You must unlock your domain, and the domain can’t have any of the following status codes when you submit the transfer request:<br />
++ clientTransferProhibited + pendingDelete + pendingTransfer + redemptionPeriod</p>
+<p><strong>Geographic TLDs only – verifying WHOIS information (step 2 of 14)</strong><br />
+If you’re transferring a domain that has a <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar-tld-list.html#registrar-tld-list-geographic">geographic TLD</a>, we sent a WHOIS query for your domain to determine whether you’ve disabled the privacy protection for the domain. If privacy protection is still enabled with your current registrar, we won’t be able to access the information we need to transfer the domain.<br />
+Authorization isn’t required for domains that have a <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar-tld-list.html#registrar-tld-list-generic">generic TLD</a>, such as .com, .net, or .org.</p>
+<p><strong>Geographic TLDs only – Sent email to registrant contact to get transfer authorization (step 3 of 14)</strong><br />
+If you’re transferring a domain that has a <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar-tld-list.html#registrar-tld-list-geographic">geographic TLD</a>, we’ve sent an email to the registrant contact for the domain. The purpose of the email is confirm that the transfer was requested by an authorized contact of the domain.<br />
+Authorization isn’t required for domains that have a <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar-tld-list.html#registrar-tld-list-generic">generic TLD</a>, such as .com, .net, or .org.</p>
+<p><strong>Verifying transfer with current registrar (step 4 of 14)</strong><br />
+We’ve sent a request to the current registrar for the domain to initiate the transfer.</p>
+<p><strong>Geographic TLDs only – Awaiting authorization from registrant contact (step 5 of 14)</strong><br />
+We sent email to the registrant contact for the domain (see step 3 of 14), and we’re waiting for the registrant contact to click a link in the email to authorize the transfer. If you’re transferring a domain that has a <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/registrar-tld-list.html#registrar-tld-list-geographic">geographic TLD</a> and you didn’t receive the email for some reason, see <a href="domain-click-email-link.html">Resending authorization and confirmation emails</a>.</p>
+<p><strong>Contacted current registrar to request transfer (step 6 of 14)</strong><br />
+We’re working with the current registrar for the domain to finalize the transfer.</p>
+<p><strong>Waiting for the current registrar to complete the transfer (step 7 of 14)</strong><br />
+Your current registrar is confirming that your domain meets the requirements for being transferred. This step might take up to ten days, depending on the TLD for your domain:<br />
++ <a href="registrar-tld-list-generic.html">Generic top-level domains</a> – take up to seven days + <a href="registrar-tld-list-geographic.html">Geographic top-level domains</a> (also known as country code top-level domains) – take up to ten days <strong>Note</strong><br />
+If you have approved the confirmation email sent from Route 53 when transferring a .JP domain, but it has stopped for several days in STEP 7, contact <a href="https://console.aws.amazon.com/support/home?region=us-east-1#/case/create?issueType=customer-service&amp;serviceCode=billing&amp;categoryCode=domain-name-registration-issue">AWS Support Center</a> for assistance. For most registrars, the process is entirely automated and can’t be accelerated. Some registrars send you an email that asks you to approve the transfer; if your registrar sends this confirmation email, the transfer process might be much faster than seven to ten days.<br />
+For information about reasons that a registrar might reject the transfer, see <a href="domain-transfer-to-route-53.html#domain-transfer-to-route-53-requirements">Transfer requirements for top-level domains</a>.</p>
+<p><strong>Confirming with the registrant contact that the contact initiated the transfer (step 8 of 14)</strong><br />
+Some TLD registries send the registrant contact another email to confirm that the domain transfer was requested by an authorized user.</p>
+<p><strong>Synchronizing name servers with the registry (step 9 of 14)</strong><br />
+This step occurs only if the name servers that you provided as part of the transfer request are different from the name servers that are listed with the current registrar. We’ll try to update your name servers to the new name servers that you provided.</p>
+<p><strong>Synchronizing settings with the registry (step 10 of 14)</strong><br />
+We’re verifying that the transfer has completed successfully, and we’re synchronizing your domain-related data with our registrar associate.</p>
+<p><strong>Sending updated contact information to the registry (step 11 of 14)</strong><br />
+If you changed the ownership of the domain when you requested the transfer, we’re trying to make this change. However, most registries don’t allow a transfer of ownership as part of the domain transfer process.</p>
+<p><strong>Finalizing the transfer to Route 53 (step 12 of 14)</strong><br />
+We’re confirming that the transfer process was successful.</p>
+<p><strong>Finalizing transfer (step 13 of 14)</strong><br />
+We’re setting up your domain in Route 53.</p>
+<p><strong>Transfer Complete (step 14 of 14)</strong><br />
+Your transfer has been successfully completed.</p>
+</body>
+</html>

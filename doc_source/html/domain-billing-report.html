@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>domain-billing-report</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="downloading-a-domain-billing-report">Downloading a domain billing report<a name="domain-billing-report"></a></h1>
+<p>If your AWS bill is charged to a credit card, you receive a separate invoice for each domain transaction. These invoices don’t include the domain name. If you manage multiple domains and you want to view charges by domain for a specified time period, you can download a domain billing report. This report includes all charges that apply to domain registration, including the following: + Registering a domain + Renewing registration for a domain + Transferring a domain to Amazon Route 53 + Changing the owner of a domain (for some TLDs, this operation is free)</p>
+<p><strong>Note</strong><br />
+If you use invoiced payments, any Route 53 domain registration transactions appear in your monthly AWS invoice. The invoice includes the domain name and operation that each charge applies to.</p>
+<p>When you run the report using the console, you can choose the following options: + <strong>Last 12 months</strong>: The report includes charges from one year before you ran the report until the current day. For example, if you run the report on June 3rd, it includes charges from June 3rd the previous year until the current day. + <strong>Individual months in the last year</strong>: The report includes charges for the specified month.</p>
+<p>If you run the report programmatically, you can get charges for any date range, starting with July 31, 2014. That’s the date that Route 53 started to support domain registration. For example, see <a href="https://docs.aws.amazon.com/cli/latest/reference/route53domains/view-billing.html">view-billing</a> in the <em>AWS CLI Command Reference</em>.</p>
+<p>The billing report, in CSV format, includes the following values: + The AWS invoice ID that the charge appears on. + The operation (REGISTER_DOMAIN, RENEW_DOMAIN, TRANSFER_IN_DOMAIN, or CHANGE_DOMAIN_OWNER). + The name of the domain. + The charge for the operation in US dollars. + The date and time in ISO 8601 format, for example, 2016-03-03T19:20:25.177Z. For more information about ISO 8601 format, see the Wikipedia article <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>.<a name="domain-billing-report-procedure"></a></p>
+<p><strong>To download a domain billing report</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Registered Domains</strong>.</p></li>
+<li><p>Choose <strong>Domain billing report</strong>.</p></li>
+<li><p>Choose the date range for the report, and then choose <strong>Download domain report</strong>.</p></li>
+<li><p>Follow the prompts to open the report or to save it.</p></li>
+<li><p>If you encounter issues while downloading a domain billing report, you can contact AWS Support for free. For more information, see <a href="domain-contact-support.html">Contacting AWS Support about domain registration issues</a>.</p></li>
+</ol>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>r53-api-permissions-ref</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="amazon-route-53-api-permissions-actions-resources-and-conditions-reference">Amazon Route 53 API permissions: Actions, resources, and conditions reference<a name="r53-api-permissions-ref"></a></h1>
+<p>When you set up <a href="auth-and-access-control.html#access-control">Access control</a> and write a permissions policy that you can attach to an IAM identity (identity-based policies), you can use the lists of <a href="https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazonroute53.html">Actions, resources, and condition keys for Route 53</a>, <a href="https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazonroute53domains.html">Actions, resources, and condition keys for Route 53 Domains</a>, and <a href="https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazonroute53resolver.html">Actions, resources, and condition keys for Route 53 Resolver</a> in the <em>Service Authorization Reference</em>. The pages include each Amazon Route 53 API action, the actions that you must grant permissions access to, and the AWS resource that you must grant access to. You specify the actions in the policy’s <code>Action</code> field, and you specify the resource value in the policy’s <code>Resource</code> field.</p>
+<p>You can use AWS-wide condition keys in your Route 53 policies to express conditions. For a complete list of AWS-wide keys, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html#AvailableKeys">Available keys</a> in the <em>IAM User Guide</em>.</p>
+<p><strong>Note</strong><br />
+When granting access, the hosted zone and the Amazon VPC must belong to the same partition. A partition is a group of AWS Regions. Each AWS account is scoped to one partition.<br />
+The following are the supported partitions:<br />
+<code>aws</code> - AWS Regions <code>aws-cn</code> - China Regions <code>aws-us-gov</code> - AWS GovCloud (US) Region For more information, see <a href="https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html">Access Management</a> in the <em>AWS General Reference</em>.</p>
+<p><strong>Note</strong><br />
+To specify an action, use the applicable prefix (<code>route53</code>, <code>route53domains</code>, or <code>route53resolver</code>) followed by the API operation name, for example:<br />
+<code>route53:CreateHostedZone</code> <code>route53domains:RegisterDomain</code> <code>route53resolver:CreateResolverEndpoint</code></p>
+</body>
+</html>

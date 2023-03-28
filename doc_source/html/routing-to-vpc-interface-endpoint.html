@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>routing-to-vpc-interface-endpoint</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="routing-traffic-to-an-amazon-virtual-private-cloud-interface-endpoint-by-using-your-domain-name">Routing traffic to an Amazon Virtual Private Cloud interface endpoint by using your domain name<a name="routing-to-vpc-interface-endpoint"></a></h1>
+<p>You can use AWS PrivateLink to access selected services with an Amazon Virtual Private Cloud (Amazon VPC) interface endpoint. These services include some AWS services, services that are hosted by other AWS customers and partners in their own VPCs, and supported AWS Marketplace partner services.</p>
+<p>To route domain traffic to an interface endpoint, use Amazon Route 53 to create an alias record. An alias record is a Route 53 extension to DNS. It’s similar to a CNAME record, but you can create an alias record both for the root domain, such as example.com, and for subdomains, such as www.example.com. You can create CNAME records only for subdomains.</p>
+<p><strong>Note</strong><br />
+Route 53 doesn’t charge for alias queries to interface endpoints or other AWS resources.</p>
+<p><strong>Topics</strong> + <a href="#routing-to-vpc-interface-endpoint-prereqs">Prerequisites</a> + <a href="#routing-to-vpc-interface-endpoint-config">Configuring Amazon Route 53 to route traffic to an Amazon VPC interface endpoint</a></p>
+<h2 id="prerequisites">Prerequisites<a name="routing-to-vpc-interface-endpoint-prereqs"></a></h2>
+<p>To get started, you need the following: + An Amazon VPC interface endpoint. For more information, see <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpce-interface.html">Interface VPC endpoints (AWS PrivateLink)</a> in the <em>Amazon VPC User Guide</em>. + A registered domain name. You can use Amazon Route 53 as your domain registrar, or you can use a different registrar. + Route 53 as the DNS service for the domain. If you register your domain name by using Route 53, we automatically configure Route 53 as the DNS service for the domain.</p>
+<p>For information about using Route 53 as the DNS service provider for your domain, see <a href="MigratingDNS.html">Making Amazon Route 53 the DNS service for an existing domainMaking Route 53 the DNS service for an existing domain</a>.</p>
+<h2 id="configuring-amazon-route-53-to-route-traffic-to-an-amazon-vpc-interface-endpoint">Configuring Amazon Route 53 to route traffic to an Amazon VPC interface endpoint<a name="routing-to-vpc-interface-endpoint-config"></a></h2>
+<p>To configure Amazon Route 53 to route traffic to an Amazon VPC interface endpoint, perform the following procedure.<a name="routing-to-vpc-interface-endpoint-config-procedure"></a></p>
+<p><strong>To route traffic to an Amazon VPC interface endpoint</strong></p>
+<ol type="1">
+<li><p>If you created the Route 53 hosted zone and the Amazon VPC interface endpoint using the same account, skip to step 2.</p>
+<p>If you created the hosted zone and the interface endpoint using different accounts, get the service name for the interface endpoint:</p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Amazon VPC console at <a href="https://console.aws.amazon.com/vpc/">https://console.aws.amazon.com/vpc/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Endpoints</strong>.</p></li>
+<li><p>In the right pane, choose the endpoint that you want to route internet traffic to.</p></li>
+<li><p>In the bottom pane, get the value of DNS name, for example, <strong>vpce-0fd00dd593example-dexample.cloudtrail.us-west-2.vpce.amazonaws.com</strong>.</p></li>
+</ol></li>
+<li><p>Open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Hosted zones</strong>.</p></li>
+<li><p>Choose the name of the hosted zone that has the domain name that you want to use to route traffic to your interface endpoint.</p></li>
+<li><p>Choose <strong>Create record</strong>.</p></li>
+<li><p>Specify the following values:<br />
+<strong>Routing policy</strong><br />
+Choose the applicable routing policy. For more information, see <a href="routing-policy.html">Choosing a routing policy</a>.<br />
+<strong>Record name</strong><br />
+Enter the domain name that you want to use to route traffic to your Amazon VPC interface endpoint.<br />
+<strong>Alias</strong><br />
+If you are using the <strong>Quick create</strong> record creation method, turn on <strong>Alias</strong>.<br />
+<strong>Value/Route traffic to</strong><br />
+Choose <strong>Alias to VPC endpoint</strong>, then choose the Region that the endpoint is from.<br />
+How you specify the value for <strong>Endpoints</strong> depends on whether you created the hosted zone and the interface endpoint using the same AWS account or different accounts:</p>
+<ul>
+<li><strong>Same account</strong> – Choose the list, and find the category <strong>Amazon VPC endpoints</strong>. Then choose the DNS name of the interface endpoint that you want to route internet traffic to.</li>
+<li><strong>Different accounts</strong> – Enter the value that you got in step 1 of this procedure.<br />
+<strong>Record type</strong><br />
+Choose <strong>A – IPv4 address</strong>.<br />
+<strong>Evaluate target health</strong><br />
+Accept the default value of <strong>Yes</strong>.</li>
+</ul></li>
+<li><p>Choose <strong>Create records</strong>.</p>
+<p>Changes generally propagate to all Route 53 servers within 60 seconds. When propagation is done, you’ll be able to route traffic to your interface endpoint by using the name of the alias record that you created in this procedure.</p></li>
+</ol>
+</body>
+</html>

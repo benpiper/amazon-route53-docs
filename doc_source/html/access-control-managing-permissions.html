@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>access-control-managing-permissions</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="using-identity-based-policies-iam-policies-for-amazon-route-53">Using identity-based policies (IAM policies) for Amazon Route 53<a name="access-control-managing-permissions"></a></h1>
+<p>This topic provides examples of identity-based policies that demonstrate how an account administrator can attach permissions policies to IAM identities (users, groups, and roles) and thereby grant permissions to perform operations on Amazon Route 53 resources.</p>
+<p><strong>Important</strong><br />
+We recommend that you first review the introductory topics that explain the basic concepts and options to manage access to your Route 53 resources. For more information, see <a href="access-control-overview.html">Overview of managing access permissions to your Amazon Route 53 resources</a>.</p>
+<p><strong>Note</strong><br />
+When granting access, the hosted zone and the Amazon VPC must belong to the same partition. A partition is a group of AWS Regions. Each AWS account is scoped to one partition.<br />
+The following are the supported partitions:<br />
+<code>aws</code> - AWS Regions <code>aws-cn</code> - China Regions <code>aws-us-gov</code> - AWS GovCloud (US) Region For more information, see <a href="https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html">Access Management</a> and <a href="https://docs.aws.amazon.com/general/latest/gr/r53.html">Amazon Route 53 endpoints and quotas</a> in the <em>AWS General Reference</em>.</p>
+<p><strong>Topics</strong> + <a href="#console-required-permissions">Permissions required to use the Amazon Route 53 console</a> + <a href="#example-permissions-record-owner">Example permissions for a domain record owner</a> + <a href="#KMS-key-policy-for-DNSSEC">Route 53 customer managed key permissions required for DNSSEC signing</a> + <a href="#access-policy-examples-for-sdk-cli">Customer managed policy examples</a></p>
+<p>The following example shows a permissions policy. The <code>Sid</code>, or statement ID, is optional:</p>
+<pre><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Sid&quot; : &quot;AllowPublicHostedZonePermissions&quot;,
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: [
+                &quot;route53:CreateHostedZone&quot;,
+                &quot;route53:UpdateHostedZoneComment&quot;,
+                &quot;route53:GetHostedZone&quot;,
+                &quot;route53:ListHostedZones&quot;,
+                &quot;route53:DeleteHostedZone&quot;,
+                &quot;route53:ChangeResourceRecordSets&quot;,
+                &quot;route53:ListResourceRecordSets&quot;,
+                &quot;route53:GetHostedZoneCount&quot;,
+                &quot;route53:ListHostedZonesByName&quot;
+            ],
+            &quot;Resource&quot;: &quot;*&quot;
+        },
+        {
+         &quot;Sid&quot; : &quot;AllowHealthCheckPermissions&quot;,
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: [
+                &quot;route53:CreateHealthCheck&quot;,
+                &quot;route53:UpdateHealthCheck&quot;,
+                &quot;route53:GetHealthCheck&quot;,
+                &quot;route53:ListHealthChecks&quot;,
+                &quot;route53:DeleteHealthCheck&quot;,
+                &quot;route53:GetCheckerIpRanges&quot;,
+                &quot;route53:GetHealthCheckCount&quot;,
+                &quot;route53:GetHealthCheckStatus&quot;,
+                &quot;route53:GetHealthCheckLastFailureReason&quot;
+            ],
+            &quot;Resource&quot;: &quot;*&quot;
+        }
+    ]
+}</code></pre>
+<p>The policy includes two statements: + The first statement grants permissions to the actions that are required to create and manage public hosted zones and their records. The wildcard character (*) in the Amazon Resource Name (ARN) grants access to all the hosted zones that are owned by the current AWS account. + The second statement grants permissions to all the actions that are required to create and manage health checks.</p>
+<p>For a list of actions and the ARN that you specify to grant or deny permission to use each action, see <a href="r53-api-permissions-ref.html">Amazon Route 53 API permissions: Actions, resources, and conditions reference</a>.</p>
+<h2 id="permissions-required-to-use-the-amazon-route-53-console">Permissions required to use the Amazon Route 53 console<a name="console-required-permissions"></a></h2>
+<p>To grant full access to the Amazon Route 53 console, you grant the permissions in the following permissions policy:</p>
+<pre><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;:[
+        {
+            &quot;Effect&quot;:&quot;Allow&quot;,
+            &quot;Action&quot;:[
+                &quot;route53:*&quot;, 
+                &quot;route53domains:*&quot;,
+                &quot;cloudfront:ListDistributions&quot;,
+                &quot;elasticloadbalancing:DescribeLoadBalancers&quot;,
+                &quot;elasticbeanstalk:DescribeEnvironments&quot;,
+                &quot;s3:ListAllMyBuckets&quot;,
+                &quot;s3:GetBucketLocation&quot;,
+                &quot;s3:GetBucketWebsite&quot;,
+                &quot;ec2:DescribeRegions&quot;,
+                &quot;ec2:DescribeVpcs&quot;,
+                &quot;ec2:CreateNetworkInterface&quot;,
+                &quot;ec2:CreateNetworkInterfacePermission&quot;,
+                &quot;ec2:DeleteNetworkInterface&quot;,
+                &quot;ec2:DescribeAvailabilityZones&quot;,
+                &quot;ec2:DescribeNetworkInterfaces&quot;,
+                &quot;ec2:DescribeSecurityGroups&quot;,
+                &quot;ec2:DescribeSubnets&quot;,
+                &quot;ec2:ModifyNetworkInterfaceAttribute&quot;,
+                &quot;sns:ListTopics&quot;,
+                &quot;sns:ListSubscriptionsByTopic&quot;,
+                &quot;sns:CreateTopic&quot;,
+                &quot;kms:ListAliases&quot;,
+                &quot;kms:DescribeKey&quot;,
+                &quot;kms:CreateKey&quot;,
+                &quot;kms:CreateAlias&quot;,
+                &quot;kms:Sign&quot;,
+                &quot;cloudwatch:DescribeAlarms&quot;,
+                &quot;cloudwatch:PutMetricAlarm&quot;,
+                &quot;cloudwatch:DeleteAlarms&quot;,
+                &quot;cloudwatch:GetMetricStatistics&quot;
+            ],
+            &quot;Resource&quot;:&quot;*&quot;
+        },
+        {
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: &quot;apigateway:GET&quot;,
+            &quot;Resource&quot;: &quot;arn:aws:apigateway:*::/domainnames&quot;
+        }
+    ]
+}</code></pre>
+<p>Here’s why the permissions are required:</p>
+<p><strong><code>route53:*</code></strong><br />
+Lets you perform all Route 53 actions <em>except</em> the following:<br />
++ Create and update alias records for which the value of <strong>Alias Target</strong> is a CloudFront distribution, an Elastic Load Balancing load balancer, an Elastic Beanstalk environment, or an Amazon S3 bucket. (With these permissions, you can create alias records for which the value of <strong>Alias Target</strong> is another record in the same hosted zone.) + Work with private hosted zones. + Work with domains. + Create, delete, and view CloudWatch alarms. + Render CloudWatch metrics in the Route 53 console.</p>
+<p><strong><code>route53domains:*</code></strong><br />
+Lets you work with domains.<br />
+If you list <code>route53</code> actions individually, you must include <code>route53:CreateHostedZone</code> to work with domains. When you register a domain, a hosted zone is created at the same time, so a policy that includes permissions to register domains also requires permission to create hosted zones. For domain registration, Route 53 doesn’t support granting or denying permissions to individual resources.</p>
+<p><strong><code>route53resolver:*</code></strong><br />
+Lets you work with Route 53 Resolver.</p>
+<p><strong><code>cloudfront:ListDistributions</code></strong><br />
+Lets you create and update alias records for which the value of <strong>Alias Target</strong> is a CloudFront distribution.<br />
+These permissions aren’t required if you aren’t using the Route 53 console. Route 53 uses it only to get a list of distributions to display in the console.</p>
+<p><strong><code>elasticloadbalancing:DescribeLoadBalancers</code></strong><br />
+Lets you create and update alias records for which the value of <strong>Alias Target</strong> is an ELB load balancer.<br />
+These permissions aren’t required if you aren’t using the Route 53 console. Route 53 uses it only to get a list of load balancers to display in the console.</p>
+<p><strong><code>elasticbeanstalk:DescribeEnvironments</code></strong><br />
+Lets you create and update alias records for which the value of <strong>Alias Target</strong> is an Elastic Beanstalk environment.<br />
+These permissions aren’t required if you aren’t using the Route 53 console. Route 53 uses it only to get a list of environments to display in the console.</p>
+<p><strong><code>s3:ListAllMyBuckets</code>, <code>s3:GetBucketLocation</code>, and <code>s3:GetBucketWebsite</code></strong><br />
+Let you create and update alias records for which the value of <strong>Alias Target</strong> is an Amazon S3 bucket. (You can create an alias to an Amazon S3 bucket only if the bucket is configured as a website endpoint; <code>s3:GetBucketWebsite</code> gets the required configuration information.)<br />
+These permissions aren’t required if you aren’t using the Route 53 console. Route 53 uses it only to get a list of buckets to display in the console.</p>
+<p><strong><code>ec2:DescribeVpcs</code> and <code>ec2:DescribeRegions</code></strong><br />
+Let you work with private hosted zones.</p>
+<p><strong>All listed <code>ec2</code> permissions</strong><br />
+Let you work with Route 53 Resolver.</p>
+<p><strong><code>sns:ListTopics</code>, <code>sns:ListSubscriptionsByTopic</code>, <code>sns:CreateTopic</code>, <code>cloudwatch:DescribeAlarms</code>, <code>cloudwatch:PutMetricAlarm</code>, <code>cloudwatch:DeleteAlarms</code></strong><br />
+Let you create, delete, and view CloudWatch alarms.</p>
+<p><strong><code>cloudwatch:GetMetricStatistics</code></strong><br />
+Lets you create CloudWatch metric health checks.<br />
+These permissions aren’t required if you aren’t using the Route 53 console. Route 53 uses it only to get statistics to display in the console.</p>
+<p><strong><code>apigateway:GET</code></strong><br />
+Lets you create and update alias records for which the value of <strong>Alias Target</strong> is an Amazon API Gateway API.<br />
+This permission isn’t required if you aren’t using the Route 53 console. Route 53 uses it only to get a list of APIs to display in the console.</p>
+<p><strong><code>kms:*</code></strong><br />
+Lets you work with AWS KMS to enable DNSSEC signing.</p>
+<h2 id="example-permissions-for-a-domain-record-owner">Example permissions for a domain record owner<a name="example-permissions-record-owner"></a></h2>
+<p>With resource record set permissions you can set granular permissions that limit what the AWS user can update or modify. For more intormation, see <a href="specifying-rrset-conditions.html">Using IAM policy conditions for fine-grained access control to manage resource record sets</a>.</p>
+<p>In some scenarios, a hosted zone owner might be responsible for the overall management of the hosted zone, while another person in the organization is responsible for a subset of those tasks. A hosted zone owner who has enabled DNSSEC signing, for example, might want to create an IAM policy that includes the permission for someone else to add and delete Resource Set Records (RRs) in the hosted zone, among other tasks. The specific permissions that a hosted zone owner chooses to enable for a record owner or other people will depend on their organization’s policy.</p>
+<p>The following is an example IAM policy that allows a record owner to make modifications to RRs, traffic policies, and health checks. A record owner with this policy is not allowed to do zone-level operations, such as creating or deleting a zone, enabling or disabling query logging, creating or deleting a reusable delegation set, or changing DNSSEC settings.</p>
+<pre><code>{
+      &quot;Sid&quot;: &quot;Do not allow zone-level modification &quot;,
+      &quot;Effect&quot;: &quot;Allow&quot;,
+      &quot;Action&quot;: [
+        &quot;route53:ChangeResourceRecordSets&quot;,
+        &quot;route53:CreateTrafficPolicy&quot;,
+        &quot;route53:DeleteTrafficPolicy&quot;,
+        &quot;route53:CreateTrafficPolicyInstance&quot;,
+        &quot;route53:CreateTrafficPolicyVersion&quot;,
+        &quot;route53:UpdateTrafficPolicyInstance&quot;,
+        &quot;route53:UpdateTrafficPolicyComment&quot;,
+        &quot;route53:DeleteTrafficPolicyInstance&quot;,
+        &quot;route53:CreateHealthCheck&quot;,
+        &quot;route53:UpdateHealthCheck&quot;,
+        &quot;route53:DeleteHealthCheck&quot;,
+        &quot;route53:List*&quot;,
+        &quot;route53:Get*&quot;
+      ],
+      &quot;Resource&quot;: [
+        &quot;*&quot;
+      ]
+}</code></pre>
+<h2 id="route-53-customer-managed-key-permissions-required-for-dnssec-signing">Route 53 customer managed key permissions required for DNSSEC signing<a name="KMS-key-policy-for-DNSSEC"></a></h2>
+<p>When you enable DNSSEC signing for Route 53, Route 53 creates a key-signing key (KSK) based on a customer managed key in AWS Key Management Service (AWS KMS). You can use an existing customer managed key that supports DNSSEC signing or create a new one. Route 53 must have permission to access your customer managed key so that it can create the KSK for you.</p>
+<p>To enable Route 53 to access your customer managed key, make sure that your customer managed key policy contains the following statements:</p>
+<pre><code>{
+            &quot;Sid&quot;: &quot;Allow Route 53 DNSSEC Service&quot;,
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Principal&quot;: {
+                &quot;Service&quot;: &quot;dnssec-route53.amazonaws.com&quot;
+            },
+            &quot;Action&quot;: [&quot;kms:DescribeKey&quot;,
+                       &quot;kms:GetPublicKey&quot;,
+                       &quot;kms:Sign&quot;],
+            &quot;Resource&quot;: &quot;*&quot;
+        },
+        {
+            &quot;Sid&quot;: &quot;Allow Route 53 DNSSEC to CreateGrant&quot;,
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Principal&quot;: {
+                &quot;Service&quot;: &quot;dnssec-route53.amazonaws.com&quot;
+            },
+            &quot;Action&quot;: [&quot;kms:CreateGrant&quot;],
+            &quot;Resource&quot;: &quot;*&quot;,
+            &quot;Condition&quot;: {
+                &quot;Bool&quot;: {
+                    &quot;kms:GrantIsForAWSResource&quot;: true
+                }
+            }
+        }</code></pre>
+<p>The confused deputy problem is a security issue where an entity without a permission for an action can coerce a more-privileged entity to perform it. To protect your AWS KMS from it, you can optionally limit the permissions that a service has to a resource in a resource-based policy by supplying a combination of <code>aws:SourceAccount</code> and <code>aws:SourceArn</code> conditions (both or one). <code>aws:SourceAccount</code> is an AWS account ID of an owner of a hosted zone. <code>aws:SourceArn</code> is an ARN of a hosted zone.</p>
+<p>The following are two examples of permissions you can add:</p>
+<pre><code>{
+    &quot;Sid&quot;: &quot;Allow Route 53 DNSSEC Service&quot;,
+    …
+    &quot;Resource&quot;: &quot;*&quot;,
+    &quot;Condition&quot;: {
+        &quot;StringEquals&quot;: {
+            &quot;aws:SourceAccount&quot;: &quot;111122223333&quot;
+        },
+        &quot;ArnEquals&quot;: {
+            &quot;aws:SourceArn&quot;: &quot;arn:aws:route53:::hostedzone/HOSTED_ZONE_ID&quot;
+        }
+    }
+},</code></pre>
+<p>- Or -</p>
+<pre><code>{
+    &quot;Sid&quot;: &quot;Allow Route 53 DNSSEC Service&quot;,
+    …
+    &quot;Resource&quot;: &quot;*&quot;,
+    &quot;Condition&quot;: {
+        &quot;StringEquals&quot;: {
+            &quot;aws:SourceAccount&quot;: [&quot;1111-2222-3333&quot;,&quot;4444-5555-6666&quot;]
+        },
+        &quot;ArnLike&quot;: {
+            &quot;aws:SourceArn&quot;: &quot;arn:aws:route53:::hostedzone/*&quot;
+        }
+    }
+},</code></pre>
+<p>For more information, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/confused-deputy.html">The confused deputy problem</a> in the <em>IAM User Guide</em>.</p>
+<h2 id="customer-managed-policy-examples">Customer managed policy examples<a name="access-policy-examples-for-sdk-cli"></a></h2>
+<p>You can create your own custom IAM policies to allow permissions for Route 53 actions. You can attach these custom policies to the IAM users or groups that require the specified permissions. These policies work when you are using the Route 53 API, the AWS SDKs, or the AWS CLI. The following examples show permissions for several common use cases. For the policy that grants a user full access to Route 53, see <a href="#console-required-permissions">Permissions required to use the Amazon Route 53 console</a>.</p>
+<p><strong>Topics</strong> + <a href="#access-policy-example-allow-read-hosted-zones">Example 1: Allow read access to all hosted zones</a> + <a href="#access-policy-example-allow-create-delete-hosted-zones">Example 2: Allow creation and deletion of hosted zones</a> + <a href="#access-policy-example-allow-full-domain-access">Example 3: Allow full access to all domains (public hosted zones only)</a> + <a href="#access-policy-example-create-resolver-endpoints">Example 4: Allow creation of inbound and outbound Route 53 Resolver endpoints</a></p>
+<h3 id="example-1-allow-read-access-to-all-hosted-zones">Example 1: Allow read access to all hosted zones<a name="access-policy-example-allow-read-hosted-zones"></a></h3>
+<p>The following permissions policy grants the user permissions to list all hosted zones and view all the records in a hosted zone.</p>
+<pre><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;:[
+        {
+            &quot;Effect&quot;:&quot;Allow&quot;,
+            &quot;Action&quot;:[
+                &quot;route53:GetHostedZone&quot;, 
+                &quot;route53:ListResourceRecordSets&quot;
+            ],
+            &quot;Resource&quot;:&quot;*&quot;
+        },
+        {
+            &quot;Effect&quot;:&quot;Allow&quot;,
+            &quot;Action&quot;:[&quot;route53:ListHostedZones&quot;],
+            &quot;Resource&quot;:&quot;*&quot;
+        }
+    ]
+}</code></pre>
+<h3 id="example-2-allow-creation-and-deletion-of-hosted-zones">Example 2: Allow creation and deletion of hosted zones<a name="access-policy-example-allow-create-delete-hosted-zones"></a></h3>
+<p>The following permissions policy allows users to create and delete hosted zones, and to track the progress of the change.</p>
+<pre><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;:[
+        {
+            &quot;Effect&quot;:&quot;Allow&quot;,
+            &quot;Action&quot;:[&quot;route53:CreateHostedZone&quot;],
+            &quot;Resource&quot;:&quot;*&quot;
+        },
+        {
+            &quot;Effect&quot;:&quot;Allow&quot;,
+            &quot;Action&quot;:[&quot;route53:DeleteHostedZone&quot;],
+            &quot;Resource&quot;:&quot;*&quot;
+        },
+        {
+            &quot;Effect&quot;:&quot;Allow&quot;,
+            &quot;Action&quot;:[&quot;route53:GetChange&quot;],
+            &quot;Resource&quot;:&quot;*&quot;
+        }
+    ]
+}</code></pre>
+<h3 id="example-3-allow-full-access-to-all-domains-public-hosted-zones-only">Example 3: Allow full access to all domains (public hosted zones only)<a name="access-policy-example-allow-full-domain-access"></a></h3>
+<p>The following permissions policy allows users to perform all actions on domain registrations, including permissions to register domains and create hosted zones.</p>
+<pre><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;:[
+        {
+            &quot;Effect&quot;:&quot;Allow&quot;,
+            &quot;Action&quot;:[
+                &quot;route53domains:*&quot;,
+                &quot;route53:CreateHostedZone&quot;
+            ],
+            &quot;Resource&quot;:&quot;*&quot;
+        }
+    ]
+}</code></pre>
+<p>When you register a domain, a hosted zone is created at the same time, so a policy that includes permissions to register domains also requires permissions to create hosted zones. (For domain registration, Route 53 doesn’t support granting permissions to individual resources.)</p>
+<p>For information about permissions that are required to work with private hosted zones, see <a href="#console-required-permissions">Permissions required to use the Amazon Route 53 console</a>.</p>
+<h3 id="example-4-allow-creation-of-inbound-and-outbound-route-53-resolver-endpoints">Example 4: Allow creation of inbound and outbound Route 53 Resolver endpoints<a name="access-policy-example-create-resolver-endpoints"></a></h3>
+<p>The following permissions policy allows users to use the Route 53 console to create Resolver inbound and outbound endpoints.</p>
+<p>Some of these permissions are required only to create endpoints in the console. You can omit these permissions if you want to grant permissions only to create inbound and outbound endpoints programmatically: + <code>route53resolver:ListResolverEndpoints</code> lets users see the list of inbound or outbound endpoints so they can verify that an endpoint was created. + <code>DescribeAvailabilityZones</code> is required to display a list of Availability Zones. + <code>DescribeVpcs</code> is required to display a list of VPCs.</p>
+<pre><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Sid&quot;: &quot;VisualEditor0&quot;,
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: [
+                &quot;route53resolver:CreateResolverEndpoint&quot;,
+                &quot;route53resolver:ListResolverEndpoints&quot;,
+                &quot;ec2:CreateNetworkInterface&quot;,
+                &quot;ec2:CreateNetworkInterfacePermission&quot;,
+                &quot;ec2:DescribeAvailabilityZones&quot;,
+                &quot;ec2:DescribeNetworkInterfaces&quot;,
+                &quot;ec2:DescribeSecurityGroups&quot;,
+                &quot;ec2:DescribeSubnets&quot;,
+                &quot;ec2:DescribeVpcs&quot;
+            ],
+            &quot;Resource&quot;: &quot;*&quot;
+        }
+    ]
+}</code></pre>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>specifying-rrset-conditions</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="using-iam-policy-conditions-for-fine-grained-access-control-to-manage-resource-record-sets">Using IAM policy conditions for fine-grained access control to manage resource record sets<a name="specifying-rrset-conditions"></a></h1>
+<p>When you grant permissions for resource record sets in Route 53, you can specify conditions that determine how a permissions policy takes effect.</p>
+<p>In Route 53, you can specify conditions when granting permissions using an IAM policy (see <a href="auth-and-access-control.html#access-control">Access control</a>). For example, you can: + Grant permissions to allow access to a single resource record set. + Grant permissions to allow users access to all resource record sets of a specific DNS record type in a hosted zone, for example A and AAAA records. + Grant permissions to allow users access to a resource record set where its name contains a specific string. + Grant permissions to allow users to perform only a subset of the <code>CREATE | UPSERT | DELETE</code> actions on the Route 53 console, or when using the <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_ChangeResourceRecordSets.html">ChangeResourceRecordSets</a> API.</p>
+<p>You can also create permissions that combine any of the granular permissions.</p>
+<p>Use the IAM <code>Condition</code> element to implement a fine-grained access control policy. By adding a <code>Condition</code> element to a permissions policy, you can allow or deny access to records in Route 53 resource record sets, based upon your business requirements. For example, your IAM policy can restrict access to individual DNS records in a hosted zone. You then apply the policy to IAM users, groups, or roles that you create using the IAM console.</p>
+<h2 id="normalizing-the-condition-key-values">Normalizing the condition key values<a name="route53_rrset_conditionkeys_normalization"></a></h2>
+<p>The values you enter for the policy conditions must be formatted, or normalized, as follows:</p>
+<p><strong>For <code>route53:ChangeResourceRecordSetsNormalizedRecordNames</code>:</strong> + All letters must be lowercase. + The DNS name must be without the trailing dot. + Characters other than a–z, 0–9, - (hyphen), _ (underscore), and . (period, as a delimiter between labels) must use escape codes in the format \three-digit octal code. For example, <code>\052</code>is the octal code for character *.</p>
+<p><strong>For <code>route53:ChangeResourceRecordSetsActions</code>, the value can be any of the following and must be uppercase:</strong> + CREATE + UPSERT + DELETE</p>
+<p><strong>For <code>route53:ChangeResourceRecordSetsRecordTypes</code></strong>: + The value must be in uppercase, and can be any of the Route 53 supported DNS record types. For more information, see <a href="ResourceRecordTypes.html">Supported DNS record types</a>.</p>
+<p><strong>Important</strong><br />
+For your permissions to allow or restrict actions as you intend, you must follow these conventions.</p>
+<p>You can use the <a href="IAM/latest/UserGuide/access-analyzer-policy-validation.html">Access Analyzer</a> or <a href="IAM/latest/UserGuide/access_policies_testing-policies.html">Policy Simulator</a> to validate that your policy grants or restricts the permissions as expected. You can also validate the permissions by applying an IAM policy to a test user or role to carry out Route 53 operations.</p>
+<h2 id="specifying-conditions-using-condition-keys">Specifying conditions: using condition keys<a name="route53_rrset_ConditionKeys"></a></h2>
+<p>AWS provides a set of predefined condition keys (AWS-wide condition keys) for all AWS services that support IAM for access control. For example, you can use the <code>aws:SourceIp</code> condition key to check the requester’s IP address before allowing an action to be performed. For more information and a list of the AWS-wide keys, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_elements.html#AvailableKeys">Available Keys for Conditions</a> in the <em>IAM User Guide</em>.</p>
+<p><strong>Note</strong><br />
+Route 53 doesn’t support tag-based condition keys.</p>
+<p>The following table shows the Route 53 service-specific condition keys that apply to resource record sets.</p>
+<hr />
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Route 53 Condition Key</th>
+<th>API operations</th>
+<th>Value type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>route53:ChangeResourceRecordSetsNormalizedRecordNames</td>
+<td><a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_ChangeResourceRecordSets.html">ChangeResourceRecordSets</a></td>
+<td>Multi-valued</td>
+<td>Represents a list of DNS record names in the request of ChangeResourceRecordSets. To get the expected behavior, DNS names in the IAM policy must be normalized as follows: <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/specifying-rrset-conditions.html">[See the AWS documentation website for more details]</a></td>
+</tr>
+<tr class="even">
+<td>route53:ChangeResourceRecordSetsRecordTypes</td>
+<td><a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_ChangeResourceRecordSets.html">ChangeResourceRecordSets</a></td>
+<td>Multi-valued</td>
+<td>Represents a list of DNS record types in the request of <code>ChangeResourceRecordSets</code>. <code>ChangeResourceRecordSetsRecordTypes</code> can be any of the Route 53 supported DNS record types. For more information, see <a href="ResourceRecordTypes.html">Supported DNS record types</a>. All must be entered in uppercase in the policy.</td>
+</tr>
+<tr class="odd">
+<td>route53:ChangeResourceRecordSetsActions</td>
+<td><a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_ChangeResourceRecordSets.html">ChangeResourceRecordSets</a></td>
+<td>Multi-valued</td>
+<td>Represents a list of actions in the request of <code>ChangeResourceRecordSets</code>. <code>ChangeResourceRecordSetsActions</code> can be any of the following values (must be uppercase): <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/specifying-rrset-conditions.html">[See the AWS documentation website for more details]</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="example-policies-using-conditions-for-fine-grained-access">Example policies: Using conditions for fine-grained access<a name="route53_rrset_conditionkeys-examples"></a></h2>
+<p>Each of the examples in this section sets the Effect clause to Allow and specifies only the actions, resources, and parameters that are allowed. Access is permitted only to what is explicitly listed in the IAM policy.</p>
+<p>In some cases, it is possible to rewrite these policies so that they are deny-based (that is, setting the Effect clause to Deny and inverting all of the logic in the policy). However, we recommend that you avoid using deny-based policies because they are difficult to write correctly, compared to allow-based policies. This is especially true for Route 53 due to text normalization that is required.</p>
+<p><strong>Grant permissions that limit access to DNS records with specific names</strong><br />
+The following permissions policy grants permissions that allow <code>ChangeResourceRecordSets</code> actions on the Hosted Zone Z12345 for example.com. It uses the <code>route53:ChangeResourceRecordSetsNormalizedRecordNames</code> condition key to limit user actions only on the records that match the specified names.</p>
+<pre><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: &quot;route53:ChangeResourceRecordSets&quot;,
+            &quot;Resource&quot;: &quot;arn:aws:route53:::hostedzone/Z11111112222222333333&quot;,
+            &quot;Condition&quot;: {
+                &quot;ForAllValues:StringEquals&quot;:{
+                    &quot;route53:ChangeResourceRecordSetsNormalizedRecordNames&quot;: [&quot;example.com&quot;, &quot;marketing.example.com&quot;]
+                }
+            }
+          }
+        ]
+}</code></pre>
+<p><code>ForAllValues:StringEquals</code> is an IAM condition operator that applies to multi-valued keys. The condition in the policy above will allow the operation only when all changes in <code>ChangeResourceRecordSets</code> have the DNS name of example.com. For more information, see <a href="IAM/latest/UserGuide/reference_policies_elements_condition_operators.html">IAM condition operators</a> and <a href="IAM/latest/UserGuide/reference_policies_multi-value-conditions.html">IAM condition with multiple keys or values</a> in the IAM User Guide.</p>
+<p>To implement the permission that matches names with certain suffixes, you can use the IAM wildcard (*) in the policy with condition operator <code>StringLike</code> or <code>StringNotLike</code>. The following policy will allow the operation when all changes in the <code>ChangeResourceRecordSets</code> operation have DNS names that end with “-beta.example.com”.</p>
+<pre><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: &quot;route53:ChangeResourceRecordSets&quot;,
+            &quot;Resource&quot;: &quot;arn:aws:route53:::hostedzone/Z11111112222222333333&quot;,
+            &quot;Condition&quot;: {
+                &quot;ForAllValues:StringLike&quot;:{
+                     &quot;route53:ChangeResourceRecordSetsNormalizedRecordNames&quot;: [&quot;*-beta.example.com&quot;]
+                }
+            }
+          }
+        ]
+}</code></pre>
+<p><strong>Note</strong><br />
+The IAM wildcard isn’t the same as the domain name wildcard. See the following example for how to use the wildcard with a domain name.</p>
+<p><strong>Grant permissions that limit access to DNS records that match a domain name containing a wildcard</strong><br />
+The following permissions policy grants permissions that allow <code>ChangeResourceRecordSets</code> actions on the Hosted Zone Z12345 for example.com. It uses the <code>route53:ChangeResourceRecordSetsNormalizedRecordNames</code> condition key to limit user actions only to the records that match *.example.com.</p>
+<pre><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: &quot;route53:ChangeResourceRecordSets&quot;,
+            &quot;Resource&quot;: &quot;arn:aws:route53:::hostedzone/Z11111112222222333333&quot;,
+            &quot;Condition&quot;: {
+                &quot;ForAllValues:StringEquals&quot;:{
+                     &quot;route53:ChangeResourceRecordSetsNormalizedRecordNames&quot;: [&quot;\\052.example.com&quot;]
+                }
+            }
+          }
+        ]
+}</code></pre>
+<p><code>\052</code>is the octal code for character * in the DNS name, and <code>\</code> in <code>\052</code> is escaped to be <code>\\</code> to follow JSON syntax.</p>
+<p><strong>Grant permissions that limit access to specific DNS records</strong><br />
+The following permissions policy grants permissions that allow <code>ChangeResourceRecordSets</code> actions on the Hosted Zone Z12345 for example.com. It uses the combination of three condition keys to limit user actions to allow only creating or editing DNS records with certain DNS name and type.</p>
+<pre><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: &quot;route53:ChangeResourceRecordSets&quot;,
+            &quot;Resource&quot;: &quot;arn:aws:route53:::hostedzone/Z11111112222222333333&quot;,
+            &quot;Condition&quot;: {
+                &quot;ForAllValues:StringEquals&quot;:{
+                     &quot;route53:ChangeResourceRecordSetsNormalizedRecordNames&quot;: [&quot;example.com&quot;],
+                     &quot;route53:ChangeResourceRecordSetsRecordTypes&quot;: [&quot;MX&quot;],
+                     &quot;route53:ChangeResourceRecordSetsActions&quot;: [&quot;CREATE&quot;, &quot;UPSERT&quot;]
+                }
+            }
+          }
+        ]
+}</code></pre>
+<p><strong>Grant permissions that limit access to creating and editing only the specified types of DNS records</strong><br />
+The following permissions policy grants permissions that allow <code>ChangeResourceRecordSets</code> actions on the Hosted Zone Z12345 for example.com. It uses the <code>route53:ChangeResourceRecordSetsRecordTypes</code> condition key to limit user actions only on the records which match the specified types (A and AAAA).</p>
+<pre><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Action&quot;: &quot;route53:ChangeResourceRecordSets&quot;,
+            &quot;Resource&quot;: &quot;arn:aws:route53:::hostedzone/Z11111112222222333333&quot;,
+            &quot;Condition&quot;: {
+                &quot;ForAllValues:StringEquals&quot;:{
+                     &quot;route53:ChangeResourceRecordSetsRecordTypes&quot;: [&quot;A&quot;, &quot;AAAA&quot;]
+                }
+            }
+          }
+        ]
+}</code></pre>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resolver-automatic-forwarding-rules-reverse-dns</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="forwarding-rules-for-reverse-dns-queries-in-resolver">Forwarding rules for reverse DNS queries in Resolver<a name="resolver-automatic-forwarding-rules-reverse-dns"></a></h1>
+<p>When the <code>enableDnsHostnames</code> and <code>enableDnsSupport</code> are set to <code>true</code> for a virtual private cloud (VPC) from Amazon VPC, Resolver automatically creates auto-defined system rules for reverse DNS queries. For more information about these settings, see <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html#vpc-dns-support">DNS attributes in your VPC</a> in the <em>Amazon VPC Developer Guide</em>.</p>
+<p>Forwarding rules for reverse DNS queries are particularly useful for services like SSH or Active Directory, which have an option to authenticate users by performing a reverse DNS lookup for the IP address from which a customer is attempting to connect to a resource. For more information about auto-defined system rules, see <a href="resolver-overview-DSN-queries-to-vpc.html#resolver-overview-forward-vpc-to-network-autodefined-rules">Domain names that Resolver creates autodefined system rules for</a>.</p>
+<p>You can turn off these rules and modify all reverse DNS queries so that they are, for example, forwarded to your on-premises name servers for resolution.</p>
+<p>After you turn off the automatic rules, create rules to forward the queries as needed to your on-premises resources. For more information about how to manage forwarding rules, see <a href="resolver-rules-managing.html">Managing forwarding rules</a>.<a name="resolver-automatic-reverse-rules-disable-procedure"></a></p>
+<p><strong>To turn off auto-defined rules</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, under <strong>Resolver</strong> choose <strong>VPCs</strong>, and then choose a VPC ID.</p></li>
+<li><p>Under <strong>Autodefined rules for reverse DNS resolution</strong>, deselect the check box. If the check box is already deselected, you can select it to turn on auto-defined reverse DNS resolution.</p></li>
+</ol>
+<p>For the related APIs, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API-actions-by-function.html#actions-by-function-resolver-configuration">Resolver configuration APIs</a>.</p>
+</body>
+</html>

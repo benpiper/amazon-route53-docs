@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resolver-dns-firewall-vpc-associating-rule-group</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="managing-associations-between-your-vpc-and-route-53-resolver-dns-firewall-rule-group">Managing associations between your VPC and Route 53 Resolver DNS Firewall rule group<a name="resolver-dns-firewall-vpc-associating-rule-group"></a></h1>
+<p><strong>To view a rule group’s VPC associations</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p>
+<p>- OR -</p>
+<p>Sign in to the AWS Management Console and open the</p>
+<p>the Amazon VPC console under <a href="https://console.aws.amazon.com/vpc/">https://console.aws.amazon.com/vpc/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Rule groups</strong>.</p></li>
+<li><p>On the navigation bar, choose the Region for the rule group.</p></li>
+<li><p>Select the rule group that you want to associate.</p></li>
+<li><p>Choose <strong>View details</strong>. The rule group page displays.</p></li>
+<li><p>Toward the bottom, you can see a tabbed details area that includes rules and associated VPCs. Choose the tab <strong>Associated VPCs</strong>.</p></li>
+</ol>
+<p><strong>To associate a rule group with a VPC</strong></p>
+<ol type="1">
+<li><p>Locate the rule group’s VPC associations by following the instructions in <a href="resolver-dns-firewall-rule-group-sharing.html">the preceding procedure</a> <strong>To view a rule group’s VPC associations</strong>.</p></li>
+<li><p>In the <strong>Associated VPCs</strong> tab, choose <strong>Associate VPC</strong>.</p></li>
+<li><p>Locate the VPC that you want to associate with the rule group in the dropdown. Select it, then choose <strong>Associate</strong>.</p></li>
+</ol>
+<p>In the rule group page, your VPC is listed in the <strong>Associated VPCs</strong> tab. At first, the association’s <strong>Status</strong> reports <strong>Updating</strong>. When the association is complete, the status changes to <strong>Complete</strong>.</p>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>monitoring-resolver-dns-firewall-with-cloudwatch</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="monitoring-route-53-resolver-dns-firewall-rule-groups-with-amazon-cloudwatch">Monitoring Route 53 Resolver DNS Firewall rule groups with Amazon CloudWatch<a name="monitoring-resolver-dns-firewall-with-cloudwatch"></a></h1>
+<p>You can use Amazon CloudWatch to monitor the number of DNS queries that are filtered by Route 53 Resolver DNS Firewall rule groups. Amazon CloudWatch collects and processes raw data into readable, near real-time metrics. These statistics are recorded for a period of two weeks, so that you can access historical information and gain a better perspective on how your resources are performing. By default, metric data for DNS Firewall rule groups is automatically sent to CloudWatch at five-minute intervals.</p>
+<p>For more information about DNS Firewall, see <a href="resolver-dns-firewall.html">Route 53 Resolver DNS Firewall</a>. For more information about CloudWatch, see <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/WhatIsCloudWatch.html">What is Amazon CloudWatch?</a> in the <em>Amazon CloudWatch User Guide</em>.</p>
+<h2 id="metrics-and-dimensions-for-route-53-resolver-dns-firewall">Metrics and dimensions for Route 53 Resolver DNS Firewall<a name="metrics-dimensions-resolver-dns-firewall"></a></h2>
+<p>When you associate a Route 53 Resolver DNS Firewall rule group with a VPC to filter DNS queries, DNS Firewall starts to send metrics and dimensions once every 5 minutes to CloudWatch about the queries that it filters. For information about the metrics and dimensions for DNS Firewall, see <a href="#cloudwatch-metrics-resolver-dns-firewall">CloudWatch metrics for Route 53 Resolver DNS Firewall</a>.</p>
+<p>You can use the following procedures to view the metrics in the CloudWatch console or view them by using the AWS Command Line Interface (AWS CLI).</p>
+<p><strong>To view DNS Firewall metrics using the CloudWatch console</strong></p>
+<ol type="1">
+<li><p>Open the CloudWatch console at <a href="https://console.aws.amazon.com/cloudwatch/">https://console.aws.amazon.com/cloudwatch/</a>.</p></li>
+<li><p>On the navigation bar, choose the Region that you want to view.</p></li>
+<li><p>In the navigation pane, choose <strong>Metrics</strong>.</p></li>
+<li><p>On the <strong>All metrics</strong> tab, choose <strong>Route 53 Resolver</strong>.</p></li>
+<li><p>Choose a metric that you’re interested in.</p></li>
+</ol>
+<p><strong>To view metrics using the AWS CLI</strong> + At a command prompt, use the following command:</p>
+<pre><code>1. aws cloudwatch list-metrics --namespace &quot;AWS/Route53Resolver&quot;</code></pre>
+<p><strong>Topics</strong> + <a href="#cloudwatch-metrics-resolver-dns-firewall">CloudWatch metrics for Route 53 Resolver DNS Firewall</a></p>
+<h3 id="cloudwatch-metrics-for-route-53-resolver-dns-firewall">CloudWatch metrics for Route 53 Resolver DNS Firewall<a name="cloudwatch-metrics-resolver-dns-firewall"></a></h3>
+<p>The <code>AWS/Route53Resolver</code> namespace includes metrics for Route 53 Resolver DNS Firewall rule groups.</p>
+<p><strong>Topics</strong> + <a href="#cloudwatch-metrics-resolver-dns-firewall-rule-group">Metrics for Route 53 Resolver DNS Firewall rule groups</a> + <a href="#cloudwatch-metrics-resolver-vpc">Metrics for VPCs</a> + <a href="#cloudwatch-metrics-resolver-firewall-vpc">Metrics for firewall rule group and VPC association</a> + <a href="#cloudwatch-metrics-domain-list-firewall">Metrics for a domain list in a firewall rule group</a></p>
+<h4 id="metrics-for-route-53-resolver-dns-firewall-rule-groups">Metrics for Route 53 Resolver DNS Firewall rule groups<a name="cloudwatch-metrics-resolver-dns-firewall-rule-group"></a></h4>
+<p><strong>FirewallRuleGroupQueryVolume</strong><br />
+The number of DNS Firewall queries that match a firewall rule group (specified by <code>FirewallRuleGroupId</code>).<br />
+Dimensions: <code>FirewallRuleGroupId</code><br />
+Valid statistics: Sum<br />
+Units: Count</p>
+<h4 id="metrics-for-vpcs">Metrics for VPCs<a name="cloudwatch-metrics-resolver-vpc"></a></h4>
+<p><strong>VPCFirewallQueryVolume</strong><br />
+The number of DNS Firewall queries from a VPC (specified by <code>VpcId</code>).<br />
+Dimensions: <code>VpcId</code><br />
+Valid statistics: Sum<br />
+Units: Count</p>
+<h4 id="metrics-for-firewall-rule-group-and-vpc-association">Metrics for firewall rule group and VPC association<a name="cloudwatch-metrics-resolver-firewall-vpc"></a></h4>
+<p><strong>FirewallRuleGroupVpcQueryVolume</strong><br />
+The number of DNS Firewall queries from a VPC (specified by <code>VpcId</code>) that match a firewall rule group (specified by <code>FirewallRuleGroupId</code>).<br />
+Dimensions: <code>FirewallRuleGroupId, VpcId</code><br />
+Valid statistics: Sum<br />
+Units: Count</p>
+<h4 id="metrics-for-a-domain-list-in-a-firewall-rule-group">Metrics for a domain list in a firewall rule group<a name="cloudwatch-metrics-domain-list-firewall"></a></h4>
+<p><strong>FirewallRuleGroupVpcQueryVolume</strong><br />
+The number of DNS firewall queries that match a firewall domain list (specified by <code>FirewallDomainListId</code>) within a firewall rule group (specified by <code>FirewallRuleGroupId</code>).<br />
+Dimensions: <code>FirewallRuleGroupId, FirewallDomainListId</code><br />
+Valid statistics: Sum<br />
+Units: Count</p>
+</body>
+</html>

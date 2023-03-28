@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>hosted-zone-public-viewing-query-metrics</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="viewing-dns-query-metrics-for-a-public-hosted-zone">Viewing DNS query metrics for a public hosted zone<a name="hosted-zone-public-viewing-query-metrics"></a></h1>
+<p>You can view the total number of DNS queries that Route 53 is responding to for a specified public hosted zone or combination of public hosted zones. The metrics appear in CloudWatch, which lets you view a graph, choose the time period that you want to view, and customize the metrics in a variety of other ways. You can also create alarms and configure notifications, so that you’re notified when the number of DNS queries in a specified time period go above or below a specified level.</p>
+<p><strong>Note</strong><br />
+Route 53 automatically sends the number of DNS queries to CloudWatch for all public hosted zones, so you don’t need to configure anything before you can view query metrics. There’s no charge for DNS query metrics.</p>
+<p><strong>Which DNS queries are counted?</strong><br />
+Metrics include only the queries that DNS resolvers forward to Route 53. If a DNS resolver has already cached the response to a query (such as the IP address for a load balancer for example.com), the resolver will continue to return the cached response without forwarding the query to Route 53 until the TTL for the corresponding record expires.<br />
+Depending on how many DNS queries are submitted for a domain name (example.com) or subdomain name (www.example.com), which resolvers your users are using, and the TTL for the record, DNS query metrics might contain information about only one query out of every several thousand queries that are submitted to DNS resolvers. For more information about how DNS works, see <a href="welcome-dns-service.html#welcome-dns-service-how-route-53-routes-traffic">How Amazon Route 53 routes traffic for your domain</a>.</p>
+<p><strong>When do query metrics for a hosted zone start to appear in CloudWatch?</strong><br />
+After you create a hosted zone, there’s a delay of up to several hours before the hosted zone can appear in CloudWatch. In addition, you must submit a DNS query for a record in the hosted zone so there’s data to display.</p>
+<p><strong>Metrics are available only in US East (N. Virginia)</strong><br />
+To get metrics on the console, you must choose US East (N. Virginia) for the Region. To get metrics using the AWS CLI, you must either leave the AWS Region unspecified, or specify <code>us-east-1</code> as the Region. Route 53 metrics aren’t available if you choose any other Region.</p>
+<p><strong>CloudWatch metric and dimension for DNS queries</strong><br />
+For information about the CloudWatch metric and dimension for DNS queries, see <a href="monitoring-hosted-zones-with-cloudwatch.html">Monitoring hosted zones using Amazon CloudWatch</a>. For information about CloudWatch metrics, see <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/working_with_metrics.html">Using Amazon CloudWatch metrics</a> in the <em>Amazon CloudWatch User Guide</em>.</p>
+<p><strong>Getting more detailed data about DNS queries</strong><br />
+To get more detailed information about each DNS query that Route 53 responds to, including the following values, you can configure query logging:<br />
++ Domain or subdomain that was requested + Date and time of the request + DNS record type (such as A or AAAA) + Route 53 edge location that responded to the DNS query + DNS response code, such as <code>NoError</code> or <code>ServFail</code> For more information, see <a href="query-logs.html">Public DNS query logging</a>.</p>
+<p><strong>How to get DNS query metrics</strong><br />
+Shortly after you create a hosted zone, Amazon Route 53 starts to send metrics and dimensions once a minute to CloudWatch. You can use the following procedures to view the metrics on the CloudWatch console or view them by using the AWS Command Line Interface (AWS CLI).</p>
+<p><strong>Topics</strong> + <a href="#hosted-zone-public-viewing-query-metrics-console">Viewing DNS query metrics for a public hosted zone in the CloudWatch console</a> + <a href="#hosted-zone-public-viewing-query-metrics-cli">Getting DNS query metrics using the AWS CLI</a></p>
+<h2 id="viewing-dns-query-metrics-for-a-public-hosted-zone-in-the-cloudwatch-console">Viewing DNS query metrics for a public hosted zone in the CloudWatch console<a name="hosted-zone-public-viewing-query-metrics-console"></a></h2>
+<p>To view DNS query metrics for public hosted zones in the CloudWatch console, perform the following procedure.<a name="hosted-zone-public-viewing-query-metrics-console-procedure"></a></p>
+<p><strong>To view DNS query metrics for a public hosted zone on the CloudWatch console</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the CloudWatch console at <a href="https://console.aws.amazon.com/cloudwatch/">https://console.aws.amazon.com/cloudwatch/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Metrics</strong>.</p></li>
+<li><p>On the AWS Region list in the upper right corner of the console, choose <strong>US East (N. Virginia)</strong>. Route 53 metrics aren’t available if you choose any other AWS Region.</p></li>
+<li><p>On the <strong>All metrics</strong> tab, choose <strong>Route 53</strong>.</p></li>
+<li><p>Choose <strong>Hosted Zone Metrics</strong>.</p></li>
+<li><p>Select the check box for one or more hosted zones that have the metric name <strong>DNSQueries</strong>.</p></li>
+<li><p>On the <strong>Graphed metrics</strong> tab, change the applicable values to view the metrics in the format that you want.</p>
+<p>For <strong>Statistic</strong>, choose <strong>Sum</strong> or <strong>SampleCount</strong>; these statistics both display the same value.</p></li>
+</ol>
+<h2 id="getting-dns-query-metrics-using-the-aws-cli">Getting DNS query metrics using the AWS CLI<a name="hosted-zone-public-viewing-query-metrics-cli"></a></h2>
+<p>To get DNS query metrics using the AWS CLI, you use the <a href="https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/get-metric-data.html">get-metric-data</a> command. Note the following: + You specify most values for the command in a separate JSON file. For more information, see <a href="https://docs.aws.amazon.com/cli/latest/reference/cloudwatch/get-metric-data.html">get-metric-data</a>. + The command returns one value for each interval that you specify for <code>Period</code> in the JSON file. <code>Period</code> is in seconds, so if you specify a five-minute time period and specify <code>60</code> for <code>Period</code>, you get five values. If you specify a five-minute time period and specify <code>300</code> for <code>Period</code>, you get one value. + In the JSON file, you can specify any value for <code>Id</code>. + Either leave the AWS Region unspecified, or specify <code>us-east-1</code> as the Region. Route 53 metrics aren’t available if you choose any other Region. For more information, see <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html">Configuring the AWS CLI</a> in the <em>AWS Command Line Interface User Guide</em>.</p>
+<p>Here’s the AWS CLI command that you use to get DNS query metrics for the five-minute time period between 4:01 and 4:07 on May 1, 2019. The <code>metric-data-queries</code> parameter references the sample JSON file that follows the command.</p>
+<pre><code>aws cloudwatch get-metric-data --metric-data-queries file://./metric.json --start-time 2019-05-01T04:01:00Z --end-time 2019-05-01T04:07:00Z</code></pre>
+<p>Here’s the sample JSON file:</p>
+<pre><code>[
+    {
+        &quot;Id&quot;: &quot;my_dns_queries_id&quot;,
+        &quot;MetricStat&quot;: {
+            &quot;Metric&quot;: {
+                &quot;Namespace&quot;: &quot;AWS/Route53&quot;,
+                &quot;MetricName&quot;: &quot;DNSQueries&quot;,
+                &quot;Dimensions&quot;: [
+                    {
+                        &quot;Name&quot;: &quot;HostedZoneId&quot;,
+                        &quot;Value&quot;: &quot;Z1D633PJN98FT9&quot;
+                    }
+                ]
+            },
+            &quot;Period&quot;: 60,
+            &quot;Stat&quot;: &quot;Sum&quot;
+        },
+        &quot;ReturnData&quot;: true
+    }
+]</code></pre>
+<p>Here’s the output from this command. Note the following: + The start time and end time in the command cover a seven-minute time period, <code>2019-05-01T04:01:00Z</code> to <code>2019-05-01T04:07:00Z</code>. + There are only six return values. There’s no value for <code>2019-05-01T04:05:00Z</code> because there were no DNS queries during that minute. + The value of <code>Period</code> specified in the JSON file is <code>60</code> (seconds), so the values are reported in one-minute intervals.</p>
+<pre><code>{
+    &quot;MetricDataResults&quot;: [
+        {
+            &quot;Id&quot;: &quot;my_dns_queries_id&quot;,
+            &quot;StatusCode&quot;: &quot;Complete&quot;,
+            &quot;Label&quot;: &quot;DNSQueries&quot;,
+            &quot;Values&quot;: [
+                101.0,
+                115.0,
+                103.0,
+                127.0,
+                111.0,
+                120.0
+            ],
+            &quot;Timestamps&quot;: [
+                &quot;2019-05-01T04:07:00Z&quot;,
+                &quot;2019-05-01T04:06:00Z&quot;,
+                &quot;2019-05-01T04:04:00Z&quot;,
+                &quot;2019-05-01T04:03:00Z&quot;,
+                &quot;2019-05-01T04:02:00Z&quot;,
+                &quot;2019-05-01T04:01:00Z&quot;
+            ]
+        }
+    ]
+}</code></pre>
+</body>
+</html>

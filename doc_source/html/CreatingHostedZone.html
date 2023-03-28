@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>CreatingHostedZone</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="creating-a-public-hosted-zone">Creating a public hosted zone<a name="CreatingHostedZone"></a></h1>
+<p>A public hosted zone is a container that holds information about how you want to route traffic on the internet for a specific domain, such as example.com, and its subdomains (acme.example.com, zenith.example.com). After you create a hosted zone, you create records that specify how you want to route traffic for the domain and subdomains.</p>
+<p><strong>Important</strong><br />
+You can create a hosted zone only for a domain that you have permission to administer. Typically, this means that you own the domain, but you might also be developing an application for the domain registrant.</p>
+<p><strong>To create a public hosted zone using the Route 53 console</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>If you’re new to Route 53, choose <strong>Get started</strong> under <strong>DNS management</strong>.</p>
+<p>If you’re already using Route 53, choose <strong>Hosted zones</strong> in the navigation pane.</p></li>
+<li><p>Choose <strong>Create hosted zone</strong>.</p></li>
+<li><p>In the <strong>Create Hosted Zone</strong> pane, enter the name of the domain that you want to route traffic for. You can also optionally enter a comment.</p>
+<p>For information about how to specify characters other than a-z, 0-9, and - (hyphen) and how to specify internationalized domain names, see <a href="DomainNameFormat.html">DNS domain name format</a>.</p></li>
+<li><p>For <strong>Type</strong>, accept the default value of <strong>Public Hosted Zone</strong>.</p></li>
+<li><p>Choose <strong>Create</strong>.</p></li>
+<li><p>Create records that specify how you want to route traffic for the domain and subdomains. For more information, see <a href="rrsets-working-with.html">Working with records</a>.</p></li>
+<li><p>To use records in the new hosted zone to route traffic for your domain, see the applicable topic:</p>
+<ul>
+<li>If you’re making Route 53 the DNS service for a domain that is registered with another domain registrar, see <a href="MigratingDNS.html">Making Amazon Route 53 the DNS service for an existing domainMaking Route 53 the DNS service for an existing domain</a>.</li>
+<li>If the domain is registered with Route 53, see <a href="domain-name-servers-glue-records.html">Adding or changing name servers and glue records for a domain</a>.</li>
+</ul></li>
+</ol>
+</body>
+</html>

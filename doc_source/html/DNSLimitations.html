@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>DNSLimitations</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="quotas">Quotas<a name="DNSLimitations"></a></h1>
+<p>Amazon Route 53 API requests and entities are subject to the following quotas (formerly referred to as “limits”).</p>
+<p><strong>Topics</strong> + <a href="#limits-service-quotas">Using Service Quotas to view and manage quotas</a> + <a href="#limits-api-entities">Quotas on entities</a> + <a href="#limits-api-requests">Maximums on API requests</a></p>
+<h2 id="using-service-quotas-to-view-and-manage-quotas">Using Service Quotas to view and manage quotas<a name="limits-service-quotas"></a></h2>
+<p>You can use the Service Quotas service to view quotas and to request quota increases for many AWS services. For more information, see the <a href="https://docs.aws.amazon.com/servicequotas/latest/userguide/">Service Quotas User Guide</a>. (You can currently use Service Quotas to view and manage only Route 53 and Route 53 Resolver quotas. Domain registration quotas aren’t available.)</p>
+<p><strong>Note</strong><br />
+To view quotas and request higher quotas for Route 53, you must change the Region to US East (N. Virginia). To view quotas and request higher quotas for Resolver, change to the applicable Region.</p>
+<h2 id="quotas-on-entities">Quotas on entities<a name="limits-api-entities"></a></h2>
+<p>Amazon Route 53 entities are subject to the following quotas.</p>
+<p>For information on getting current quotas (formerly referred to as “limits”), see the following Route 53 actions: + <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_GetAccountLimit.html">GetAccountLimit</a> – Gets quotas on health checks, hosted zones, reusable delegation sets, traffic flow policies, and traffic flow policy records + <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_GetHostedZoneLimit.html">GetHostedZoneLimit</a> – Gets quotas on records in a hosted zone and on Amazon VPCs that you can associate with a private hosted zone + <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_GetReusableDelegationSetLimit.html">GetReusableDelegationSetLimit</a> – Gets the quota on the number of hosted zones that you can associate with a reusable delegation set</p>
+<p><strong>Topics</strong> + <a href="#limits-api-entities-domains">Quotas on domains</a> + <a href="#limits-api-entities-hosted-zones">Quotas on hosted zones</a> + <a href="#limits-api-entities-records">Quotas on records</a> + <a href="#limits-api-entities-resolver">Quotas on Route 53 Resolver</a> + <a href="#limits-api-entities-health-checks">Quotas on health checks</a> + <a href="#limits-api-entities-query-log-configs">Quotas on query log configurations</a> + <a href="#limits-api-entities-traffic-flow">Quotas on traffic flow policies and policy records</a> + <a href="#limits-api-entities-reusable-delegation-sets">Quotas on reusable delegation sets</a></p>
+<h3 id="quotas-on-domains">Quotas on domains<a name="limits-api-entities-domains"></a></h3>
+<hr />
+<table>
+<thead>
+<tr class="header">
+<th>Entity</th>
+<th>Quota</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Domains</td>
+<td>20* per AWS account <a href="https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&amp;limitType=service-code-route53">Request a higher quota</a>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>*</strong>The limit is 20 for new customers as of March 2021.</p>
+<p>If you have an existing account and your default limit is 50 now, it will remain at 50.</p>
+<h3 id="quotas-on-hosted-zones">Quotas on hosted zones<a name="limits-api-entities-hosted-zones"></a></h3>
+<hr />
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Entity</th>
+<th>Quota</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Hosted zones</td>
+<td>500 per AWS account <a href="https://console.aws.amazon.com/servicequotas/home?region=us-east-1#!/services/route53/quotas">Request a higher quota</a>.</td>
+</tr>
+<tr class="even">
+<td>Hosted zones that can use the same reusable delegation set</td>
+<td>100 <a href="https://console.aws.amazon.com/servicequotas/home?region=us-east-1#!/services/route53/quotas">Request a higher quota</a>.</td>
+</tr>
+<tr class="odd">
+<td>Amazon VPCs that you can associate with a private hosted zone per hosted zone</td>
+<td>300 <a href="https://console.aws.amazon.com/servicequotas/home?region=us-east-1#!/services/route53/quotas">Request a higher quota</a>.</td>
+</tr>
+<tr class="even">
+<td>Private hosted zones that you can associate a VPC with</td>
+<td>No quota <strong>*</strong></td>
+</tr>
+<tr class="odd">
+<td>Authorizations that you can create so you can associate VPCs that were created by one account with a hosted zone that was created by another account</td>
+<td>1000</td>
+</tr>
+<tr class="even">
+<td>The number of key signing keys (KSK) that you can create per hosted zone</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p><strong>*</strong> You can associate a VPC with any or all of the private hosted zones that you control through your AWS accounts. For example, suppose you have three AWS accounts and all three have the default quota of 500 hosted zones. If you create 500 private hosted zones for all three accounts, you can associate a VPC with all 1,500 private hosted zones.</p>
+<h3 id="quotas-on-records">Quotas on records<a name="limits-api-entities-records"></a></h3>
+<hr />
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Entity</th>
+<th>Quota</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Records</td>
+<td>10,000 per hosted zone <a href="https://console.aws.amazon.com/servicequotas/home?region=us-east-1#!/services/route53/quotas">Request a higher quota</a>. For a quota greater than 10,000 records in a hosted zone, an additional charge applies.For more information, see <a href="https://aws.amazon.com/route53/pricing/">Amazon Route 53 Pricing</a>.</td>
+</tr>
+<tr class="even">
+<td>Values in a record</td>
+<td>400 per record</td>
+</tr>
+<tr class="odd">
+<td>Geolocation, latency, multivalue answer, weighted, and IP-based records</td>
+<td>100 records that have the same name and type</td>
+</tr>
+<tr class="even">
+<td>Geoproximity records</td>
+<td>30 records that have the same name and type</td>
+</tr>
+<tr class="odd">
+<td>CIDR collections</td>
+<td>5 per AWS account. <a href="https://console.aws.amazon.com/servicequotas/home?region=us-east-1#!/services/route53/quotas">Request a higher quota</a>.</td>
+</tr>
+<tr class="even">
+<td>CIDR blocks</td>
+<td>1000 per CIDR collection. <a href="https://console.aws.amazon.com/servicequotas/home?region=us-east-1#!/services/route53/quotas">Request a higher quota</a>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="quotas-on-route-53-resolver">Quotas on Route 53 Resolver<a name="limits-api-entities-resolver"></a></h3>
+<p>This section includes all the Route 53 Resolver quotas</p>
+<h4 id="quotas-on-route-53-resolver-1">Quotas on Route 53 Resolver<a name="increase-resolver-quotas"></a></h4>
+<p>Use the following procedure to increase quotas for Route 53 Resolver.<a name="increase-quota-procedure"></a></p>
+<p><strong>To increase Resolver quotas</strong></p>
+<ol type="1">
+<li><p>Open the Service Quotas console at <a href="https://console.aws.amazon.com/servicequotas/home/services/route53resolver/quotas">https://console.aws.amazon.com/servicequotas/home/services/route53resolver/quotas</a>.</p></li>
+<li><p>Go to the region where you want to increase the limit.</p></li>
+<li><p>Select the Route 53 Resolver <strong>Quota name</strong> you want to increase.</p></li>
+<li><p>Select <strong>Request quota increase</strong>, enter the quota value, and then select <strong>Request</strong>.</p></li>
+</ol>
+<h4 id="quotas-on-route-53-resolver-endpoints">Quotas on Route 53 Resolver endpoints<a name="limits-api-entities-resolver-endpoints"></a></h4>
+<hr />
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Entity</th>
+<th>Quota</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Endpoints per AWS Region</td>
+<td>4 per AWS account <a href="#increase-quota-procedure">Request a higher quota</a>.</td>
+</tr>
+<tr class="even">
+<td>IP addresses per endpoint</td>
+<td>6 <a href="#increase-quota-procedure">Request a higher quota</a>.</td>
+</tr>
+<tr class="odd">
+<td>IP addresses per rule</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td>Rules per AWS Region</td>
+<td>1000 per AWS account <a href="#increase-quota-procedure">Request a higher quota</a>.</td>
+</tr>
+<tr class="odd">
+<td>Associations between rules and VPCs per AWS Region</td>
+<td>2000 per AWS account <a href="#increase-quota-procedure">Request a higher quota</a>.</td>
+</tr>
+<tr class="even">
+<td>Queries per second per IP address in an endpoint</td>
+<td>10,000*</td>
+</tr>
+</tbody>
+</table>
+<p><strong>*</strong> Each elastic network interface endpoint can process up to 10,000 DNS queries per second (QPS). The number of DNS QPS varies by the type of query, size of the response, health of the target name servers, query response times, round trip latency, and the protocol in use. For example, queries to a target name server that is slow to respond can significantly reduce the capacity of the network interface. Additionally, to ensure high availability, Route 53 Resolver generates redundant outbound queries for each DNS request that it receives. As a result, the QPS for each outbound network interface will not match the QPS sent to Route 53 Resolver. Use CloudWatch metrics to measure how many queries are being sent to each network interface. For more information, see <a href="monitoring-resolver-with-cloudwatch.html#cloudwatch-metrics-resolver-ip-address">Metrics for Resolver IP addresses</a>. If your maximum query rate exceeds 50% of the capacity for any network interface in the endpoint, you can add more network interfaces to increase the endpoint capacity.</p>
+<h4 id="quotas-on-route-53-resolver-query-logs">Quotas on Route 53 Resolver query logs<a name="limits-api-entities-resolver-query-logs"></a></h4>
+<hr />
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Entity</th>
+<th>Quota</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Query log configurations per AWS Region</td>
+<td>20</td>
+</tr>
+<tr class="even">
+<td>Query log configuration VPC associations per AWS Region</td>
+<td>100</td>
+</tr>
+<tr class="odd">
+<td>Query log configuration VPC associations per account per AWS Region (shared using RAM) for the account that the configuration was shared to.</td>
+<td>100</td>
+</tr>
+</tbody>
+</table>
+<h4 id="quotas-on-route-53-resolver-dns-firewall">Quotas on Route 53 Resolver DNS Firewall<a name="limits-api-entities-resolver-dns-firewall"></a></h4>
+<hr />
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Entity</th>
+<th>Quota</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Number of rule groups associated to a VPC for a single account per AWS Region</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>Number of DNS Firewall domains in a single Amazon S3 file for a single account per AWS Region</td>
+<td>250,000 <a href="#increase-quota-procedure">Request a higher quota</a>.</td>
+</tr>
+<tr class="odd">
+<td>Number of DNS Firewall rule groups for a single account per AWS Region</td>
+<td>1,000 <a href="#increase-quota-procedure">Request a higher quota</a>.</td>
+</tr>
+<tr class="even">
+<td>Number of rules within a rule group for a single account account per AWS Region</td>
+<td>100 <a href="#increase-quota-procedure">Request a higher quota</a>.</td>
+</tr>
+<tr class="odd">
+<td>Number of domain lists for a single account account per AWS Region</td>
+<td>1000 <a href="#increase-quota-procedure">Request a higher quota</a>.</td>
+</tr>
+<tr class="even">
+<td>Number of domain specifications across all DNS Firewall domain lists for a single account per AWS Region</td>
+<td>100,000 <a href="#increase-quota-procedure">Request a higher quota</a>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="quotas-on-health-checks">Quotas on health checks<a name="limits-api-entities-health-checks"></a></h3>
+<hr />
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Entity</th>
+<th>Quota</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Health checks</td>
+<td>200 active health checks per AWS account <a href="https://console.aws.amazon.com/servicequotas/home?region=us-east-1#!/services/route53/quotas">Request a higher quota</a>.</td>
+</tr>
+<tr class="even">
+<td>Child health checks that a calculated health check can monitor</td>
+<td>255</td>
+</tr>
+<tr class="odd">
+<td>Maximum total length of headers in the response to a health check request</td>
+<td>16,384 bytes (16K)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="quotas-on-query-log-configurations">Quotas on query log configurations<a name="limits-api-entities-query-log-configs"></a></h3>
+<hr />
+<table>
+<thead>
+<tr class="header">
+<th>Entity</th>
+<th>Quota</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Query log configurations</td>
+<td>1 per hosted zone</td>
+</tr>
+</tbody>
+</table>
+<h3 id="quotas-on-traffic-flow-policies-and-policy-records">Quotas on traffic flow policies and policy records<a name="limits-api-entities-traffic-flow"></a></h3>
+<hr />
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Entity</th>
+<th>Quota</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Traffic policies For more information about Route 53 traffic flow, see <a href="traffic-flow.html">Using traffic flow to route DNS traffic</a>.</td>
+<td>50 per AWS account <a href="https://console.aws.amazon.com/servicequotas/home?region=us-east-1#!/services/route53/quotas">Request a higher quota</a>.</td>
+</tr>
+<tr class="even">
+<td>Traffic policy versions</td>
+<td>1,000 per traffic policy</td>
+</tr>
+<tr class="odd">
+<td>Traffic policy records (referred to as “policy instances” in the Route 53 API, AWS SDKs, AWS Command Line Interface, and AWS Tools for Windows PowerShell)</td>
+<td>5 per AWS account <a href="https://console.aws.amazon.com/servicequotas/home?region=us-east-1#!/services/route53/quotas">Request a higher quota</a>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="quotas-on-reusable-delegation-sets">Quotas on reusable delegation sets<a name="limits-api-entities-reusable-delegation-sets"></a></h3>
+<hr />
+<table>
+<thead>
+<tr class="header">
+<th>Entity</th>
+<th>Quota</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Reusable delegation sets</td>
+<td>100 per AWS account <a href="https://console.aws.amazon.com/servicequotas/home?region=us-east-1#!/services/route53/quotas">Request a higher quota</a>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="maximums-on-api-requests">Maximums on API requests<a name="limits-api-requests"></a></h2>
+<p>Amazon Route 53 API requests are subject to the following maximums.</p>
+<p><strong>Topics</strong> + <a href="#limits-api-requests-changeresourcerecordsets">Number of elements and characters in <code>ChangeResourceRecordSets</code> requests</a> + <a href="#limits-api-requests-route-53">Frequency of Amazon Route 53 API requests</a> + <a href="#limits-api-requests-route-53-resolver">Frequency of Route 53 Resolver API requests</a></p>
+<h3 id="number-of-elements-and-characters-in-changeresourcerecordsets-requests">Number of elements and characters in <code>ChangeResourceRecordSets</code> requests<a name="limits-api-requests-changeresourcerecordsets"></a></h3>
+<p><strong><code>ResourceRecord</code> elements</strong><br />
+A request cannot contain more than 1,000 <code>ResourceRecord</code> elements (including alias records). When the value of the <code>Action</code> element is <code>UPSERT</code>, each <code>ResourceRecord</code> element is counted twice.</p>
+<p><strong>Maximum number of characters</strong><br />
+The sum of the number of characters (including spaces) in all <code>Value</code> elements in a request cannot exceed 32,000 characters. When the value of the <code>Action</code> element is <code>UPSERT</code>, each character in a <code>Value</code> element is counted twice.</p>
+<h3 id="frequency-of-amazon-route-53-api-requests">Frequency of Amazon Route 53 API requests<a name="limits-api-requests-route-53"></a></h3>
+<p><strong>All Amazon Route 53 API requests</strong><br />
+For the <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_Operations_Amazon_Route_53.html">Amazon Route 53 APIs</a> five requests per second per AWS account. If you submit more than five requests per second, Amazon Route 53 returns an HTTP 400 error (<code>Bad request</code>). The response header also includes a <code>Code</code> element with a value of <code>Throttling</code> and a <code>Message</code> element with a value of <code>Rate exceeded</code>.<br />
+If your application exceeds this limit, we recommend that you implement exponential backoff for retries. For more information, see <a href="https://docs.aws.amazon.com/general/latest/gr/api-retries.html">Error Retries and Exponential Backoff in AWS</a> in the <em>Amazon Web Services General Reference</em>.</p>
+<p><strong><code>ChangeResourceRecordSets</code> requests</strong><br />
+If Route 53 can’t process a request before the next request arrives, it will reject subsequent requests for the same hosted zone and return an HTTP 400 error (<code>Bad request</code>). The response header also includes a <code>Code</code> element with a value of <code>PriorRequestNotComplete</code> and a <code>Message</code> element with a value of <code>The request was rejected because Route 53 was still processing a prior request.</code></p>
+<p><strong><code>CreateHealthCheck</code> requests</strong><br />
+You can submit a maximum of 1,000 <code>CreateHealthCheck</code> requests in a 24-hour period.</p>
+<h3 id="frequency-of-route-53-resolver-api-requests">Frequency of Route 53 Resolver API requests<a name="limits-api-requests-route-53-resolver"></a></h3>
+<p><strong>All requests</strong><br />
+Five requests per second per AWS account per Region. If you submit more than five requests per second in a Region, Resolver returns an HTTP 400 error (<code>Bad request</code>). The response header also includes a <code>Code</code> element with a value of <code>Throttling</code> and a <code>Message</code> element with a value of <code>Rate exceeded</code>.<br />
+If your application exceeds this limit, we recommend that you implement exponential backoff for retries. For more information, see <a href="https://docs.aws.amazon.com/general/latest/gr/api-retries.html">Error Retries and Exponential Backoff in AWS</a> in the <em>Amazon Web Services General Reference</em>.</p>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>best-practices-healthcheck-monitoring-endpoints</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="best-practices-for-elastic-ip-addresses-for-health-checks">Best practices for Elastic IP addresses for health checks<a name="best-practices-healthcheck-monitoring-endpoints"></a></h1>
+<p>Best practice for your health check endpoints is to use Elastic IP addresses. However, be sure to delete any health check that is associated with an Elastic IP address that you no longer own. For example, if you are no longer using an Amazon EC2 instance, make sure you delete any health check that is associated to its Elastic IP address. This is because the Elastic IP address can be assigned to a different user or AWS account, which might compromise your health check data.</p>
+</body>
+</html>

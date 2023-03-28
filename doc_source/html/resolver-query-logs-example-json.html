@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resolver-query-logs-example-json</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="route-53-resolver-query-log-example">Route 53 Resolver query log example<a name="resolver-query-logs-example-json"></a></h1>
+<p>Here’s a resolver query log example:</p>
+<pre><code>          
+      {
+        &quot;srcaddr&quot;: &quot;4.5.64.102&quot;,
+        &quot;vpc_id&quot;: &quot;vpc-7example&quot;,
+        &quot;answers&quot;: [
+            {
+                &quot;Rdata&quot;: &quot;203.0.113.9&quot;,
+                &quot;Type&quot;: &quot;PTR&quot;,
+                &quot;Class&quot;: &quot;IN&quot;
+            }
+        ],
+        &quot;firewall_rule_group_id&quot;: &quot;rslvr-frg-01234567890abcdef&quot;,
+        &quot;firewall_rule_action&quot;: &quot;BLOCK&quot;,
+        &quot;query_name&quot;: &quot;15.3.4.32.in-addr.arpa.&quot;,
+        &quot;firewall_domain_list_id&quot;: &quot;rslvr-fdl-01234567890abcdef&quot;,
+        &quot;query_class&quot;: &quot;IN&quot;,
+        &quot;srcids&quot;: {
+            &quot;instance&quot;: &quot;i-0d15cd0d3example&quot;
+        },
+        &quot;rcode&quot;: &quot;NOERROR&quot;,
+        &quot;query_type&quot;: &quot;PTR&quot;,
+        &quot;transport&quot;: &quot;UDP&quot;,
+        &quot;version&quot;: &quot;1.100000&quot;,
+        &quot;account_id&quot;: &quot;111122223333&quot;,
+        &quot;srcport&quot;: &quot;56067&quot;,
+        &quot;query_timestamp&quot;: &quot;2021-02-04T17:51:55Z&quot;,
+        &quot;region&quot;: &quot;us-east-1&quot;
+    }</code></pre>
+</body>
+</html>

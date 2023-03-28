@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resolver-dns-firewall-rule-settings</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="rule-settings-in-dns-firewall">Rule settings in DNS Firewall<a name="resolver-dns-firewall-rule-settings"></a></h1>
+<p>When you create or edit a rule in a DNS Firewall rule group, you specify the following values:</p>
+<p><strong>Name</strong><br />
+A unique identifier for the rule in the rule group.</p>
+<p><strong>(Optional) Description</strong><br />
+A short description that provides more information about the rule.</p>
+<p><strong>Domain list</strong><br />
+The list of domains that the rule inspects for. You can create and manage your own domain list or you can subscribe to a domain list that AWS manages for you. For more information, see <a href="resolver-dns-firewall-domain-lists.html">Route 53 Resolver DNS Firewall domain lists</a>.</p>
+<p><strong>Action</strong><br />
+How you want DNS Firewall to handle a DNS query whose domain name matches the specifications in the rule’s domain list. For more information, see <a href="resolver-dns-firewall-rule-actions.html">Rule actions in DNS Firewall</a>.</p>
+<p><strong>Priority</strong><br />
+Unique positive integer setting for the rule within the rule group that determines processing order. DNS Firewall inspects DNS queries against the rules in a rule group starting with the lowest numeric priority setting and going up. You can change a rule’s priority at any time, for example to change the order of processing or make space for other rules.</p>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>health-checks-updating-deleting-tasks</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="updating-or-deleting-health-checks-when-dns-failover-is-configured">Updating or deleting health checks when DNS failover is configured<a name="health-checks-updating-deleting-tasks"></a></h1>
+<p>When you want to update or delete health checks that are associated with records, or you want to change records that have associated health checks, you must consider how your changes affect routing of DNS queries and your DNS failover configuration.</p>
+<p><strong>Important</strong><br />
+Route 53 doesn’t prevent you from deleting a health check even if the health check is associated with one or more records. If you delete a health check and you don’t update the associated records, the future status of the health check can’t be predicted and might change. This will affect the routing of DNS queries for your DNS failover configuration.</p>
+<p>To update or delete health checks that are already associated with records, we recommend that you perform the following tasks:</p>
+<ol type="1">
+<li><p>Identify the records that are associated with the health checks. To identify the records that are associated with a health check, you must do one of the following:</p>
+<ul>
+<li>Review the records in each hosted zone using the Route 53 console. For more information, see <a href="resource-record-sets-listing.html">Listing records</a>.</li>
+<li>Run the <code>ListResourceRecordSets</code> API action on each hosted zone and review the response. For more information, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_ListResourceRecordSets.html">ListResourceRecordSets</a> in the <em>Amazon Route 53 API Reference</em>.</li>
+</ul></li>
+<li><p>Assess the change in behavior that will result from updating or deleting health checks, or from updating records. Based on that assessment, determine which changes to make.</p>
+<p>For more information, see <a href="dns-failover-complex-configs.html#dns-failover-complex-configs-hc-omitting">What happens when you omit health checks?</a></p></li>
+<li><p>Change health checks and records as applicable. For more information, see the following topics:</p>
+<ul>
+<li><a href="health-checks-creating.html">Creating and updating health checks</a></li>
+<li><a href="resource-record-sets-editing.html">Editing records</a></li>
+</ul></li>
+<li><p>Delete the health checks that you’re no longer using, if any. For more information, see <a href="health-checks-deleting.html">Deleting health checks</a>.</p></li>
+</ol>
+</body>
+</html>

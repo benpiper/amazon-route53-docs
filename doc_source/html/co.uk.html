@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>co.uk</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="co.uk-united-kingdom">.co.uk (United Kingdom)<a name="co.uk"></a></h1>
+<p><a href="registrar-tld-list.html#index">Return to index</a></p>
+<p><strong>Registration and renewal period</strong><br />
+One to ten years.</p>
+<p><strong>Restrictions</strong><br />
+Open to the public, with no restrictions.</p>
+<p><strong>Privacy protection</strong><br />
+All information is hidden.</p>
+<p><strong>Domain locking to prevent unauthorized transfers</strong><br />
+Not supported. We recommend that you prevent unauthorized transfers by restricting access to the <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_domains_RetrieveDomainAuthCode.html">RetrieveDomainAuthCode</a> API action. (When you restrict access to this Route 53 API, you also restrict who can generate an authorization code using the Route 53 console, AWS SDKs, and other programmatic methods.) For more information, see <a href="auth-and-access-control.html">Identity and access management in Amazon Route 53</a>.</p>
+<p><strong>Internationalized domain names</strong><br />
+Not supported.</p>
+<p><strong>Authorization code required for transfer to Route 53</strong><br />
+If you’re transferring a .co.uk domain to Route 53, you don’t need to get an authorization code. Instead, use the method provided by your current domain registrar to update the value of the IPS tag for the domain to <strong>GANDI</strong>, all uppercase. (An IPS tag is required by Nominet, the registry for .uk domain names.) If your registrar will not change the value of the IPS tag, <a href="http://www.nominet.org.uk/uk-domain-names/manage-your-domain/change-registrar">contact Nominet</a>.<br />
+When you register a .co.uk domain, Route 53 automatically sets the IPS tag for the domain to <strong>GANDI</strong>.</p>
+<p><strong>DNSSEC</strong><br />
+Supported for domain registration. For more information, see <a href="domain-configure-dnssec.html">Configuring DNSSEC for a domain</a>.</p>
+<p><strong>Deadlines for renewing and restoring domains</strong><br />
++ Renewal is possible: Between 180 days before and 30 days after the expiration date + Late renewal with Route 53 is possible: Between 30 days and 90 days after expiration + Domain is deleted from Route 53: 90 days after expiration + Restoration with the registry is possible: No + Domain is deleted from the registry: 92 days after expiration</p>
+<p><strong>Deletion of domain registration</strong><br />
+The registry for .co.uk domains doesn’t allow you to delete domain registrations. Instead, you must disable automatic renewal and wait for the domain to expire. For more information, see <a href="domain-delete.html">Deleting a domain name registration</a>.</p>
+</body>
+</html>

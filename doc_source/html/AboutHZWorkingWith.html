@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>AboutHZWorkingWith</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="working-with-public-hosted-zones">Working with public hosted zones<a name="AboutHZWorkingWith"></a></h1>
+<p>A public hosted zone is a container that holds information about how you want to route traffic on the internet for a specific domain, such as example.com, and its subdomains (acme.example.com, zenith.example.com). You get a public hosted zone in one of two ways: + When you register a domain with Route 53, we create a hosted zone for you automatically. + When you transfer DNS service for an existing domain to Route 53, you start by creating a hosted zone for the domain. For more information, see <a href="MigratingDNS.html">Making Amazon Route 53 the DNS service for an existing domainMaking Route 53 the DNS service for an existing domain</a>.</p>
+<p>In both cases, you then create records in the hosted zone to specify how you want to route traffic for the domain and subdomains. For example, you might create a record to route traffic for www.example.com to a CloudFront distribution or to a web server in your data center. For more information about records, see <a href="rrsets-working-with.html">Working with records</a>.</p>
+<p>This topic explains how to use the Amazon Route 53 console to create, list, and delete public hosted zones.</p>
+<p><strong>Note</strong><br />
+You can also use a Route 53 <em>private</em> hosted zone to route traffic within one or more VPCs that you create with the Amazon VPC service. For more information, see <a href="hosted-zones-private.html">Working with private hosted zones</a>.</p>
+<p><strong>Topics</strong> + <a href="hosted-zone-public-considerations.html">Considerations when working with public hosted zones</a> + <a href="CreatingHostedZone.html">Creating a public hosted zone</a> + <a href="GetInfoAboutHostedZone.html">Getting the name servers for a public hosted zone</a> + <a href="ListInfoOnHostedZone.html">Listing public hosted zones</a> + <a href="hosted-zone-public-viewing-query-metrics.html">Viewing DNS query metrics for a public hosted zone</a> + <a href="DeleteHostedZone.html">Deleting a public hosted zone</a> + <a href="dns-test.html">Checking DNS responses from Route 53</a> + <a href="white-label-name-servers.html">Configuring white-label name servers</a> + <a href="SOA-NSrecords.html">NS and SOA records that Amazon Route 53 creates for a public hosted zone</a></p>
+</body>
+</html>

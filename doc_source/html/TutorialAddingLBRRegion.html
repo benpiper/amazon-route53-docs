@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>TutorialAddingLBRRegion</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="adding-another-region-to-your-latency-based-routing-in-amazon-route-53">Adding another Region to your latency-based routing in Amazon Route 53<a name="TutorialAddingLBRRegion"></a></h1>
+<p>If you’re using latency based routing and you want to add an instance in a new region, you can gradually shift traffic to the new region in the same way that you gradually shifted traffic to latency-based routing in <a href="TutorialTransitionToLBR.html">Transitioning to latency-based routing in Amazon Route 53</a>.</p>
+<p>For example, suppose you’re using latency-based routing to route traffic for <code>www.example.com</code>, and you want to add an Amazon EC2 instance in Asia Pacific (Tokyo) to your instances in US East (Ohio), US West (N. California), and Europe (Ireland). The following example procedure explains one way that you could add an instance in another region.</p>
+<p>For this example, the Amazon Route 53 hosted zone for <code>example.com</code> already has a weighted alias record for <code>www.example.com</code> that is routing traffic to the latency-based records for <code>www-lbr.example.com</code>: + US East (Ohio), Elastic IP address <code>W.W.W.W</code> + US West (N. California), Elastic IP address <code>X.X.X.X</code> + Europe (Ireland), Elastic IP address <code>Y.Y.Y.Y</code></p>
+<p>The weighted alias record has a weight of 100. After you transitioned to latency-based routing, assume that you deleted the other weighted record that you used for the transition. <a name="TutorialAddingLBRRegionProcedure"></a></p>
+<p><strong>To add another Region to your latency-based routing in Route 53</strong></p>
+<ol type="1">
+<li><p>Create four new latency-based records that include the three original regions as well as the new region to which you want to start routing traffic.</p>
+<ul>
+<li>US East (Ohio), Elastic IP address <code>W.W.W.W</code></li>
+<li>US West (N. California), Elastic IP address <code>X.X.X.X</code></li>
+<li>Europe (Ireland), Elastic IP address <code>Y.Y.Y.Y</code></li>
+<li>Asia Pacific (Tokyo), Elastic IP address <code>Z.Z.Z.Z</code></li>
+</ul>
+<p>Give all of the latency records the same new domain name, for example, <code>www-lbr-2012-04-30.example.com</code>, and the same type, A.</p>
+<p>When you’re finished creating the latency records, Route 53 will continue to route traffic using the original weighted alias record (<code>www.example.com</code>) and latency records (<code>www-lbr.example.com</code>).</p>
+<p>You can use the <code>www-lbr-2012-04-30.example.com</code> records for validation testing, for example, to ensure that each endpoint can accept requests.</p></li>
+<li><p>Create a weighted alias record for the new latency records:</p>
+<ul>
+<li>For the domain name, specify the name for the existing weighted alias record, <code>www.example.com</code>.</li>
+<li>For <strong>Value/Route traffic to</strong>, choose <strong>Alias to another record in this hosted zone</strong>, and specify <code>www-lbr-2012-04-30.example.com</code>.</li>
+<li>For <strong>Weight</strong>, specify 1.</li>
+</ul>
+<p>When you finish, Route 53 will begin to route a tiny fraction of your traffic (1/101) to the Amazon EC2 instances for which you created the <code>www-lbr-2012-04-30.example.com</code> latency records in Step 1. The remainder of the traffic will continue to be routed to the <code>www-lbr.example.com</code> latency records, which do not include the Amazon EC2 instance in the Asia Pacific (Tokyo) region.</p></li>
+<li><p>As you develop confidence that your endpoints are adequately scaled for the incoming traffic, adjust the weights accordingly. For example, if you want 10% of your requests to be routed to the latency records that include the Tokyo region, change the weight for <code>www-lbr.example.com</code> from 100 to 90 and the weight for <code>www-lbr-2012-04-30.example.com</code> from 1 to 10.</p></li>
+</ol>
+<p>For more information about creating records, see <a href="resource-record-sets-creating.html">Creating records by using the Amazon Route 53 console</a>.</p>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resource-record-sets-editing</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="editing-records">Editing records<a name="resource-record-sets-editing"></a></h1>
+<p>The following procedure explains how to edit records using the Amazon Route 53 console. For information about how to edit records using the Route 53 API, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_ChangeResourceRecordSets.html">ChangeResourceRecordSets</a> in the <em>Amazon Route 53 API Reference</em>.</p>
+<p><strong>Note</strong><br />
+Your changes to records take time to propagate to the Route 53 DNS servers. Currently, the only way to verify that changes have propagated is to use the <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_GetChange.html">GetChange</a> API action. Changes generally propagate to all Route 53 name servers within 60 seconds.<a name="resource-record-sets-editing-procedure"></a></p>
+<p><strong>To edit records using the Route 53 console</strong></p>
+<ol type="1">
+<li><p>If you’re not editing alias records, skip to step 2.</p>
+<p>If you’re editing alias records that route traffic to ELB Classic, Application, or Network Load Balancers, and if you created your Route 53 hosted zone and your load balancer using different accounts, perform the procedure <a href="resource-record-sets-creating.html#resource-record-sets-elb-dns-name-procedure">Getting the DNS name for an ELB load balancer</a> to get the DNS name for the load balancer.</p>
+<p>If you’re editing alias records for any other AWS resource, skip to step 2.</p></li>
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Hosted zones</strong>.</p></li>
+<li><p>On the <strong>Hosted Zones</strong> page, choose the row for the hosted zone that contains the records that you want to edit.</p></li>
+<li><p>Select the row for the record that you want to edit, and then enter your changes in the <strong>Edit record</strong> pane.</p></li>
+<li><p>Enter the applicable values. For more information, see <a href="resource-record-sets-values.html">Values that you specify when you create or edit Amazon Route 53 records</a>.</p></li>
+<li><p>Choose <strong>Save changes</strong>.</p></li>
+<li><p>If you’re editing multiple records, repeat steps 5 through 7.</p></li>
+</ol>
+</body>
+</html>

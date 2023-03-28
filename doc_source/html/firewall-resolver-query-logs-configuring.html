@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>firewall-resolver-query-logs-configuring</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="configuring-logging-for-dns-firewall">Configuring logging for DNS Firewall<a name="firewall-resolver-query-logs-configuring"></a></h1>
+<p>You can evaluate your DNS Firewall rules by using Amazon CloudWatch metrics and the Resolver query logs. The logs provide the domain list name for all alerts and blocking actions. For more information about Amazon CloudWatch, see <a href="monitoring-resolver-dns-firewall-with-cloudwatch.html">Monitoring Route 53 Resolver DNS Firewall rule groups with Amazon CloudWatch</a>.</p>
+<p>When you enable DNS Firewall, associate it to a VPC, and you have logging enabled, <code>firewall_rule_group_id</code>, <code>firewall_rule_action</code>, and <code>firewall_domain_list_id</code> are the DNS Firewall specific fields provided within your logs.</p>
+<p>To start logging the DNS queries that are filtered by DNS Firewall rules that originate in your VPCs, you perform the following tasks in the Amazon Route 53 console:<a name="firewall-resolver-query-logs-configuring-procedure"></a></p>
+<p><strong>To configure Resolver query logging for DNS Firewall</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>Expand the Route 53 console menu. In the upper left corner of the console, choose the three horizontal bars (<img src="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/images/menu-icon.png" alt="[Menu icon]" />) icon.</p></li>
+<li><p>Within the Resolver menu, choose <strong>Query logging</strong>.</p></li>
+<li><p>In the Region selector, choose the AWS Region where you want to create the query logging configuration.</p>
+<p>This must be the same Region where you created the VPCs that that are associated with DNS Firewall that you want to log queries for. If you have VPCs in multiple Regions, you must create at least one query logging configuration for each Region.</p></li>
+<li><p>Choose <strong>Configure query logging</strong>.</p></li>
+<li><p>Specify the following values:<br />
+<strong>Query logging configuration name</strong><br />
+Enter a name for your query logging configuration. The name appears in the console in the list of query logging configurations. Enter a name that will help you find this configuration later.<br />
+<strong>Query logs destination</strong><br />
+Choose the type of AWS resource that you want Resolver to send query logs to. For information about how to choose among the options (CloudWatch Logs log group, S3 bucket, and Kinesis Data Firehose delivery stream), see <a href="resolver-query-logs-choosing-target-resource.html">AWS resources that you can send Resolver query logs to</a>.<br />
+After you choose the type of resource, you can either create another resource of that type or choose an existing resource that was created by the current AWS account.<br />
+You can choose only resources that were created in the AWS Region that you chose in step 4, the Region where you’re creating the query logging configuration. If you choose to create a new resource, that resource will be created in the same Region.<br />
+<strong>VPCs to log queries for</strong><br />
+This query logging configuration will log DNS queries that originate in the VPCs that you choose. Check the check box for each VPC in the current Region that you want Resolver to log queries for, then choose <strong>Choose</strong>.<br />
+VPC log delivery can be enabled only once for a specific destination type. The logs can’t be delivered to multiple destinations of the same type. For example, VPC logs can’t be delivered to two Amazon S3 destinations.</p></li>
+<li><p>Choose <strong>Configure query logging</strong>.</p></li>
+</ol>
+<p><strong>Note</strong><br />
+You should start to see DNS queries made by resources in your VPC in the logs within a few minutes of successfully creating the query logging configuration.</p>
+</body>
+</html>

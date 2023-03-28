@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resolver-getting-started</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="getting-started-with-route-53-resolver">Getting started with Route 53 Resolver<a name="resolver-getting-started"></a></h1>
+<p>The Route 53 Resolver console includes a wizard that guides you through the following steps for getting started with Resolver: + Create endpoints: inbound, outbound, or both. + For outbound endpoints, create one or more forwarding rules, which specify the domain names for which you want to route DNS queries to your network. + If you created an outbound endpoint, choose the VPC that you want to associate the rules with.<a name="resolver-getting-started-procedure"></a></p>
+<p><strong>To configure Route 53 Resolver using the wizard</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Resolver console at <a href="https://console.aws.amazon.com/route53resolver/">https://console.aws.amazon.com/route53resolver/</a>.</p></li>
+<li><p>On the <strong>Welcome to Route 53 Resolver</strong> page, choose <strong>Configure endpoints</strong>.</p></li>
+<li><p>On the navigation bar, choose the Region where you want to create a Resolver endpoint.</p></li>
+<li><p>Under <strong>Basic configuration</strong>, choose the direction that you want to forward DNS queries:</p>
+<ul>
+<li><strong>Inbound and outbound</strong>: The wizard guides you through settings that let you both forward DNS queries from resolvers on your network to Resolver in a VPC, and forward specified queries (such as example.com or example.net) from a VPC to resolvers on your network.</li>
+<li><strong>Inbound only</strong>: The wizard guides you through settings that let you forward DNS queries from resolvers on your network to Resolver in a VPC.</li>
+<li><strong>Outbound only</strong>: The wizard guides you through settings that let you forward specified queries from a VPC to resolvers on your network.</li>
+</ul></li>
+<li><p>Choose <strong>Next</strong>.</p></li>
+<li><p>If you chose <strong>Inbound and outbound</strong> or <strong>Inbound only</strong>, enter the applicable values for configuring an inbound endpoint. Then continue with step 7. For more information, see <a href="resolver-forwarding-inbound-queries.html#resolver-forwarding-inbound-queries-values">Values that you specify when you create or edit inbound endpoints</a>.</p>
+<p>If you choose <strong>Outbound only</strong>, skip to step 7.</p></li>
+<li><p>Enter the applicable values for configuring an outbound endpoint. For more information, see <a href="resolver-forwarding-outbound-queries.html#resolver-forwarding-outbound-queries-endpoint-values">Values that you specify when you create or edit outbound endpoints</a>.</p></li>
+<li><p>If you chose <strong>Inbound and outbound</strong> or <strong>Outbound only</strong>, enter the applicable values for creating a rule. For more information, see <a href="resolver-forwarding-outbound-queries.html#resolver-forwarding-outbound-queries-rule-values">Values that you specify when you create or edit rules</a>.</p></li>
+<li><p>On the <strong>Review and create</strong> page, confirm that the settings that you specified on previous pages are correct. If necessary, choose <strong>Edit</strong> for the applicable section, and update settings. When you’re satisfied with the settings, choose <strong>Submit</strong>. <strong>Note</strong><br />
+Creating an outbound endpoint takes a minute or two. You can’t create another outbound endpoint until the first one is created.</p></li>
+<li><p>If you want to create more rules, see <a href="resolver-rules-managing.html">Managing forwarding rules</a>.</p></li>
+<li><p>If you created an inbound endpoint, configure DNS resolvers on your network to forward the applicable DNS queries to the IP addresses for your inbound endpoint. For more information, refer to the documentation for your DNS application.</p></li>
+</ol>
+</body>
+</html>

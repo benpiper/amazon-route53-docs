@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>routing-policy-latency-phz</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="latency-based-routing-in-private-hosted-zones">Latency-based routing in private hosted zones<a name="routing-policy-latency-phz"></a></h1>
+<p>For private hosted zones, Route 53 answers DNS queries with an endpoint that is in the same AWS Region, or is closest in distance to the AWS Region of the VPC that the query originated from.</p>
+<p>If you include health checks, and the record with the lowest latency to the query’s origin is unhealthy, a healthy endpoint with the next lowest latency is returned.</p>
+<p>In the example configuration in the following figure, DNS queries coming from an us-east-1 AWS Region, or closest to it, will be routed to the 1.1.1.1 endpoint. DNS queries from us-west-2, or closes to it, will be routed to the 2.2.2.2 endpoint.</p>
+<figure>
+<img src="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/images/latency-phz.png" alt="" /><figcaption>[A screenshot that shows two latency records for a private hosted zone.]</figcaption>
+</figure>
+</body>
+</html>

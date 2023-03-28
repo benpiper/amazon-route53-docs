@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>getting-started-s3</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="use-your-domain-for-a-static-website-in-an-amazon-s3-bucket">Use your domain for a static website in an Amazon S3 bucket<a name="getting-started-s3"></a></h1>
+<p>This getting started tutorial shows you how to perform the following tasks: + Register a domain name, such as example.com + Create an Amazon S3 bucket and configure it to host a website + Create a sample website and save the file in your S3 bucket + Configure Amazon Route 53 to route traffic to your new website</p>
+<p>When you’re finished, you’ll be able to open a browser, enter the name of your domain, and view your website.</p>
+<p><strong>Note</strong><br />
+You can also transfer an existing domain to Route 53, but the process is more complex and time-consuming than registering a new domain. For more information, see <a href="domain-transfer-to-route-53.html">Transferring registration for a domain to Amazon Route 53</a>.</p>
+<p><strong>Topics</strong> + <a href="#getting-started-prerequisites">Prerequisites</a> + <a href="#getting-started-find-domain-name">Step 1: Register a domain</a> + <a href="#getting-started-create-s3-website-bucket">Step 2: Create an S3 bucket for your root domain</a> + <a href="#getting-started-create-s3-www-bucket">Step 3 <em>(optional)</em>: Create another S3 Bucket, for your subdomain</a> + <a href="#getting-started-configure-root-for-website">Step 4: Set up your root domain bucket for website hosting</a> + <a href="#getting-started-subdomain-bucket-redirect">Step 5 : <em>(optional)</em>: Set up your subdomain bucket for website redirect</a> + <a href="#getting-started-upload-content">Step 6: Upload index to create website content</a> + <a href="#getting-started-block-access">Step 7: Edit S3 Block Public Access settings</a> + <a href="#getting-started-attach-policy">Step 8: Attach a bucket policy</a> + <a href="#getting-started-test-domain-endpoint">Step 9: Test your domain endpoint</a> + <a href="#getting-started-create-alias">Step 10: Route DNS traffic for your domain to your website bucket</a> + <a href="#getting-started-test">Step 11: Test your website</a> + <a href="#getting-started-cloudfront">Step 12 (optional): Use Amazon CloudFront to speed up distribution of your content</a></p>
+<h2 id="prerequisites">Prerequisites<a name="getting-started-prerequisites"></a></h2>
+<p>Before you begin, be sure that you’ve completed the steps in <a href="setting-up-route-53.html">Setting up Amazon Route 53</a>.</p>
+<h2 id="step-1-register-a-domain">Step 1: Register a domain<a name="getting-started-find-domain-name"></a></h2>
+<p>To use a domain name (such as example.com), you must find a domain name that isn’t already in use and register it. When you register a domain name, you reserve it for your exclusive use everywhere on the internet, typically for one year. By default, we automatically renew your domain name at the end of each year, but you can turn off automatic renewal.<a name="getting-started-domain-register-procedure"></a></p>
+<p><strong>To register a new domain using Amazon Route 53</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>If you’re new to Route 53, choose <strong>Get started</strong>.</p>
+<p>If you’re already using Route 53, in the navigation pane, choose <strong>Registered domains</strong>.</p></li>
+<li><p>Choose <strong>Register Domain</strong>.</p></li>
+<li><p>Enter the domain name that you want to register, and choose <strong>Check</strong> to find out whether the domain name is available.</p>
+<p>For information about how to specify characters other than a-z, 0-9, and - (hyphen), and how to specify internationalized domain names, see <a href="DomainNameFormat.html">DNS domain name format</a>.</p></li>
+<li><p>If the domain is available, choose <strong>Add to cart</strong>. The domain name appears in your shopping cart.</p>
+<p>The <strong>Related domain suggestions</strong> list shows other domains that you might want to register instead of your first choice (if it’s not available), or in addition to your first choice. Choose <strong>Add to cart</strong> for each additional domain that you want to register, up to a maximum of five domains.</p>
+<p>If the domain name isn’t available and you don’t want one of the suggested domain names, repeat step 4 until you find an available domain name that you like. <strong>Note</strong><br />
+If you also want your users to be able to use www.<em>your-domain-name</em>, such as www.example.com, to access your sample website, you don’t need to register a second domain. Later in this topic, we explain how to route traffic for www.<em>your-domain-name</em> to your website.</p></li>
+<li><p>In the shopping cart, choose the number of years that you want to register the domain for.</p></li>
+<li><p>To register more domains, repeat steps 4 through 6.</p></li>
+<li><p>Choose <strong>Continue</strong>.</p></li>
+<li><p>On the <strong>Contact Details for Your</strong> <em>n</em> <strong>Domains</strong> page, enter contact information for the domain registrant, administrator, and technical contacts.</p>
+<p>By default, we use the same information for all three contacts. If you want to enter different information for one or more contacts, change the value of <strong>My Registrant, Administrative, and Technical Contacts are all the same</strong> to <strong>No</strong>.</p>
+<p>If you’re registering more than one domain, we use the same contact information for all of the domains.</p>
+<p>For more information, see <a href="domain-register-values-specify.html">Values that you specify when you register or transfer a domain</a>.</p></li>
+<li><p>For some top-level domains (TLDs), we’re required to collect additional information. For these TLDs, enter the applicable values after the <strong>Postal/Zip Code</strong> field.</p></li>
+<li><p>Choose whether you want to hide your contact information from WHOIS queries. For more information, see the following topics:</p>
+<ul>
+<li><a href="domain-privacy-protection.html">Enabling or disabling privacy protection for contact information for a domain</a></li>
+<li><a href="registrar-tld-list.html">Domains that you can register with Amazon Route 53</a></li>
+</ul></li>
+<li><p>Choose <strong>Continue</strong>.</p></li>
+<li><p>Review the information that you entered, read the terms of service, and select the check box to confirm that you’ve read the terms of service.</p></li>
+<li><p>Choose <strong>Complete Purchase</strong>.</p>
+<p>We send an email to the registrant for the domain to verify that the registrant contact can be reached at the email address that you specified. (This is an ICANN requirement.) The email comes from one of the following email addresses:</p>
+<ul>
+<li><strong>noreply@registrar.amazon.com </strong> – for TLDs registered by Amazon Registrar.</li>
+<li><strong>noreply@domainnameverification.net</strong> – for TLDs registered by our registrar associate, Gandi.</li>
+</ul>
+<p>To determine who the registrar is for your TLD, see <a href="find-your-registrar.html">Finding your registrar</a>. <strong>Important</strong><br />
+The registrant contact must follow the instructions in the email to confirm that the email was received, or we must suspend the domain as required by ICANN. When a domain is suspended, it’s not accessible on the internet.</p>
+<p>You’ll receive another email when your domain registration has been approved. To determine the current status of your request, see <a href="domain-view-status.html">Viewing the status of a domain registration</a>.</p></li>
+</ol>
+<p>By default, you register a domain for one year. If you won’t want to keep the domain, you can turn off automatic renewal, so the domain expires at the end of a year. <a name="getting-started-disable-renewal-procedure"></a></p>
+<p><strong><em>(Optional)</em> To turn off automatic renewal for a domain</strong></p>
+<ol type="1">
+<li><p>In the navigation pane, choose <strong>Registered domains</strong>.</p></li>
+<li><p>In the list of domains, select the linked name of your domain.</p></li>
+<li><p>If the value of the <strong>Auto renew</strong> field is <strong>Enabled (disable)</strong>, choose <strong>disable</strong> to turn off automatic renewal. The change takes effect immediately.</p>
+<p>If the value of the field is <strong>Disabled (enable)</strong>, don’t change the setting.</p></li>
+</ol>
+<h2 id="step-2-create-an-s3-bucket-for-your-root-domain">Step 2: Create an S3 bucket for your root domain<a name="getting-started-create-s3-website-bucket"></a></h2>
+<p>Amazon S3 lets you store and retrieve your data from anywhere on the internet. To organize your data, you create buckets and upload your data to the buckets by using the AWS Management Console. You can use Amazon S3 to host a static website in a bucket. The following procedure explains how to create a bucket.<a name="getting-started-create-s3-website-bucket-procedure"></a></p>
+<p><strong>To create an S3 bucket for your root domain</strong></p>
+<ol type="1">
+<li><p>Open the Amazon S3 console at <a href="https://console.aws.amazon.com/s3/">https://console.aws.amazon.com/s3/</a>.</p></li>
+<li><p>Choose <strong>Create bucket</strong>.</p></li>
+<li><p>Enter the following values:<br />
+<strong>Bucket name</strong><br />
+Enter the name of your domain, such as <strong>example.com</strong>.<br />
+<strong>Region</strong><br />
+Choose the Region closest to most of your users.<br />
+Make note of the Region that you choose; you’ll need this information later in the process.</p></li>
+<li><p>To accept the default settings and create the bucket, choose <strong>Create bucket</strong>.</p></li>
+</ol>
+<h2 id="step-3-optional-create-another-s3-bucket-for-your-subdomain">Step 3 <em>(optional)</em>: Create another S3 Bucket, for your subdomain<a name="getting-started-create-s3-www-bucket"></a></h2>
+<p>In the preceding procedure, you created a bucket for your domain name, such as example.com. This allows your users to access your website by using your domain name, such as example.com.</p>
+<p>If you also want your users to be able to use <strong>www</strong>.<em>your-domain-name</em>, such as www.example.com, to access your sample website, create a second S3 bucket. Configure the second bucket to route traffic to the first bucket.<a name="getting-started-create-s3-www-bucket-procedure"></a></p>
+<p><strong>To create an S3 bucket for www.<em>your-domain-name</em></strong></p>
+<ol type="1">
+<li><p>Choose <strong>Create bucket</strong>.</p></li>
+<li><p>Enter the following values:<br />
+<strong>Bucket name</strong><br />
+Enter <strong>www.<em>your-domain-name</em></strong>. For example, if you registered the domain name example.com, enter <strong>www.example.com</strong>.<br />
+<strong>Region</strong><br />
+Choose the same Region that you created the first bucket in.</p></li>
+<li><p>To accept the default settings and create the bucket, choose <strong>Create</strong>.</p></li>
+</ol>
+<h2 id="step-4-set-up-your-root-domain-bucket-for-website-hosting">Step 4: Set up your root domain bucket for website hosting<a name="getting-started-configure-root-for-website"></a></h2>
+<p>Now that you have an S3 bucket, you can configure it for website hosting.<a name="getting-started-configure-s3-website-bucket-procedure"></a></p>
+<p><strong>To allow website hosting on your S3 bucket</strong></p>
+<ol type="1">
+<li><p>Open the Amazon S3 console at <a href="https://console.aws.amazon.com/s3/">https://console.aws.amazon.com/s3/</a>.</p></li>
+<li><p>In the <strong>Buckets</strong> list, choose the name of the bucket that you want to enable for static website hosting.</p></li>
+<li><p>Choose <strong>Properties</strong>.</p></li>
+<li><p>Under <strong>Static website hosting</strong>, choose <strong>Enable</strong>.</p></li>
+<li><p>Choose <strong>Use this bucket to host a website</strong>.</p></li>
+<li><p>Under <strong>Static website hosting</strong>, choose <strong>Enable</strong>.</p></li>
+<li><p>In <strong>Index document</strong>, enter the file name of the index document, typically <code>index.html</code>.</p>
+<p>The index document name is case sensitive and must exactly match the file name of the HTML index document that you plan to upload to your S3 bucket. When you configure a bucket for website hosting, you must specify an index document. Amazon S3 returns this index document when requests are made to the root domain or any of the subfolders.</p></li>
+<li><p>(Optional) To provide your own custom error document for 4XX class errors, in <strong>Error document</strong>, enter the custom error document file name.</p>
+<p>If you don’t specify a custom error document and an error occurs, Amazon S3 returns a default HTML error document.</p></li>
+<li><p>(Optional) If you want to specify advanced redirection rules, in <strong>Redirection</strong> <strong>rules</strong>, enter XML to describe the rules.</p>
+<p>For more information, see <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/how-to-page-redirect.html#advanced-conditional-redirects">Configuring advanced conditional redirects</a> in the <em>Amazon Simple Storage Service User Guide</em>.</p></li>
+<li><p>Choose <strong>Save changes</strong>.</p></li>
+<li><p>Under <strong>Static website hosting</strong>, note the <strong>Endpoint</strong>.</p>
+<p>The <strong>Endpoint</strong> is the Amazon S3 website endpoint for your bucket. After you finish configuring your bucket as a static website, you can use this endpoint to test your website, as shown in <a href="#getting-started-test-domain-endpoint">Step 9: Test your domain endpoint</a>.</p>
+<p>After you use the following steps to edit settings for public access and add a bucket policy that allows public read access,you can use the website endpoint to access your website.</p></li>
+</ol>
+<h2 id="step-5-optional-set-up-your-subdomain-bucket-for-website-redirect">Step 5 : <em>(optional)</em>: Set up your subdomain bucket for website redirect<a name="getting-started-subdomain-bucket-redirect"></a></h2>
+<p>After you configure your root domain bucket for website hosting, you can optionally configure your subdomain bucket to redirect all requests to the domain. For example, you can configure all requests for <code>www.example.com</code> to be redirected to <code>example.com</code>.<a name="getting-started-configure-s3-website-redirect-procedure"></a></p>
+<p><strong>To configure a redirect</strong></p>
+<ol type="1">
+<li><p>On the Amazon S3 console, in the <strong>Buckets</strong> list, choose your subdomain bucket name (for example, <code>www.example.com</code>).</p></li>
+<li><p>Choose <strong>Properties</strong>.</p></li>
+<li><p>Under <strong>Static website hosting</strong>, choose <strong>Edit</strong>.</p></li>
+<li><p>Choose <strong>Redirect requests for an object</strong>.</p></li>
+<li><p>In the <strong>Target bucket</strong> box, enter your root domain, for example, <strong>example.com</strong>.</p></li>
+<li><p>For <strong>Protocol</strong>, choose <strong>http</strong>.</p></li>
+<li><p>Choose <strong>Save changes</strong>.</p></li>
+</ol>
+<h2 id="step-6-upload-index-to-create-website-content">Step 6: Upload index to create website content<a name="getting-started-upload-content"></a></h2>
+<p>When you allow static website hosting on your bucket, you enter the name of the index document (for example, <strong>index.html</strong>). After you allow static website hosting for the bucket, you upload an HTML file with this index document name to your bucket.<a name="getting-started-create-website-procedure"></a></p>
+<p><strong>To upload an index file</strong></p>
+<ol type="1">
+<li><p>Copy the following example text you can use as a simple one-page website for this tutorial, paste it into a text editor, and save it as index.html:</p>
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Amazon Route 53 Getting Started&lt;/title&gt;   
+&lt;/head&gt;
+
+&lt;body&gt;
+
+&lt;h1&gt;Routing Internet Traffic to an Amazon S3 Bucket for Your Website&lt;/h1&gt;
+
+&lt;p&gt;For more information, see 
+&lt;a href=&quot;https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/getting-started.html&quot;&gt;Getting Started with Amazon Route 53&lt;/a&gt; 
+in the &lt;emphasis&gt;Amazon Route 53 Developer Guide&lt;/emphasis&gt;.&lt;/p&gt;
+
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre></li>
+<li><p>In the <strong>Buckets list</strong>, choose the name of the bucket that you want to enable static website hosting for.</p></li>
+<li><p>In the Amazon S3 console, choose the name of the bucket that you created in the procedure <a href="#getting-started-configure-s3-website-bucket-procedure">To allow website hosting on your S3 bucket</a> (click the linked bucket name).</p></li>
+<li><p>Choose <strong>Upload</strong>, <strong>Add Files</strong>, select index.html from where you saved it, and then <strong>Upload</strong>.</p></li>
+<li><p>If you created and error document, for example, <strong>404.html</strong>, follow steps 3 through 5 to upload it.</p></li>
+</ol>
+<h2 id="step-7-edit-s3-block-public-access-settings">Step 7: Edit S3 Block Public Access settings<a name="getting-started-block-access"></a></h2>
+<p>By default, Amazon S3 blocks public access to your account and buckets. If you want to use a bucket to host a static website, use these steps to edit your public access settings.</p>
+<p><strong>Warning</strong><br />
+Before you complete this step, review <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html">Blocking public access to your Amazon S3 storage</a> to ensure that you understand and accept the risks involved with allowing public access. When you turn off block public access settings to make your bucket public, anyone on the internet can access your bucket. We recommend that you block all public access to your buckets.<a name="getting-started-block-access-procedure"></a></p>
+<p><strong>To route traffic to your website</strong></p>
+<ol type="1">
+<li><p>Open the Amazon S3 console at <a href="https://console.aws.amazon.com/s3/">https://console.aws.amazon.com/s3/</a>.</p></li>
+<li><p>Choose the name of the bucket that you have configured as a static website.</p></li>
+<li><p>Choose <strong>Permissions</strong>.</p></li>
+<li><p>Under <strong>Block public access (bucket settings)</strong>, choose <strong>Edit</strong>.</p></li>
+<li><p>Clear <strong>Block all public access</strong>, and choose <strong>Save changes</strong>.</p></li>
+</ol>
+<p>Amazon S3 turns off Block Public Access settings for your bucket. To create a public, static website, you might also have to edit the <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/configuring-block-public-access-account.html">Block Public Access settings</a> for your account before adding a bucket policy. If account settings for Block Public Access are currently turned on, you see a note under <strong>Block public access (bucket settings)</strong>.</p>
+<h2 id="step-8-attach-a-bucket-policy">Step 8: Attach a bucket policy<a name="getting-started-attach-policy"></a></h2>
+<p>After you edit Amazon S3 Block Public Access settings, you can add a bucket policy to grant public read access to your bucket. When you grant public read access, anyone on the internet can access your bucket.</p>
+<p><strong>Warning</strong><br />
+Before you complete this step, review <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-control-block-public-access.html">Blocking public access to your Amazon S3 storage</a> to ensure that you understand and accept the risks involved with allowing public access. When you turn off block public access settings to make your bucket public, anyone on the internet can access your bucket. We recommend that you block all public access to your buckets.<a name="getting-started-attach-policy-procedure"></a></p>
+<p><strong>To route traffic to your website</strong></p>
+<ol type="1">
+<li><p>Open the Amazon S3 console at <a href="https://console.aws.amazon.com/s3/">https://console.aws.amazon.com/s3/</a>.</p></li>
+<li><p>Under <strong>Buckets</strong>, choose the name of your bucket.</p></li>
+<li><p>Choose <strong>Permissions</strong>.</p></li>
+<li><p>Under <strong>Bucket Policy</strong>, choose <strong>Edit</strong>.</p></li>
+<li><p>Copy the following bucket policy and paste it into a text editor. This policy grants everyone on the internet (<code>"Principal":"*"</code>) permission to get the files (<code>"Action":["s3:GetObject"]</code>) in the S3 bucket that is associated with your domain name (<code>"arn:aws:s3:::your-domain-name/*"</code>).</p>
+<pre><code>{
+   &quot;Version&quot;:&quot;2012-10-17&quot;,
+   &quot;Statement&quot;:[{
+      &quot;Sid&quot;:&quot;AddPerm&quot;,
+      &quot;Effect&quot;:&quot;Allow&quot;,
+      &quot;Principal&quot;:&quot;*&quot;,
+      &quot;Action&quot;:[
+         &quot;s3:GetObject&quot;
+      ],
+      &quot;Resource&quot;:[
+         &quot;arn:aws:s3:::your-domain-name/*&quot;
+      ]
+    }]
+}</code></pre></li>
+<li><p>Update the value for <code>Resource</code> to <em>your-domain-name</em>, for example <strong>example.com</strong>.</p></li>
+<li><p>Choose <strong>Save changes</strong>.</p></li>
+</ol>
+<h2 id="step-9-test-your-domain-endpoint">Step 9: Test your domain endpoint<a name="getting-started-test-domain-endpoint"></a></h2>
+<p>After you configure your domain bucket to host a public website, you can test your endpoint. You can test the endpoint only for your domain bucket because your subdomain bucket is set up for website redirect and not static website hosting.</p>
+<p><strong>Note</strong><br />
+Amazon S3 does not support HTTPS access to the website. If you want to use HTTPS, you can use Amazon CloudFront to serve a static website hosted on Amazon S3.<br />
+For more information, see <a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-https-viewers-to-cloudfront.html">Requiring HTTPS for Communication Between Viewers and CloudFront</a>.</p>
+<ol type="1">
+<li><p>Under <strong>Buckets</strong>, choose the name of your bucket.</p></li>
+<li><p>Choose <strong>Properties</strong>.</p></li>
+<li><p>At the bottom of the page, under <strong>Static website hosting</strong>, choose your <strong>Bucket website endpoint</strong>.</p>
+<p>Your index document opens in a separate browser window.</p></li>
+</ol>
+<h2 id="step-10-route-dns-traffic-for-your-domain-to-your-website-bucket">Step 10: Route DNS traffic for your domain to your website bucket<a name="getting-started-create-alias"></a></h2>
+<p>You now have a one-page website in your S3 bucket. To start routing internet traffic for your domain to your S3 bucket, perform the following procedure. <a name="getting-started-create-alias-procedure"></a></p>
+<p><strong>To route traffic to your website</strong></p>
+<ol type="1">
+<li><p>Open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Hosted zones</strong>. <strong>Note</strong><br />
+When you registered your domain, Amazon Route 53 automatically created a hosted zone with the same name. A hosted zone contains information about how you want Route 53 to route traffic for the domain.</p></li>
+<li><p>In the list of hosted zones, choose the name of your domain.</p></li>
+<li><p>Choose <strong>Create record</strong>. <strong>Note</strong><br />
+Each record contains information about how you want to route traffic for one domain (such as example.com) or one subdomain (such as www.example.com or test.example.com). Records are stored in the hosted zone for your domain.</p></li>
+<li><p>Choose <strong>Switch to wizard</strong>.</p></li>
+<li><p>Choose <strong>Simple routing</strong> and choose <strong>Next</strong>.</p></li>
+<li><p>Choose <strong>Define simple record</strong>.</p></li>
+<li><p>In <strong>Record name</strong>, accept the default value, which is the name of your hosted zone and your domain.</p></li>
+<li><p>In <strong>Record type</strong>, choose <strong>A ‐ Routes traffic to an IPv4 address and some AWS resources</strong>.</p></li>
+<li><p>In <strong>Value/Route traffic to</strong>, choose <strong>Alias to S3 website endpoint</strong>.</p></li>
+<li><p>Choose the Region.</p></li>
+<li><p>Choose the S3 bucket.</p>
+<p>The bucket name should match the name that appears in the <strong>Name</strong> box. In the <strong>Choose S3 bucket</strong> list, the bucket name appears with the Amazon S3 website endpoint for the Region where the bucket was created, for example, <code>s3-website-us-west-1.amazonaws.com (example.com)</code>.</p>
+<p><strong>Choose S3 bucket</strong> lists a bucket if one of the following is true:</p>
+<ul>
+<li>You configured the bucket as a static website.</li>
+<li>The bucket name is the same as the name of the record that you’re creating.</li>
+<li>The current AWS account created the bucket.</li>
+</ul>
+<p>If your bucket does not appear in the <strong>Choose S3 bucket</strong> list, enter the Amazon S3 website endpoint for the Region where the bucket was created, for example, <strong>s3-website-us-west-2.amazonaws.com</strong>. For a complete list of Amazon S3 website endpoints, see <a href="https://docs.aws.amazon.com/general/latest/gr/s3.html#s3_website_region_endpoints">Amazon S3 Website endpoints</a>. For more information about the alias target, see “values/route traffic to” section in <a href="resource-record-sets-values-alias.html">Values specific for simple alias records</a>.</p></li>
+<li><p>For <strong>Evaluate target health</strong>, choose <strong>No</strong>.</p></li>
+<li><p>Choose <strong>Define simple record</strong>.</p></li>
+</ol>
+<p><strong>(Optional) To add an alias record for your subdomain (<code>www.example.com</code>)</strong></p>
+<p>If you created a bucket for your subdomain, add an alias record for it also.</p>
+<ol type="1">
+<li><p>Under <strong>Configure records</strong>, choose <strong>Define simple record</strong>.</p></li>
+<li><p>In <strong>Record name</strong> for your subdomain, type <code>www</code>.</p></li>
+<li><p>In <strong>Record type</strong>, choose <strong>A ‐ Routes traffic to an IPv4 address and some AWS resources</strong>.</p></li>
+<li><p>In <strong>Value/Route traffic to</strong>, choose <strong>Alias to S3 website endpoint</strong>.</p></li>
+<li><p>Choose the Region.</p></li>
+<li><p>Choose the S3 bucket, for example, <code>s3-website-us-west-2.amazonaws.com (example.com)</code>.</p>
+<p>If your bucket does not appear in the <strong>Choose S3 bucket</strong> list, enter the Amazon S3 website endpoint for the Region where the bucket was created, for example, <strong>s3-website-us-west-2.amazonaws.com</strong>.</p></li>
+<li><p>For <strong>Evaluate target health</strong>, choose <strong>No</strong>.</p></li>
+<li><p>Choose <strong>Define simple record</strong>.</p></li>
+<li><p>On the <strong>Configure records</strong> page, choose <strong>Create records</strong>.</p></li>
+</ol>
+<h2 id="step-11-test-your-website">Step 11: Test your website<a name="getting-started-test"></a></h2>
+<p>To verify that the website is working correctly, open a web browser and browse to the following URLs: + http://<em>your-domain-name</em>, for example, <code>example.com</code> – Displays the index document in the <em>your-domain-name</em> bucket + http://www.<em>your-domain-name</em> for example, <code>www.example.com</code> – Redirects your request to the <em>your-domain-name</em> bucket</p>
+<p>In some cases, you might need to clear the cache to see the expected behavior.</p>
+<p>For more advanced information about routing your internet traffic, see <a href="dns-configuring.html">Configuring Amazon Route 53 as your DNS service</a>. For information about routing your internet traffic to AWS resources, see <a href="routing-to-aws-resources.html">Routing internet traffic to your AWS resources</a>.</p>
+<h2 id="step-12-optional-use-amazon-cloudfront-to-speed-up-distribution-of-your-content">Step 12 (optional): Use Amazon CloudFront to speed up distribution of your content<a name="getting-started-cloudfront"></a></h2>
+<p>CloudFront is a web service that speeds up distribution of your static and dynamic web content, such as .html, .css, .js, and image files, to your users. CloudFront delivers your content through a worldwide network of data centers called edge locations. When a user requests content that you’re serving with CloudFront, the user is routed to the edge location that provides the lowest latency (time delay), so that content is delivered with the best possible performance. + If the content is already in the edge location with the lowest latency, CloudFront delivers it immediately. + If the content is not in that edge location, CloudFront retrieves it from an Amazon S3 bucket or an HTTP server (for example, a web server) that you have identified as the source for the definitive version of your content.</p>
+<p>For information about using CloudFront to distribute the content in your Amazon S3 bucket, see <a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/MigrateS3ToCloudFront.html#adding-cloudfront-to-s3">Adding CloudFront when you’re distributing content from Amazon S3</a> in the <em>Amazon CloudFront Developer Guide</em>.</p>
+</body>
+</html>

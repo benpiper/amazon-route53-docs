@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>getting-started-cloudfront-overview</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="use-an-amazon-cloudfront-distribution-to-serve-a-static-website">Use an Amazon CloudFront distribution to serve a static website<a name="getting-started-cloudfront-overview"></a></h1>
+<p>This getting started tutorial shows you how to perform the following tasks: + Register a domain name, such as example.com. + Create a certificate for your domain. + Create two Amazon S3 buckets and configure one to host a website and the other one to redirect to the subdomain. + Create a sample website and save the file in your S3 bucket. + Create CloudFront distributions for both S3 buckets. + Configure Amazon Route 53 to route traffic to the CloudFront distributions.</p>
+<p>When you’re finished, you’ll be able to open a browser, enter the name of your domain, and view your website securely.</p>
+<p><strong>Topics</strong> + <a href="#getting-started-prerequisites-cloudfront">Prerequisites</a> + <a href="#getting-started-cloudfront-domain-name">Step 1: Register a domain</a> + <a href="#getting-started-cloudfront-request-certificate">Step 2: Request a public certificate</a> + <a href="#getting-started-cloudformation-create-s3-www-bucket">Step 3: Create an S3 bucket to host your subdomain</a> + <a href="#getting-started-cloudfront-s3-bucket">Step 4 : Create another S3 bucket, for your root domain</a> + <a href="#getting-started-cloudformation-www-for-website">Step 5: Upload website files to your subdomain bucket</a> + <a href="#getting-started-cloudfront-bucket-redirect">Step 6: Set up your root domain bucket for website redirect</a> + <a href="#getting-started-cloudfront-distribution">Step 7: Create an Amazon CloudFront distribution for your subdomain</a> + <a href="#getting-started-cloudfront-distribution-root">Step 8: Create an Amazon CloudFront distribution for your root domain</a> + <a href="#getting-started-cloudfront-create-alias">Step 9: Route DNS traffic for your domain to your CloudFront distribution</a> + <a href="#getting-started-cloudfront-test">Step 10 : Test your website</a></p>
+<h2 id="prerequisites">Prerequisites<a name="getting-started-prerequisites-cloudfront"></a></h2>
+<p>Before you begin, be sure that you’ve completed the steps in <a href="setting-up-route-53.html">Setting up Amazon Route 53</a>.</p>
+<h2 id="step-1-register-a-domain">Step 1: Register a domain<a name="getting-started-cloudfront-domain-name"></a></h2>
+<p>To use a domain name (such as example.com), you must find a domain name that isn’t already in use and register it. When you register a domain name, you reserve it for your exclusive use everywhere on the internet, typically for one year. By default, we automatically renew your domain name at the end of each year, but you can turn off automatic renewal.<a name="getting-started-domain-register-procedure"></a></p>
+<p><strong>To register a new domain using Amazon Route 53</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>If you’re new to Route 53, choose <strong>Get started</strong>.</p>
+<p>If you’re already using Route 53, in the navigation pane, choose <strong>Registered domains</strong>.</p></li>
+<li><p>Choose <strong>Register Domain</strong>.</p></li>
+<li><p>Enter the domain name that you want to register, and choose <strong>Check</strong> to find out whether the domain name is available.</p>
+<p>For information about how to specify characters other than a-z, 0-9, and - (hyphen), and how to specify internationalized domain names, see <a href="DomainNameFormat.html">DNS domain name format</a>.</p></li>
+<li><p>If the domain is available, choose <strong>Add to cart</strong>. The domain name appears in your shopping cart.</p>
+<p>The <strong>Related domain suggestions</strong> list shows other domains that you might want to register instead of your first choice (if it’s not available), or in addition to your first choice. Choose <strong>Add to cart</strong> for each additional domain that you want to register, up to a maximum of five domains.</p>
+<p>If the domain name isn’t available and you don’t want one of the suggested domain names, repeat step 4 until you find an available domain name that you like. <strong>Note</strong><br />
+If you also want your users to be able to use www.<em>your-domain-name</em>, such as www.example.com, to access your sample website, you don’t need to register a second domain. Later in this topic, we explain how to route traffic for www.<em>your-domain-name</em> to your website.</p></li>
+<li><p>In the shopping cart, choose the number of years that you want to register the domain for.</p></li>
+<li><p>To register more domains, repeat steps 4 through 6.</p></li>
+<li><p>Choose <strong>Continue</strong>.</p></li>
+<li><p>On the <strong>Contact Details for Your</strong> <em>n</em> <strong>Domains</strong> page, enter contact information for the domain registrant, administrator, and technical contacts.</p>
+<p>By default, we use the same information for all three contacts. If you want to enter different information for one or more contacts, change the value of <strong>My Registrant, Administrative, and Technical Contacts are all the same</strong> to <strong>No</strong>.</p>
+<p>If you’re registering more than one domain, we use the same contact information for all of the domains.</p>
+<p>For more information, see <a href="domain-register-values-specify.html">Values that you specify when you register or transfer a domain</a>.</p></li>
+<li><p>For some top-level domains (TLDs), we’re required to collect additional information. For these TLDs, enter the applicable values after the <strong>Postal/Zip Code</strong> field.</p></li>
+<li><p>Choose whether you want to hide your contact information from WHOIS queries. For more information, see the following topics:</p>
+<ul>
+<li><a href="domain-privacy-protection.html">Enabling or disabling privacy protection for contact information for a domain</a></li>
+<li><a href="registrar-tld-list.html">Domains that you can register with Amazon Route 53</a></li>
+</ul></li>
+<li><p>Choose <strong>Continue</strong>.</p></li>
+<li><p>Review the information that you entered, read the terms of service, and select the check box to confirm that you’ve read the terms of service.</p></li>
+<li><p>Choose <strong>Complete Purchase</strong>.</p>
+<p>We send an email to the registrant for the domain to verify that the registrant contact can be reached at the email address that you specified. (This is an ICANN requirement.) The email comes from one of the following email addresses:</p>
+<ul>
+<li><strong>noreply@registrar.amazon.com </strong> – for TLDs registered by Amazon Registrar.</li>
+<li><strong>noreply@domainnameverification.net</strong> – for TLDs registered by our registrar associate, Gandi.</li>
+</ul>
+<p>To determine who the registrar is for your TLD, see <a href="find-your-registrar.html">Finding your registrar</a>. <strong>Important</strong><br />
+The registrant contact must follow the instructions in the email to confirm that the email was received, or we must suspend the domain as required by ICANN. When a domain is suspended, it’s not accessible on the internet.</p>
+<p>You’ll receive another email when your domain registration has been approved. To determine the current status of your request, see <a href="domain-view-status.html">Viewing the status of a domain registration</a>.</p></li>
+</ol>
+<p>By default, you register a domain for one year. If you won’t want to keep the domain, you can deactivate automatic renewal, so the domain expires at the end of a year. <a name="getting-started-disable-renewal-procedure"></a></p>
+<p><strong><em>(Optional)</em> To turn off automatic renewal for a domain</strong></p>
+<ol type="1">
+<li><p>In the navigation pane, choose <strong>Registered domains</strong>.</p></li>
+<li><p>In the list of domains, select the linked name of your domain.</p></li>
+<li><p>If the value of the <strong>Auto renew</strong> field is <strong>Enabled (disable)</strong>, choose <strong>disable</strong> to turn off automatic renewal. The change takes effect immediately.</p>
+<p>If the value of the field is <strong>Disabled (enable)</strong>, don’t change the setting.</p></li>
+</ol>
+<h2 id="step-2-request-a-public-certificate">Step 2: Request a public certificate<a name="getting-started-cloudfront-request-certificate"></a></h2>
+<p>A public certificate is required for your Amazon CloudFront distributions to configure CloudFront to require that viewers use HTTPS so that connections are encrypted when CloudFront communicates with viewers.</p>
+<p><strong>To request an AWS Certificate Manager(ACM) public certificate (console)</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the ACM console at <a href="https://console.aws.amazon.com/acm/home">https://console.aws.amazon.com/acm/home</a>. <strong>Note</strong><br />
+Make sure you create the certificate in the US East (N. Virginia) Region. This is required for Amazon CloudFront.</p>
+<p>Choose <strong>Request a public certificate</strong> and then <strong>Request a certificate</strong>.</p></li>
+<li><p>Under <strong>Domain name</strong>, enter your domain, such as <strong>example.com</strong>.</p>
+<p>Under <strong>Add another name to this certificate</strong>, enter an asterisk in front of the domain name to request a wildcard certificate for all subdomains, such as <strong>*.example.com</strong>.</p></li>
+<li><p>Choose <strong>Next</strong>.</p></li>
+<li><p>On the <strong>Select validation method page</strong>, choose <strong>DNS validation</strong> and then <strong>Next</strong>.</p></li>
+<li><p>On the <strong>Add tags</strong> page, you can optionally tag your certificate. Tags are key-value pairs that serve as metadata for identifying and organizing AWS resources.</p>
+<p>When you finish adding tags, choose <strong>Review</strong>.</p></li>
+<li><p>On the <strong>Review</strong> page, make sure the information you entered is correct, and then choose <strong>Confirm and request</strong>.</p></li>
+<li><p>On the <strong>Validation</strong> page, expand both domains and choose <strong>Create record in Route 53</strong> to automatically add the CNAME records for your domains, and then choose <strong>Create</strong>.</p>
+<p>After <strong>Success</strong> is displayed for both domains, choose <strong>Continue</strong> on the bottom of the page.</p></li>
+</ol>
+<h2 id="step-3-create-an-s3-bucket-to-host-your-subdomain">Step 3: Create an S3 bucket to host your subdomain<a name="getting-started-cloudformation-create-s3-www-bucket"></a><a name="getting-started-cloudformation-s3-www-bucket-procedure"></a></h2>
+<p><strong>To create an S3 bucket for www.<em>your-domain-name</em></strong></p>
+<p>Amazon S3 lets you store and retrieve your data from anywhere on the internet. In this step you create an S3 bucket to store all the files for your website.</p>
+<ol type="1">
+<li><p>Open the Amazon S3 console at <a href="https://console.aws.amazon.com/s3/">https://console.aws.amazon.com/s3/</a>.</p></li>
+<li><p>Choose <strong>Create bucket</strong>.</p></li>
+<li><p>Enter the following values:<br />
+<strong>Bucket name</strong><br />
+Enter <strong>www.<em>your-domain-name</em></strong>. For example, if you registered the domain name example.com, enter <strong>www.example.com</strong>.<br />
+<strong>Region</strong><br />
+Choose a Region for your bucket.</p></li>
+<li><p>To accept the default settings and create the bucket, choose <strong>Create bucket</strong>.</p>
+<p>For more information about the S3 bucket settings, see <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/view-bucket-properties.html">View bucket properties</a> in the <em>Amazon S3 user guide</em>.</p></li>
+</ol>
+<h2 id="step-4-create-another-s3-bucket-for-your-root-domain">Step 4 : Create another S3 bucket, for your root domain<a name="getting-started-cloudfront-s3-bucket"></a></h2>
+<p>If you also want your users to be able to use the root domain, .<em>your-domain-name</em> (such as example.com) to access your sample website, create a second S3 bucket. You then configure the second bucket to route traffic to the first bucket.<a name="getting-started-cloudfront-s3-bucket-procedure"></a></p>
+<p><strong>To create an S3 bucket for <em>your-domain-name</em></strong></p>
+<ol type="1">
+<li><p>Open the Amazon S3 console at <a href="https://console.aws.amazon.com/s3/">https://console.aws.amazon.com/s3/</a>.</p></li>
+<li><p>Choose <strong>Create bucket</strong>.</p></li>
+<li><p>Enter the following values:<br />
+<strong>Bucket name</strong><br />
+Enter <strong><em>your-domain-name</em></strong>. For example, if you registered the domain name example.com, enter <strong>example.com</strong>.<br />
+<strong>Region</strong><br />
+Choose the same Region that you created the first bucket in.</p></li>
+<li><p>To accept the default settings and create the bucket, choose <strong>Create bucket</strong>.</p></li>
+</ol>
+<h2 id="step-5-upload-website-files-to-your-subdomain-bucket">Step 5: Upload website files to your subdomain bucket<a name="getting-started-cloudformation-www-for-website"></a></h2>
+<p>Now that you have an S3 bucket, you can upload your website files. In this tutorial you will just upload a simple index.html file that displays text on a page..<a name="getting-started-cloudformation-www-for-website-procedure"></a></p>
+<p><strong>To enable your S3 bucket for website hosting</strong></p>
+<ol type="1">
+<li><p>Open the Amazon S3 console at <a href="https://console.aws.amazon.com/s3/">https://console.aws.amazon.com/s3/</a>.</p></li>
+<li><p>In the <strong>Buckets</strong> list, choose the linked name of the bucket you want to upload the website files to, such as <strong>www.example.com</strong>.</p></li>
+<li><p>Copy the example text that creates a simple one-page website, paste it into a text editor, and save it as index.html:</p>
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Amazon Route 53 Getting Started&lt;/title&gt;   
+&lt;/head&gt;
+
+&lt;body&gt;
+
+&lt;h1&gt;Routing Internet traffic to Cloudfront distributions for your website stored in an S3 bucket&lt;/h1&gt;
+
+&lt;p&gt;For more information, see 
+&lt;a href=&quot;https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/getting-started.html&quot;&gt;Getting Started with Amazon Route 53&lt;/a&gt; 
+in the &lt;emphasis&gt;Amazon Route 53 Developer Guide&lt;/emphasis&gt;.&lt;/p&gt;
+
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre></li>
+<li><p>In the <strong>Objects</strong> tab choose <strong>Upload</strong>.</p></li>
+<li><p>Under <strong>Files and folders</strong>, choose <strong>Add files</strong> and upload your website files. For this tutorial, upload the index.html file you saved in step 3.</p></li>
+</ol>
+<h2 id="step-6-set-up-your-root-domain-bucket-for-website-redirect">Step 6: Set up your root domain bucket for website redirect<a name="getting-started-cloudfront-bucket-redirect"></a></h2>
+<p>After you configure your root domain bucket for website hosting, you can optionally configure your subdomain bucket to redirect all requests to the domain. For example, you can configure all requests for <code>example.com</code> to be redirected to <code>www.example.com</code>.<a name="getting-started-cloudfront-bucket-redirect-procedure"></a></p>
+<p><strong>To configure a redirect</strong></p>
+<ol type="1">
+<li><p>On the Amazon S3 console, in the <strong>Buckets</strong> list, choose your bucket name (for example, <code>example.com</code>).</p></li>
+<li><p>Choose <strong>Properties</strong>.</p></li>
+<li><p>Under <strong>Static website hosting</strong>, choose <strong>Edit</strong>.</p></li>
+<li><p>Under <strong>Static website hosting</strong>, select <strong>Enable</strong>.</p></li>
+<li><p>Choose <strong>Redirect requests for an object</strong>.</p></li>
+<li><p>In the <strong>Host name</strong> box, enter your subdomain, for example, <strong>www.example.com</strong>.</p></li>
+<li><p>For <strong>Protocol</strong>, choose <strong>https</strong>.</p></li>
+<li><p>Choose <strong>Save changes</strong>.</p></li>
+<li><p>Under <strong>Static website hosting</strong>, note the <strong>Endpoint</strong>.</p>
+<p>The <strong>Endpoint</strong> is the Amazon S3 website endpoint for your bucket. You will use this endpoint to set up an Amazon CloudFront distribution.</p></li>
+</ol>
+<h2 id="step-7-create-an-amazon-cloudfront-distribution-for-your-subdomain">Step 7: Create an Amazon CloudFront distribution for your subdomain<a name="getting-started-cloudfront-distribution"></a></h2>
+<p>In this step you create a CloudFront distribution for your subdomain, such as www.example.com, to enable your website to use HTTPS so people can view it securely.<a name="getting-started-cloudfront-distribution-procedure"></a></p>
+<p><strong>To create a CloudFront distribution</strong></p>
+<ol type="1">
+<li><p>Open the CloudFront console at <a href="https://console.aws.amazon.com/cloudfront/v3/home">https://console.aws.amazon.com/cloudfront/v3/home</a>.</p></li>
+<li><p>Choose <strong>Create Distribution</strong>.</p></li>
+<li><p>Under <strong>Origin Settings</strong>, for <strong>Origin Domain Name</strong>, choose the Amazon S3 bucket that you <a href="#getting-started-cloudformation-create-s3-www-bucket">created previously</a>.</p>
+<p>For <strong>S3 bucket access</strong>, select <strong>Yes, use OAI (bucket can restrict access to only CloudFront)</strong>. For the <strong>Origin access identity</strong>, you can choose from the list, or choose <strong>Create new OAI</strong> (both will work).</p>
+<p>For <strong>Bucket policy</strong>, select <strong>Yes, update the bucket policy</strong>.</p></li>
+<li><p>For the settings under <strong>Default Cache Behavior Settings</strong>, under <strong>Viewer</strong>, set <strong>Viewer protocol policy</strong> to <strong>Redirect HTTP to HTTPS</strong> and accept the default values for the rest.</p>
+<p>For more information about cache behavior options, see <a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-web-values-specify.html#DownloadDistValuesCacheBehavior">Cache behavior settings</a> in the <em>Amazon CloudFront developer guide</em>.</p></li>
+<li><p>For the fields under <strong>Settings</strong>, do the following:</p>
+<ul>
+<li><p>Choose <strong>Add item</strong> for <strong>Alternate domain name (CNAME) - optional</strong>, and enter your subdomain, such as <strong>www.example.com</strong>.</p></li>
+<li><p>For <strong>Custom SSL Certificate</strong>, choose the certificate you <a href="#getting-started-cloudfront-request-certificate">created previously</a>.</p></li>
+<li><p>In the <strong>Default root object</strong> text box, type in <strong>index.html</strong>.</p></li>
+<li><p>For the rest, accept the default values.</p>
+<p>For more information about distribution options, see <a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-web-values-specify.html#DownloadDistValuesGeneral">Distribution settings</a>.</p></li>
+</ul></li>
+<li><p>At the bottom of the page, choose <strong>Create Distribution</strong>.</p></li>
+<li><p>After CloudFront creates your distribution, the value of the <strong>Status</strong> column for your distribution changes from <strong>In Progress</strong> to <strong>Deployed</strong>. This typically takes a few minutes.</p>
+<p>Record the domain name that CloudFront assigns to your distribution, which appears in the list of distributions. You can use this domain name to test the distribution.</p></li>
+</ol>
+<h2 id="step-8-create-an-amazon-cloudfront-distribution-for-your-root-domain">Step 8: Create an Amazon CloudFront distribution for your root domain<a name="getting-started-cloudfront-distribution-root"></a></h2>
+<p>In this step you create a CloudFront distribution for your root domain to have it use HTTPS when its URL is redirected to the subdomain.<a name="getting-started-cloudfront-distribution-root-procedure"></a></p>
+<p><strong>To create a CloudFront distribution</strong></p>
+<ol type="1">
+<li><p>Open the CloudFront console at <a href="https://console.aws.amazon.com/cloudfront/v3/home">https://console.aws.amazon.com/cloudfront/v3/home</a>.</p></li>
+<li><p>Choose <strong>Create Distribution</strong>.</p></li>
+<li><p>Under <strong>Origin Settings</strong>, for <strong>Origin Domain Name</strong>, enter the bucket website endpoint. You get this from the <strong>Static website hosting</strong> section of <strong>Properties</strong> for the Amazon S3 bucket that you <a href="#getting-started-cloudformation-create-s3-www-bucket">created previously</a>.</p>
+<p>For the rest, accept the default values.</p></li>
+<li><p>For the fields under <strong>Default Cache Behavior Settings</strong>, do the following:</p>
+<ul>
+<li>Under <strong>Viewer</strong>, set <strong>Viewer protocol policy</strong> to <strong>Redirect HTTP to HTTPS</strong>.</li>
+<li>Set <strong>Cache settings</strong> to <strong>CachingDisabled</strong>.</li>
+<li>Accept the default values for the rest.</li>
+</ul>
+<p>For more information about cache behavior options, see <a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-web-values-specify.html#DownloadDistValuesCacheBehavior">Cache behavior settings</a> in the <em>Amazon CloudFront developer guide</em>.</p></li>
+<li><p>For the fields under <strong>Settings</strong>, do the following:</p>
+<ul>
+<li>Choose <strong>Add item</strong> for <strong>Alternate domain name (CNAME) - optional</strong>, and enter your root domain, such as <strong>example.com</strong>.</li>
+<li>For <strong>Custom SSL Certificate</strong>, choose the certificate you <a href="#getting-started-cloudfront-request-certificate">created previously</a>.</li>
+<li>For the rest, accept the default values.</li>
+</ul>
+<p>For more information about distribution options, see <a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-web-values-specify.html#DownloadDistValuesGeneral">Distribution settings</a>.</p></li>
+<li><p>At the bottom of the page, choose <strong>Create Distribution</strong>.</p></li>
+<li><p>After CloudFront creates your distribution, the value of the <strong>Status</strong> column for your distribution changes from <strong>In Progress</strong> to <strong>Deployed</strong>. This typically takes a few minutes.</p>
+<p>Record the domain name that CloudFront assigns to your distribution, which appears in the list of distributions. You can use this domain name to test the distribution,</p></li>
+</ol>
+<h2 id="step-9-route-dns-traffic-for-your-domain-to-your-cloudfront-distribution">Step 9: Route DNS traffic for your domain to your CloudFront distribution<a name="getting-started-cloudfront-create-alias"></a></h2>
+<p>You now have a one-page website in your S3 bucket that uses a CloudFront distribution. To start routing internet traffic for your domain to the CloudFront distribution, perform the following procedure.</p>
+<p>For more information about routing traffic to CloudFront distriibutions, see <a href="routing-to-cloudfront-distribution.html">Routing traffic to an Amazon CloudFront distribution by using your domain name</a>.<a name="getting-started-cloudfront-create-alias-procedure"></a></p>
+<p><strong>To route traffic to your website</strong></p>
+<ol type="1">
+<li><p>Open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Hosted zones</strong>. <strong>Note</strong><br />
+When you registered your domain, Amazon Route 53 automatically created a hosted zone with the same name. A hosted zone contains information about how you want Route 53 to route traffic for the domain.</p></li>
+<li><p>In the list of hosted zones, choose the name of your domain.</p></li>
+<li><p>Choose <strong>Create record</strong>.</p>
+<p>If you are in the <strong>Quick create record</strong> view, choose <strong>Switch to wizard</strong>. <strong>Note</strong><br />
+Each record contains information about how you want to route traffic for one domain (such as example.com) or subdomain (such as www.example.com or test.example.com). Records are stored in the hosted zone for your domain.</p></li>
+<li><p>Choose <strong>Simple routing</strong> and choose <strong>Next</strong>.</p></li>
+<li><p>Choose <strong>Define simple record</strong>.</p></li>
+<li><p>In <strong>Record name</strong>, type in <strong>www</strong> in front of the default value, which is the name of your hosted zone and your domain.</p></li>
+<li><p>In <strong>Record type</strong>, choose <strong>A ‐ Routes traffic to an IPv4 address and some AWS resources</strong>.</p></li>
+<li><p>In <strong>Value/Route traffic to</strong>, choose <strong>Alias to CloudFront distribution</strong>.</p></li>
+<li><p>Choose the distribution.</p>
+<p>The distribution name should match the name that appears in the <strong>Domain name</strong> box in the <strong>Distributions</strong> list, for example, <code>dddjjjkkk.cloudfront.net</code>.</p></li>
+<li><p>For <strong>Evaluate target health</strong>, choose <strong>No</strong>.</p></li>
+<li><p>Choose <strong>Define simple record</strong>.</p></li>
+</ol>
+<p><strong>To add an alias record for your root domain (<code>example.com</code>)</strong></p>
+<p>Add an alias record for your root domain also, so it points to the S3 bucket that redirects traffic to <code>www.example.com</code>. For more information about routing traffic to CloudFront distributions, see <a href="routing-to-cloudfront-distribution.html">Routing traffic to an Amazon CloudFront distribution by using your domain name</a>.</p>
+<ol type="1">
+<li><p>Under <strong>Configure records</strong>, choose <strong>Define simple record</strong>.</p></li>
+<li><p>In <strong>Record name</strong>, accept the default value.</p></li>
+<li><p>In <strong>Record type</strong>, choose <strong>A ‐ Routes traffic to an IPv4 address and some AWS resources</strong>.</p></li>
+<li><p>In <strong>Value/Route traffic to</strong>, choose <strong>Alias to CloudFront distribution</strong>.</p></li>
+<li><p>Choose the distribution.</p>
+<p>The distribution name should match the name that appears in the <strong>Domain name</strong> box in the <strong>Distributions</strong> list, for example, <code>dddjjjkkk.cloudfront.net</code>.</p></li>
+<li><p>For <strong>Evaluate target health</strong>, choose <strong>No</strong>.</p></li>
+<li><p>Choose <strong>Define simple record</strong>.</p></li>
+<li><p>On the <strong>Configure records</strong> page, choose <strong>Create records</strong>.</p></li>
+</ol>
+<h2 id="step-10-test-your-website">Step 10 : Test your website<a name="getting-started-cloudfront-test"></a></h2>
+<p>To verify that the website is working correctly, open a web browser and browse to the following URLs: + https://www.<em>your-domain-name</em>, for example, <code>www.example.com</code> – Displays the index document in the <em>www.your-domain-name</em> bucket + https://<em>your-domain-name</em> for example, <code>example.com</code> – Redirects your request to the <em>www.your-domain-name</em> bucket</p>
+<p>In some cases, you might need to clear the cache to see the expected behavior.</p>
+<p>For more advanced information about routing your internet traffic, see <a href="dns-configuring.html">Configuring Amazon Route 53 as your DNS service</a>. For information about routing your internet traffic to AWS resources, see <a href="routing-to-aws-resources.html">Routing internet traffic to your AWS resources</a>.</p>
+</body>
+</html>

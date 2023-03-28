@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resolver-rules-managing</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="managing-forwarding-rules">Managing forwarding rules<a name="resolver-rules-managing"></a></h1>
+<p>If you want Resolver to forward queries for specified domain names to your network, you create one forwarding rule for each domain name and specify the name of the domain for which you want to forward queries.</p>
+<p><strong>Topics</strong> + <a href="#resolver-rules-managing-viewing">Viewing and editing forwarding rules</a> + <a href="#resolver-rules-managing-creating-rules">Creating forwarding rules</a> + <a href="#add-reverse-lookup">Adding rules for reverse lookup</a> + <a href="#resolver-rules-managing-associating-rules">Associating forwarding rules with a VPC</a> + <a href="#resolver-rules-managing-disassociating-rules">Disassociating forwarding rules from a VPC</a> + <a href="#resolver-rules-managing-sharing">Sharing forwarding rules with other AWS accounts and using shared rules</a> + <a href="#resolver-rules-managing-deleting">Deleting forwarding rules</a> + <a href="resolver-automatic-forwarding-rules-reverse-dns.html">Forwarding rules for reverse DNS queries in Resolver</a></p>
+<h2 id="viewing-and-editing-forwarding-rules">Viewing and editing forwarding rules<a name="resolver-rules-managing-viewing"></a></h2>
+<p>To view and edit settings for a forwarding rule, perform the following procedure.<a name="resolver-rules-managing-viewing-procedure"></a></p>
+<p><strong>To view and edit settings for a forwarding rule</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Rules</strong>.</p></li>
+<li><p>On the navigation bar, choose the Region where you created the rule.</p></li>
+<li><p>Choose the option for the rule that you want to view settings for or want to edit.</p></li>
+<li><p>Choose <strong>View details</strong> or <strong>Edit</strong>.</p>
+<p>For information about the values for forwarding rules, see <a href="resolver-forwarding-outbound-queries.html#resolver-forwarding-outbound-queries-rule-values">Values that you specify when you create or edit rules</a>.</p></li>
+<li><p>If you chose <strong>Edit</strong>, enter the applicable values, and then choose <strong>Save</strong>.</p></li>
+</ol>
+<h2 id="creating-forwarding-rules">Creating forwarding rules<a name="resolver-rules-managing-creating-rules"></a></h2>
+<p>To create one or more forwarding rules, perform the following procedure.<a name="resolver-rules-managing-creating-rules-procedure"></a></p>
+<p><strong>To create forwarding rules and associate the rules with one or more VPCs</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Rules</strong>.</p></li>
+<li><p>On the navigation bar, choose the Region where you want to create the rule.</p></li>
+<li><p>Choose <strong>Create rule</strong>.</p></li>
+<li><p>Enter the applicable values. For more information, see <a href="resolver-forwarding-outbound-queries.html#resolver-forwarding-outbound-queries-rule-values">Values that you specify when you create or edit rules</a>.</p></li>
+<li><p>Choose <strong>Save</strong>.</p></li>
+<li><p>To add another rule, repeat steps 4 through 6.</p></li>
+</ol>
+<h2 id="adding-rules-for-reverse-lookup">Adding rules for reverse lookup<a name="add-reverse-lookup"></a></h2>
+<p>If you need to control reverse lookups in your VPC, you can add rules to your outbound resolver endpoint.</p>
+<p><strong>To create the reverse lookup rule</strong></p>
+<ol type="1">
+<li><p>Follow the steps in the previous procedure, up to step 5.</p></li>
+<li><p>When you specify your rule, enter the PTR record for the IP address or addresses that you want a reverse lookup forwarding rule for.</p>
+<p>For example, if you need to forward lookups for addresses in the 10.0.0.0/23 range, enter two rules:</p>
+<ul>
+<li>0.0.10.in-addr.arpa</li>
+<li>1.0.10.in-addr.arpa</li>
+</ul>
+<p>Any IP address in those subnets will be referenced as a subdomain of those PTR records—for example, 10.0.1.161 will have a reverse lookup address of 161.1.0.10.in-addr.arpa, which is a subdomain of 1.0.10.in-addra.arpa.</p></li>
+<li><p>Specify the server to forward these lookups to.</p></li>
+<li><p>Add these rules to your outbound resolver endpoint.</p></li>
+</ol>
+<p>Note that turning on <code>enableDNSHostNames</code> for your VPC automatically adds PTR records. See <a href="resolver.html">What is Amazon Route 53 Resolver?</a>. The previous procedure is required only if you want to explicitly specify a resolver for given IP ranges—for example, when forwarding queries to an Active Directory server.</p>
+<h2 id="associating-forwarding-rules-with-a-vpc">Associating forwarding rules with a VPC<a name="resolver-rules-managing-associating-rules"></a></h2>
+<p>After you create a forwarding rule, you must associate the rule with one or more VPCs. When you associate a rule with a VPC, Resolver starts to forward DNS queries for the domain name that’s specified in the rule to the DNS resolvers that you specified in the rule. The queries pass through the outbound endpoint that you specified when you created the rule.<a name="resolver-rules-managing-associating-procedure"></a></p>
+<p><strong>To associate a forwarding rule with one or more VPCs</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Rules</strong>.</p></li>
+<li><p>On the navigation bar, choose the Region where you created the rule.</p></li>
+<li><p>Choose the name of the rule that you want to associate with one or more VPCs.</p></li>
+<li><p>Choose <strong>Associate VPC</strong>.</p></li>
+<li><p>Under <strong>VPCs that use this rule</strong>, choose the VPCs that you want to associate the rule with.</p></li>
+<li><p>Choose <strong>Add</strong>.</p></li>
+</ol>
+<h2 id="disassociating-forwarding-rules-from-a-vpc">Disassociating forwarding rules from a VPC<a name="resolver-rules-managing-disassociating-rules"></a></h2>
+<p>You disassociate a forwarding rule from a VPC in the following circumstances: + For DNS queries that originate in this VPC, you want Resolver to stop forwarding queries for the domain name specified in the rule to your network. + You want to delete the forwarding rule. If a rule is currently associated with one or more VPCs, you must disassociate the rule from all VPCs before you can delete it.</p>
+<p>If you want to disassociate a forwarding rule from one or more VPCs, perform the following procedure.<a name="resolver-rules-managing-disassociating-procedure"></a></p>
+<p><strong>To disassociate a forwarding rule from a VPC</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Rules</strong>.</p></li>
+<li><p>On the navigation bar, choose the Region where you created the rule.</p></li>
+<li><p>Choose the name of the rule that you want to disassociate from one or more VPCs.</p></li>
+<li><p>Choose the option for the VPC that you want to disassociate the rule from.</p></li>
+<li><p>Choose <strong>Disassociate</strong>.</p></li>
+<li><p>Type <strong>disassociate</strong> to confirm.</p></li>
+<li><p>Choose <strong>Submit</strong>.</p></li>
+</ol>
+<h2 id="sharing-forwarding-rules-with-other-aws-accounts-and-using-shared-rules">Sharing forwarding rules with other AWS accounts and using shared rules<a name="resolver-rules-managing-sharing"></a></h2>
+<p>You can share the forwarding rules that you created using one AWS account with other AWS accounts. To share rules, the Route 53 Resolver console integrates with AWS Resource Access Manager. For more information about Resource Access Manager, see the <a href="https://docs.aws.amazon.com/ram/latest/userguide/what-is.html">Resource Access Manager User Guide</a>.</p>
+<p>Note the following:</p>
+<p><strong>Associating shared rules with VPCs</strong><br />
+If another AWS account has shared one or more rules with your account, you can associate the rules with your VPCs the same way that you associate rules that you created with your VPCs. For more information, see <a href="#resolver-rules-managing-associating-rules">Associating forwarding rules with a VPC</a>.</p>
+<p><strong>Deleting or unsharing a rule</strong><br />
+If you share a rule with other accounts and then either delete the rule or stop sharing it, and if the rule was associated with one or more VPCs, Route 53 Resolver starts to process DNS queries for those VPCs based on the remaining rules. The behavior is the same as if you disassociate the rule from the VPC.</p>
+<p><strong>Maximum number of rules and associations</strong><br />
+When an account creates a rule and shares it with one or more other accounts, the maximum number of rules per AWS Region applies to the account that created the rule.<br />
+When an account that a rule is shared with associates the rule with one or more VPCs, the maximum number of associations between rules and VPCs per Region applies to the account that the rule is shared with.<br />
+For current Resolver quotas, see <a href="DNSLimitations.html#limits-api-entities-resolver">Quotas on Route 53 Resolver</a>.</p>
+<p><strong>Permissions</strong><br />
+To share a rule with another AWS account, you must have permission to use the <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_PutResolverRulePolicy.html">PutResolverRulePolicy</a> action.</p>
+<p><strong>Restrictions on the AWS account that a rule is shared with</strong><br />
+The account that a rule is shared with can’t change or delete the rule.</p>
+<p><strong>Tagging</strong><br />
+Only the account that created a rule can add, delete, or see tags on the rule.</p>
+<p>To view the current sharing status of a rule (including the account that shared the account or the account that a rule is shared with), and to share rules with another account, perform the following procedure.<a name="resolver-rules-managing-sharing-procedure"></a></p>
+<p><strong>To view sharing status and share rules with another AWS account</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Rules</strong>.</p></li>
+<li><p>On the navigation bar, choose the Region where you created the rule.</p>
+<p>The <strong>Sharing status</strong> column shows the current sharing status of rules that were created by the current account or that are shared with the current account:</p>
+<ul>
+<li><strong>Not shared</strong>: The current AWS account created the rule, and the rule is not shared with any other accounts.</li>
+<li><strong>Shared by me</strong>: The current account created the rule and shared it with one or more accounts.</li>
+<li><strong>Shared with me</strong>: Another account created the rule and shared it with the current account.</li>
+</ul></li>
+<li><p>Choose the name of the rule that you want to display sharing information for or that you want to share with another account.</p>
+<p>On the <strong>Rule: <em>rule name</em></strong> page, the value under <strong>Owner</strong> displays ID of the account that created the rule. That’s the current account unless the value of <strong>Sharing status</strong> is <strong>Shared with me</strong>. In that case, <strong>Owner</strong> is the account that created the rule and shared it with the current account.</p></li>
+<li><p>Choose <strong>Share</strong> to view additional information or to share the rule with another account. A page in the Resource Access Manager console appears, depending on the value of <strong>Sharing status</strong>:</p>
+<ul>
+<li><strong>Not shared</strong>: The <strong>Create resource share</strong> page appears. For information about how to share the rule with another account, OU, or organization, skip to step 6.</li>
+<li><strong>Shared by me</strong>: The <strong>Shared resources</strong> page shows the rules and other resources that are owned by the current account and shared with other accounts.</li>
+<li><strong>Shared with me</strong>: The <strong>Shared resources</strong> page shows the rules and other resources that are owned by other accounts and shared with the current account.</li>
+</ul></li>
+<li><p>To share a rule with another AWS account, OU, or organization, specify the following values. <strong>Note</strong><br />
+You can’t update sharing settings. If you want to change any of the following settings, you must reshare a rule with the new settings and then remove the old sharing settings.<br />
+<strong>Description</strong><br />
+Enter a short description that helps you remember why you shared the rule.<br />
+<strong>Resources</strong><br />
+Choose the check box for the rule that you want to share.<br />
+<strong>Principals</strong><br />
+Enter the AWS account number, OU name, or organization name.<br />
+<strong>Tags</strong><br />
+Specify one or more keys and the corresponding values. For example, you might specify <strong>Cost center</strong> for <strong>Key</strong> and specify <strong>456</strong> for <strong>Value</strong>.<br />
+These are the tags that AWS Billing and Cost Management provides for organizing your AWS bill; you can use also tags for other purposes. For more information about using tags for cost allocation, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html">Using cost allocation tags</a> in the <em>AWS Billing User Guide</em>.</p></li>
+</ol>
+<h2 id="deleting-forwarding-rules">Deleting forwarding rules<a name="resolver-rules-managing-deleting"></a></h2>
+<p>To delete a forwarding rule, perform the following procedure.</p>
+<p>Note the following: + If the forwarding rule is associated with any VPCs, you must disassociate the rule from the VPCs before you can delete the rule. For more information, see <a href="#resolver-rules-managing-disassociating-rules">Disassociating forwarding rules from a VPC</a>. + You can’t delete the default <strong>Internet Resolver</strong> rule, which has a value of <strong>Recursive</strong> for <strong>Type</strong>. This rule causes Route 53 Resolver to act as a recursive resolver for any domain names that you didn’t create custom rules for and that Resolver didn’t create autodefined rules for. For more information about how rules are categorized, see <a href="resolver-overview-DSN-queries-to-vpc.html#resolver-overview-forward-vpc-to-network-using-rules">Using rules to control which queries are forwarded to your network</a>.<a name="resolver-rules-managing-deleting-procedure"></a></p>
+<p><strong>To delete a forwarding rule</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Rules</strong>.</p></li>
+<li><p>On the navigation bar, choose the Region where you created the rule.</p></li>
+<li><p>Choose the option for the rule that you want to delete.</p></li>
+<li><p>Choose <strong>Delete</strong>.</p></li>
+<li><p>To confirm that you want to delete the rule, enter the name of the rule and choose <strong>Submit</strong>.</p></li>
+</ol>
+</body>
+</html>

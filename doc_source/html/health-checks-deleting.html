@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>health-checks-deleting</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="deleting-health-checks">Deleting health checks<a name="health-checks-deleting"></a></h1>
+<p>To delete health checks, perform the following procedure.</p>
+<p><strong>Note</strong><br />
+If you’re using AWS Cloud Map and you configured AWS Cloud Map to create a Route 53 health check when you register an instance, you can’t use the Route 53 console to delete the health check. The health check is deleted automatically when you deregister the instance. There can be a delay of several hours before the health check no longer appears in the Route 53 console. <a name="health-checks-deleting-console-proc"></a></p>
+<p><strong>To delete a health check (console)</strong></p>
+<ol type="1">
+<li><p>If you’re deleting health checks that are associated with records, perform the recommended tasks in <a href="health-checks-updating-deleting-tasks.html">Updating or deleting health checks when DNS failover is configured</a>.</p></li>
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Health Checks</strong>.</p></li>
+<li><p>In the right pane, select the health check that you want to delete.</p></li>
+<li><p>Choose <strong>Delete Health Check</strong>.</p></li>
+<li><p>Choose <strong>Yes, Delete</strong> to confirm.</p></li>
+</ol>
+</body>
+</html>

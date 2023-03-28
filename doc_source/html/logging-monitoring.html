@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>logging-monitoring</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="logging-and-monitoring-in-amazon-route-53">Logging and monitoring in Amazon Route 53<a name="logging-monitoring"></a></h1>
+<p>Amazon Route 53 provides DNS query logging and the ability to monitor your resources using health checks. In addition, Route 53 integrates with other AWS services to provide additional logging and monitoring:</p>
+<p><strong>Logging DNS queries</strong><br />
+You can configure Route 53 to log information about the queries that Route 53 receives, such as the domain or subdomain that was requested, the date and time of the request, and the DNS record type, such as A or AAAA.<br />
+For more information, see <a href="query-logs.html">Public DNS query logging</a>.</p>
+<p><strong>Using AWS CloudTrail to log console and programmatic actions</strong><br />
+CloudTrail provides a record of Route 53 actions taken by a user, a role, or an AWS service. Using the information collected by CloudTrail, you can track the requests that are made, the IP addresses that requests originate from, who made the request, when it was made, and additional details. For more information, see <a href="logging-using-cloudtrail.html">Logging Amazon Route 53 API calls with AWS CloudTrail</a>.</p>
+<p><strong>Monitoring domain registrations</strong><br />
+The Route 53 dashboard provides detailed information about the status of your domain registrations, such as the status of domain transfers and domains that are approaching the expiration date.<br />
+For more information, see <a href="monitoring-domain-registrations.html">Monitoring domain registrations</a>.</p>
+<p><strong>Using Route 53 health checks and Amazon CloudWatch to monitor your resources</strong><br />
+You can monitor your resources by creating Route 53 health checks, which use CloudWatch to collect and process raw data into readable, near real-time metrics.<br />
+For more information, see <a href="monitoring-cloudwatch.html">Monitoring your resources with Amazon Route 53 health checks and Amazon CloudWatch</a>.</p>
+<p><strong>Using Amazon CloudWatch to monitor Route 53 Resolver endpoints</strong><br />
+You can use CloudWatch to monitor the number of DNS queries that are forwarded by Resolver endpoints.<br />
+For more information, see <a href="monitoring-resolver-with-cloudwatch.html">Monitoring Route 53 Resolver endpoints with Amazon CloudWatch</a>.</p>
+<p><strong>Using AWS Trusted Advisor</strong><br />
+Trusted Advisor draws upon best practices learned from serving AWS customers. Trusted Advisor inspects your AWS environment and then makes recommendations when opportunities exist to save money, improve system availability and performance, or help close security gaps. All AWS customers have access to five Trusted Advisor checks. Customers with a Business or Enterprise support plan can view all Trusted Advisor checks.<br />
+For more information, see <a href="https://docs.aws.amazon.com/awssupport/latest/user/getting-started.html#trusted-advisor">Trusted Advisor</a>.</p>
+</body>
+</html>

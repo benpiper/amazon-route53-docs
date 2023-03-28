@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resource-record-sets-values-geo</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="values-specific-for-geolocation-records">Values specific for geolocation records<a name="resource-record-sets-values-geo"></a></h1>
+<p>When you create geolocation records, you specify the following values.</p>
+<p><strong>Topics</strong> + <a href="#rrsets-values-geo-routing-policy">Routing policy</a> + <a href="#rrsets-values-geo-name">Record name</a> + <a href="#rrsets-values-geo-type">Record type</a> + <a href="#rrsets-values-geo-ttl">TTL (seconds)</a> + <a href="#rrsets-values-geo-value">Value/Route traffic to</a> + <a href="#rrsets-values-geo-location">Location</a> + <a href="#rrsets-values-geo-sublocation">U.S. states</a> + <a href="#rrsets-values-geo-associate-with-health-check">Health check</a> + <a href="#rrsets-values-geo-set-id">Record ID</a></p>
+<h2 id="routing-policy">Routing policy<a name="rrsets-values-geo-routing-policy"></a></h2>
+<p>Choose <strong>Geolocation</strong>.</p>
+<h2 id="record-name">Record name<a name="rrsets-values-geo-name"></a></h2>
+<p>Enter the name of the domain or subdomain that you want to route traffic for. The default value is the name of the hosted zone.</p>
+<p><strong>Note</strong><br />
+If you’re creating a record that has the same name as the hosted zone, don’t enter a value (for example, an @ symbol) in the <strong>Name</strong> field.</p>
+<p>Enter the same name for all of the records in the group of geolocation records.</p>
+<p>For more information about record names, see <a href="resource-record-sets-values-shared.html#rrsets-values-common-name">Record name</a>.</p>
+<h2 id="record-type">Record type<a name="rrsets-values-geo-type"></a></h2>
+<p>The DNS record type. For more information, see <a href="ResourceRecordTypes.html">Supported DNS record types</a>.</p>
+<p>Select the same value for all of the records in the group of geolocation records.</p>
+<h2 id="ttl-seconds">TTL (seconds)<a name="rrsets-values-geo-ttl"></a></h2>
+<p>The amount of time, in seconds, that you want DNS recursive resolvers to cache information about this record. If you specify a longer value (for example, 172800 seconds, or two days), you reduce the number of calls that DNS recursive resolvers must make to Route 53 to get the latest information in this record. This has the effect of reducing latency and reducing your bill for Route 53 service. For more information, see <a href="welcome-dns-service.html#welcome-dns-service-how-route-53-routes-traffic">How Amazon Route 53 routes traffic for your domain</a>.</p>
+<p>However, if you specify a longer value for TTL, it takes longer for changes to the record (for example, a new IP address) to take effect because recursive resolvers use the values in their cache for longer periods before they ask Route 53 for the latest information. If you’re changing settings for a domain or subdomain that’s already in use, we recommend that you initially specify a shorter value, such as 300 seconds, and increase the value after you confirm that the new settings are correct.</p>
+<p>If you’re associating this record with a health check, we recommend that you specify a TTL of 60 seconds or less so clients respond quickly to changes in health status.</p>
+<h2 id="valueroute-traffic-to">Value/Route traffic to<a name="rrsets-values-geo-value"></a></h2>
+<p>Choose <strong>IP address or another value depending on the record type</strong>. Enter a value that is appropriate for the value of <strong>Record type</strong>. For all types except <strong>CNAME</strong>, you can enter more than one value. Enter each value on a separate line.</p>
+<p>You can route traffic to, or specify the following values: + <strong>A — IPv4 address</strong> + <strong>AAAA — IPv6 address</strong> + <strong>CAA — Certificate Authority Authorization</strong> + <strong>CNAME — Canonical name</strong> + <strong>MX — Mail exchange</strong> + <strong>NAPTR — Name Authority Pointer</strong> + <strong>PTR — Pointer</strong> + <strong>SPF — Sender Policy Framework</strong> + <strong>SRV — Service locator</strong> + <strong>TXT — Text</strong></p>
+<p>For more information about the above values, see <a href="resource-record-sets-values-shared.html#rrsets-values-common-value">common values for Value/Route traffic to</a>.</p>
+<h2 id="location">Location<a name="rrsets-values-geo-location"></a></h2>
+<p>When you configure Route 53 to respond to DNS queries based on the location that the queries originated from, select the continent or country for which you want Route 53 to respond with the settings in this record. If you want Route 53 to respond to DNS queries for individual states in the United States, select <strong>United States</strong> from the <strong>Location</strong> list, and then select the state under the <strong>Sublocation</strong> group.</p>
+<p>For a private hosted zone, select the continent, country, or sub-division closest to the AWS Region that your resource is in. For example, if your resource is in us-east-1, you can specify North America, United States, or Virginia.</p>
+<p><strong>Important</strong><br />
+We recommend that you create one geolocation record that has a value of <strong>Default</strong> for <strong>Location</strong>. This covers geographic locations that you haven’t created records for and IP addresses that Route 53 can’t identify a location for. When you configure the default location, set the country code to an asterisk “*”.</p>
+<p>You can’t create non-geolocation records that have the same values for <strong>Record name</strong> and <strong>Record type</strong> as geolocation records.</p>
+<p>For more information, see <a href="routing-policy-geo.html">Geolocation routing</a>.</p>
+<p>Here are the countries that Amazon Route 53 associates with each continent. The country codes are from ISO 3166. For more information, see the Wikipedia article <a href="http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO 3166-1 alpha-2</a>:</p>
+<p><strong>Africa (AF)</strong><br />
+AO, BF, BI, BJ, BW, CD, CF, CG, CI, CM, CV, DJ, DZ, EG, ER, ET, GA, GH, GM, GN, GQ, GW, KE, KM, LR, LS, LY, MA, MG, ML, MR, MU, MW, MZ, NA, NE, NG, RE, RW, SC, SD, SH, SL, SN, SO, SS, ST, SZ, TD, TG, TN, TZ, UG, YT, ZA, ZM, ZW</p>
+<p><strong>Antarctica (AN)</strong><br />
+AQ, GS, TF</p>
+<p><strong>Asia (AS)</strong><br />
+AE, AF, AM, AZ, BD, BH, BN, BT, CC, CN, GE, HK, ID, IL, IN, IO, IQ, IR, JO, JP, KG, KH, KP, KR, KW, KZ, LA, LB, LK, MM, MN, MO, MV, MY, NP, OM, PH, PK, PS, QA, SA, SG, SY, TH, TJ, TM, TW, UZ, VN, YE</p>
+<p><strong>Europe (EU)</strong><br />
+AD, AL, AT, AX, BA, BE, BG, BY, CH, CY, CZ, DE, DK, EE, ES, FI, FO, FR, GB, GG, GI, GR, HR, HU, IE, IM, IS, IT, JE, LI, LT, LU, LV, MC, MD, ME, MK, MT, NL, NO, PL, PT, RO, RS, RU, SE, SI, SJ, SK, SM, TR, UA, VA, XK</p>
+<p><strong>North America (NA)</strong><br />
+AG, AI, AW, BB, BL, BM, BQ, BS, BZ, CA, CR, CU, CW, DM, DO, GD, GL, GP, GT, HN, HT, JM, KN, KY, LC, MF, MQ, MS, MX, NI, PA, PM, PR, SV, SX, TC, TT, US, VC, VG, VI</p>
+<p><strong>Oceania (OC)</strong><br />
+AS, AU, CK, FJ, FM, GU, KI, MH, MP, NC, NF, NR, NU, NZ, PF, PG, PN, PW, SB, TK, TL, TO, TV, UM, VU, WF, WS</p>
+<p><strong>South America (SA)</strong><br />
+AR, BO, BR, CL, CO, EC, FK, GF, GY, PE, PY, SR, UY, VE</p>
+<p><strong>Note</strong><br />
+Route 53 doesn’t support creating geolocation records for the following countries: Bouvet Island (BV), Christmas Island (CX), Western Sahara (EH), and Heard Island and McDonald Islands (HM). No data is available about IP addresses for these countries.</p>
+<h2 id="u.s.-states">U.S. states<a name="rrsets-values-geo-sublocation"></a></h2>
+<p>When you configure Route 53 to respond to DNS queries based on the state of the United States that the queries originated from, select the state from the <strong>U.S. states</strong> list. United States territories (for example, Puerto Rico) are listed as countries in the <strong>Location</strong> list.</p>
+<p><strong>Important</strong><br />
+Some IP addresses are associated with the United States, but not with an individual state. If you create records for all of the states in the United States, we recommend that you also create a record for the United States to route queries for these unassociated IP addresses. If you don’t create a record for the United States, Route 53 responds to DNS queries from unassociated United States IP addresses with settings from the default geolocation record (if you created one) or with a “no answer” response.</p>
+<h2 id="health-check">Health check<a name="rrsets-values-geo-associate-with-health-check"></a></h2>
+<p>Select a health check if you want Route 53 to check the health of a specified endpoint and to respond to DNS queries using this record only when the endpoint is healthy.</p>
+<p>Route 53 doesn’t check the health of the endpoint specified in the record, for example, the endpoint specified by the IP address in the <strong>Value</strong> field. When you select a health check for a record, Route 53 checks the health of the endpoint that you specified in the health check. For information about how Route 53 determines whether an endpoint is healthy, see <a href="dns-failover-determining-health-of-endpoints.html">How Amazon Route 53 determines whether a health check is healthyHow Route 53 determines whether a health check is healthy</a>.</p>
+<p>Associating a health check with a record is useful only when Route 53 is choosing between two or more records to respond to a DNS query, and you want Route 53 to base the choice in part on the status of a health check. Use health checks only in the following configurations: + You’re checking the health of all of the records in a group of records that have the same name, type, and routing policy (such as failover or weighted records), and you specify health check IDs for all the records. If the health check for a record specifies an endpoint that is not healthy, Route 53 stops responding to queries using the value for that record. + You select <strong>Yes</strong> for <strong>Evaluate Target Health</strong> for an alias record or the records in a group of failover alias, geolocation alias, latency alias, IP-based alias, or weighted alias record. If the alias records reference non-alias records in the same hosted zone, you must also specify health checks for the referenced records. If you associate a health check with an alias record and also select <strong>Yes</strong> for <strong>Evaluate Target Health</strong>, both must evaluate to true. For more information, see <a href="dns-failover-complex-configs.html#dns-failover-complex-configs-hc-alias">What happens when you associate a health check with an alias record?</a>.</p>
+<p>If your health checks specify the endpoint only by domain name, we recommend that you create a separate health check for each endpoint. For example, create a health check for each HTTP server that is serving content for www.example.com. For the value of <strong>Domain Name</strong>, specify the domain name of the server (such as us-east-2-www.example.com), not the name of the records (example.com).</p>
+<p><strong>Important</strong><br />
+In this configuration, if you create a health check for which the value of <strong>Domain Name</strong> matches the name of the records and then associate the health check with those records, health check results will be unpredictable.</p>
+<p>For geolocation records, if an endpoint is unhealthy, Route 53 looks for a record for the larger, associated geographic Region. For example, suppose you have records for a state in the United States, for the United States, for North America, and for all locations (<strong>Location</strong> is <strong>Default</strong>). If the endpoint for the state record is unhealthy, Route 53 checks the records for the United States, for North America, and for all locations, in that order, until it finds a record that has a healthy endpoint. If all applicable records are unhealthy, including the record for all locations, Route 53 responds to the DNS query using the value for the record for the smallest geographic region.</p>
+<h2 id="record-id">Record ID<a name="rrsets-values-geo-set-id"></a></h2>
+<p>Enter a value that uniquely identifies this record in the group of geolocation records.</p>
+</body>
+</html>

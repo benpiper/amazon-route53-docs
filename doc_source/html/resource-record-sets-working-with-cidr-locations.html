@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>resource-record-sets-working-with-cidr-locations</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="working-with-cidr-locations-and-blocks">Working with CIDR locations and blocks<a name="resource-record-sets-working-with-cidr-locations"></a></h1>
+<p><a name="CIDR-locations-work-with-procedure"></a></p>
+<p><strong>To work with CIDR locations by using the Route 53 console</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>IP-based routing</strong>, <strong>CIDR collections</strong> and then, in the <strong>CIDR collections</strong> section, click on a link to a CIDR collection in the <strong>Collection name</strong> list.</p>
+<p>On the <strong>CIDR locations</strong> page, you can create a CIDR location, delete it, or edit a location and its blocks.</p>
+<ul>
+<li><p>To create a location, choose <strong>Create CIDR location</strong>.</p></li>
+<li><p>In the <strong>Create CIDR location</strong> pane, enter a name for the location, the CIDR blocks associated with the location, and then choose <strong>Create</strong>.</p></li>
+<li><p>To view a CIDR location and the blocks within, choose the radio button next to a location to display its name and CIDR blocks in the location pane.</p>
+<p>In this pane, you can also choose <strong>Edit</strong> to update the name of the location and/or its CIDR blocks. Choose <strong>Save</strong> when you have finished editing.</p></li>
+<li><p>To delete a CIDR location and the blocks within, choose the radio button next to the location you want to delete, and then choose <strong>Delete</strong>. To confirm deletion, enter the location name in the text input field and choose <strong>Delete</strong> again. <strong>Important</strong><br />
+Deleting a CIDR location can’t be undone. If you have any DNS records associated with the location, your domain might become unreachable.</p></li>
+</ul></li>
+</ol>
+</body>
+</html>

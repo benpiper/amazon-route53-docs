@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>health-checks-updating-cloudwatch-alarm-settings</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="updating-health-checks-when-you-change-cloudwatch-alarm-settings-health-checks-that-monitor-a-cloudwatch-alarm-only">Updating health checks when you change CloudWatch alarm settings (health checks that monitor a CloudWatch alarm only)<a name="health-checks-updating-cloudwatch-alarm-settings"></a></h1>
+<p>If you create a Route 53 health check that monitors the data stream for a CloudWatch alarm and then you update the settings in the CloudWatch alarm, Route 53 doesn’t automatically update the alarm settings in the health check. If you want the health check to start using the new alarm settings, you need to update the health check.</p>
+<p><strong>Note</strong><br />
+To update a health check programmatically, you can use the <code>UpdateHealthCheck</code> API. Just specify the current values for <code>AlarmIdentifier</code> and <code>Region</code>, and Route 53 will get the latest settings from CloudWatch. For more information, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_UpdateHealthCheck.html">UpdateHealthCheck</a> in the <em>Amazon Route 53 API Reference</em>.<a name="health-checks-updating-cloudwatch-alarm-settings-procedure"></a></p>
+<p><strong>To update a health check with new CloudWatch alarm settings (console)</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Health Checks</strong>.</p></li>
+<li><p>Select the check box for the health check that you want to update.</p></li>
+<li><p>Choose <strong>Edit health check</strong>.</p>
+<p>A note explains that the CloudWatch alarm for the health check has changed. The <strong>Details</strong> field shows the new alarm settings.</p></li>
+<li><p>Choose <strong>Save</strong>.</p></li>
+</ol>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>dns-failover</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="creating-amazon-route-53-health-checks-and-configuring-dns-failover">Creating Amazon Route 53 health checks and configuring DNS failover<a name="dns-failover"></a></h1>
+<p>Amazon Route 53 health checks monitor the health and performance of your web applications, web servers, and other resources. Each health check that you create can monitor one of the following: + The health of a specified resource, such as a web server. + The status of other health checks. + The status of an Amazon CloudWatch alarm. + Additionally, with Amazon Route 53 Application Recovery Controller, you can set up routing control health checks with DNS failover records to manage traffic failover for your application. To learn more, see <a href="https://docs.aws.amazon.com/r53recovery/latest/dg/what-is-route-53-recovery.html">Amazon Route 53 Application Recovery Controller Developer Guide</a>.</p>
+<p>For an overview of the types of health checks, see <a href="health-checks-types.html">Types of Amazon Route 53 health checksTypes of health checks</a>. For information about creating health checks, see <a href="health-checks-creating.html">Creating and updating health checks</a>.</p>
+<p>After you create a health check, you can get the status of the health check, get notifications when the status changes, and configure DNS failover:</p>
+<p><strong>Getting health check status and notifications</strong><br />
+You can view the current and recent status of your health checks on the Route 53 console. You can also work with health checks programmatically through one of the AWS SDKs, the AWS Command Line Interface, AWS Tools for Windows PowerShell, or the Route 53 API.<br />
+If you want to receive a notification when the status of a health check changes, you can configure an Amazon CloudWatch alarm for each health check.<br />
+For information about viewing health check status and receiving notifications, see <a href="health-checks-monitor-view-status.html">Monitoring health check status and getting notifications</a>.</p>
+<p><strong>Configuring DNS failover</strong><br />
+If you have multiple resources that perform the same function, you can configure DNS failover so that Route 53 will route your traffic from an unhealthy resource to a healthy resource. For example, if you have two web servers and one web server becomes unhealthy, Route 53 can route traffic to the other web server. For more information, see <a href="dns-failover-configuring.html">Configuring DNS failover</a>.</p>
+<p><strong>Topics</strong> + <a href="health-checks-types.html">Types of Amazon Route 53 health checks</a> + <a href="dns-failover-determining-health-of-endpoints.html">How Amazon Route 53 determines whether a health check is healthy</a> + <a href="health-checks-creating-deleting.html">Creating, updating, and deleting health checks</a> + <a href="health-checks-monitor-view-status.html">Monitoring health check status and getting notifications</a> + <a href="dns-failover-configuring.html">Configuring DNS failover</a> + <a href="health-checks-tagging.html">Naming and tagging health checks</a> + <a href="dns-failover-using-old-apis.html">Using health checks with Amazon Route 53 API versions earlier than 2012-12-12</a></p>
+</body>
+</html>

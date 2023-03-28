@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>monitoring-resolver-with-cloudwatch</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="monitoring-route-53-resolver-endpoints-with-amazon-cloudwatch">Monitoring Route 53 Resolver endpoints with Amazon CloudWatch<a name="monitoring-resolver-with-cloudwatch"></a></h1>
+<p>You can use Amazon CloudWatch to monitor the number of DNS queries that are forwarded by Route 53 Resolver endpoints. Amazon CloudWatch collects and processes raw data into readable, near real-time metrics. These statistics are recorded for a period of two weeks, so that you can access historical information and gain a better perspective on how your resources are performing. By default, metric data for Resolver endpoints is automatically sent to CloudWatch at five-minute intervals. The five-minute interval is also the smallest interval at which the metric data can be sent.</p>
+<p>For more information about Resolver, see <a href="resolver.html">What is Amazon Route 53 Resolver?</a>. For more information about CloudWatch, see <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/WhatIsCloudWatch.html">What is Amazon CloudWatch?</a> in the <em>Amazon CloudWatch User Guide</em>.</p>
+<h2 id="metrics-and-dimensions-for-route-53-resolver">Metrics and dimensions for Route 53 Resolver<a name="metrics-dimensions-resolver"></a></h2>
+<p>When you configure Resolver to forward DNS queries to your network or vice versa, Resolver starts to send <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/monitoring-resolver-with-cloudwatch.html#cloudwatch-metrics-resolver">metrics</a> and <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/monitoring-resolver-with-cloudwatch.html#cloudwatch-dimensions-resolver">dimensions</a> once every five minutes to CloudWatch about the number of queries that are forwarded. You can use the following procedures to view the metrics in the CloudWatch console or view them by using the AWS Command Line Interface (AWS CLI).</p>
+<p><strong>To view Resolver metrics using the CloudWatch console</strong></p>
+<ol type="1">
+<li><p>Open the CloudWatch console at <a href="https://console.aws.amazon.com/cloudwatch/">https://console.aws.amazon.com/cloudwatch/</a>.</p></li>
+<li><p>On the navigation bar, choose the Region where you created the endpoint.</p></li>
+<li><p>In the navigation pane, choose <strong>Metrics</strong>.</p></li>
+<li><p>On the <strong>All metrics</strong> tab, choose <strong>Route 53 Resolver</strong>.</p></li>
+<li><p>Choose <strong>By Endpoint</strong> to view query counts for a specified endpoint. Then choose the endpoints that you want to view the number of queries for.</p>
+<p>Choose <strong>Across All Endpoints</strong> to view query counts for all inbound endpoints or for all outbound endpoints that were created by the current AWS account. Then choose <strong>InboundQueryVolume</strong> or <strong>OutboundQueryVolume</strong> to view the desired counts.</p></li>
+</ol>
+<p><strong>To view metrics using the AWS CLI</strong> + At a command prompt, use the following command:</p>
+<pre><code>1. aws cloudwatch list-metrics --namespace &quot;AWS/Route53Resolver&quot;</code></pre>
+<p><strong>Topics</strong> + <a href="#cloudwatch-metrics-resolver">CloudWatch metrics for Route 53 Resolver</a> + <a href="#cloudwatch-dimensions-resolver">Dimensions for Route 53 Resolver metrics</a></p>
+<h3 id="cloudwatch-metrics-for-route-53-resolver">CloudWatch metrics for Route 53 Resolver<a name="cloudwatch-metrics-resolver"></a></h3>
+<p><code>AWS/Route53Resolver</code> namespace includes metrics for Route 53 Resolver endpoints and for IP addresses.</p>
+<p><strong>Topics</strong> + <a href="#cloudwatch-metrics-resolver-endpoint">Metrics for Resolver endpoints</a> + <a href="#cloudwatch-metrics-resolver-ip-address">Metrics for Resolver IP addresses</a></p>
+<h4 id="metrics-for-resolver-endpoints">Metrics for Resolver endpoints<a name="cloudwatch-metrics-resolver-endpoint"></a></h4>
+<p>The <code>AWS/Route53Resolver</code> namespace includes the following metrics for Route 53 Resolver endpoints.</p>
+<p><strong>EndpointHealthyENICount</strong><br />
+The number of elastic network interfaces in the <code>OPERATIONAL</code> status. This means that the Amazon VPC network interfaces for the endpoint (specified by <code>EndpointId</code>) are correctly configured and able to pass inbound or outbound DNS queries between your network and Resolver.<br />
+Valid statistics: Minimum, Maximum, Average<br />
+Units: Count</p>
+<p><strong>EndpointUnHealthyENICount</strong><br />
+The number of elastic network interfaces in the <code>AUTO_RECOVERING</code> status.<br />
+This means that the resolver is trying to recover one or more of the Amazon VPC network interfaces that are associated with the endpoint (specified by <code>EndpointId</code>). During the recovery process, the endpoint functions with limited capacity and is unable to process DNS queries until it’s fully recovered.<br />
+Valid statistics: Minimum, Maximum, Average<br />
+Units: Count</p>
+<p><strong>InboundQueryVolume</strong><br />
+For inbound endpoints, the number of DNS queries forwarded from your network to your VPCs through the endpoint specified by <code>EndpointId</code>.<br />
+Valid statistics: Sum<br />
+Units: Count</p>
+<p><strong>OutboundQueryVolume</strong><br />
+For outbound endpoints, the number of DNS queries forwarded from your VPCs to your network through the endpoint specified by <code>EndpointId</code>.<br />
+Valid statistics: Sum<br />
+Units: Count</p>
+<p><strong>OutboundQueryAggregateVolume</strong><br />
+For outbound endpoints, the total number of DNS queries forwarded from Amazon VPCs to your network, including the following:<br />
++ The number of DNS queries forwarded from your VPCs to your network through the endpoint that is specified by <code>EndpointId</code>. + When the current account shares Resolver rules with other accounts, queries from VPCs that are created by other accounts that are forwarded to your network through the endpoint that is specified by <code>EndpointId</code>. Valid statistics: Sum<br />
+Units: Count</p>
+<h4 id="metrics-for-resolver-ip-addresses">Metrics for Resolver IP addresses<a name="cloudwatch-metrics-resolver-ip-address"></a></h4>
+<p>The <code>AWS/Route53Resolver</code> namespace includes the following metrics for each IP address that’s associated with a Resolver inbound or outbound endpoint. (When you specify an endpoint, Resolver creates an Amazon VPC <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html">elastic network interface</a>.)</p>
+<p><strong>InboundQueryVolume</strong><br />
+For each IP address for your inbound endpoints, the number of DNS queries forwarded from your network to the specified IP address. Each IP address is identified by the IP address ID. You can get this value using the Route 53 console. On the page for the applicable endpoint, in the IP addresses section, see the <strong>IP address ID</strong> column. You can also get the value programmatically using <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_ListResolverEndpointIpAddresses.html">ListResolverEndpointIpAddresses</a>.<br />
+Valid statistics: Sum<br />
+Units: Count</p>
+<p><strong>OutboundQueryAggregateVolume</strong><br />
+For each IP address for your outbound endpoints, the total number of DNS queries forwarded from Amazon VPCs to your network, including the following:<br />
++ The number of DNS queries forwarded from your VPCs to your network using the specified IP address. + When the current account shares Resolver rules with other accounts, queries from VPCs that are created by other accounts that are forwarded to your network through using the specified IP address. Each IP address is identified by the IP address ID. You can get this value using the Route 53 console. On the page for the applicable endpoint, in the IP addresses section, see the <strong>IP address ID</strong> column. You can also get the value programmatically using <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_ListResolverEndpointIpAddresses.html">ListResolverEndpointIpAddresses</a>.<br />
+Valid statistics: Sum<br />
+Units: Count</p>
+<h3 id="dimensions-for-route-53-resolver-metrics">Dimensions for Route 53 Resolver metrics<a name="cloudwatch-dimensions-resolver"></a></h3>
+<p>Route 53 Resolver metrics for inbound and outbound endpoints use the <code>AWS/Route53Resolver</code> namespace and provide metrics for <code>EndpointId</code>. If you specify a value for the <code>EndpointId</code> dimension, CloudWatch returns the number of DNS queries for the specified endpoint. If you don’t specify <code>EndpointId</code>, CloudWatch returns the number of DNS queries for all endpoints that were created by the current AWS account.</p>
+</body>
+</html>

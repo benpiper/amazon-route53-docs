@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>migrate-dns-domain-inactive</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="making-route-53-the-dns-service-for-an-inactive-domain">Making Route 53 the DNS service for an inactive domain<a name="migrate-dns-domain-inactive"></a></h1>
+<p>If you want to migrate DNS service to Amazon Route 53 for a domain that isn’t getting any traffic (or is getting very little traffic), perform the procedures in this section.</p>
+<p><strong>Topics</strong> + <a href="#migrate-dns-get-zone-file-domain-inactive">Step 1: Get your current DNS configuration from the current DNS service provider (inactive domains)</a> + <a href="#migrate-dns-create-hosted-zone-domain-inactive">Step 2: Create a hosted zone (inactive domains)</a> + <a href="#migrate-dns-create-records-domain-inactive">Step 3: Create records (inactive domains)</a> + <a href="#migrate-dns-update-domain-inactive">Step 4: Update the domain registration to use Amazon Route 53 name servers (inactive domains)</a></p>
+<h2 id="step-1-get-your-current-dns-configuration-from-the-current-dns-service-provider-inactive-domains">Step 1: Get your current DNS configuration from the current DNS service provider (inactive domains)<a name="migrate-dns-get-zone-file-domain-inactive"></a></h2>
+<p>When you migrate DNS service from another provider to Route 53, you reproduce your current DNS configuration in Route 53. In Route 53, you create a hosted zone that has the same name as your domain, and you create records in the hosted zone. Each record indicates how you want to route traffic for a specified domain name or subdomain name. For example, when someone enters your domain name in a web browser, do you want traffic to be routed to a web server in your data center, to an Amazon EC2 instance, to a CloudFront distribution, or to some other location?</p>
+<p>The process that you use depends on the complexity of your current DNS configuration: + <strong>If your current DNS configuration is simple</strong> – If you’re routing internet traffic for just a few subdomains to a small number of resources, such as web servers or Amazon S3 buckets, then you can manually create a few records in the Route 53 console. + <strong>If your current DNS configuration is more complex, and you just want to reproduce your current configuration</strong> – You can simplify the migration if you can get a zone file from the current DNS service provider, and import the zone file into Route 53. (Not all DNS service providers offer zone files.) When you import a zone file, Route 53 automatically reproduces the existing configuration by creating the corresponding records in your hosted zone.</p>
+<p>Try asking customer support with your current DNS service provider how to get a <em>zone file</em> or a <em>records list</em>. For information about the required format of the zone file, see <a href="resource-record-sets-creating-import.html">Creating records by importing a zone file</a>. + <strong>If your current DNS configuration is more complex, and you’re interested in Route 53 routing features</strong> – Review the following documentation to see whether you want to use Route 53 features that aren’t available from other DNS service providers. If so, you can either create records manually, or you can import a zone file and then create or update records later: + <a href="resource-record-sets-choosing-alias-non-alias.html">Choosing between alias and non-alias records</a> explains the advantages of Route 53 alias records, which route traffic to some AWS resources, such as CloudFront distributions and Amazon S3 buckets, for no charge. + <a href="routing-policy.html">Choosing a routing policy</a> explains the Route 53 routing options, for example, routing based on the location of your users, routing based on the latency between your users and your resources, routing based on whether your resources are healthy, and routing to resources based on weights that you specify. <strong>Note</strong><br />
+You can also import a zone file and later change your configuration to take advantage of alias records and complex routing policies.</p>
+<p>If you can’t get a zone file or if you want to manually create records in Route 53, the records that you’re likely to migrate include the following: + <strong>A (Address) records</strong> – associate a domain name or subdomain name with the IPv4 address (for example, 192.0.2.3) of the corresponding resource + <strong>AAAA (Address) records</strong> – associate a domain name or subdomain name with the IPv6 address (for example, 2001:0db8:85a3:0000:0000:abcd:0001:2345) of the corresponding resource + <strong>Mail server (MX) records</strong> – route traffic to mail servers + <strong>CNAME records</strong> – reroute traffic for one domain name (example.net) to another domain name (example.com) + <strong>Records for other supported DNS record types</strong> – For a list of supported record types, see <a href="ResourceRecordTypes.html">Supported DNS record types</a>.</p>
+<h2 id="step-2-create-a-hosted-zone-inactive-domains">Step 2: Create a hosted zone (inactive domains)<a name="migrate-dns-create-hosted-zone-domain-inactive"></a></h2>
+<p>To tell Amazon Route 53 how you want to route traffic for your domain, you create a hosted zone that has the same name as your domain, and then you create records in the hosted zone.</p>
+<p><strong>Important</strong><br />
+You can create a hosted zone only for a domain that you have permission to administer. Typically, this means that you own the domain, but you might also be developing an application for the domain registrant.</p>
+<p>When you create a hosted zone, Route 53 automatically creates a name server (NS) record and a start of authority (SOA) record for the zone. The NS record identifies the four name servers that Route 53 associated with your hosted zone. To make Route 53 the DNS service for your domain, you update the registration for the domain to use these four name servers.</p>
+<p><strong>Important</strong><br />
+Don’t create additional name server (NS) or start of authority (SOA) records, and don’t delete the existing NS and SOA records. <a name="migrate-dns-create-hosted-zone-procedure"></a></p>
+<p><strong>To create a hosted zone</strong></p>
+<ol type="1">
+<li><p>Sign in to the AWS Management Console and open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>If you’re new to Route 53, choose <strong>Get started</strong>.</p>
+<p>If you’re already using Route 53, choose <strong>Hosted zones</strong> in the navigation pane.</p></li>
+<li><p>Choose <strong>Create hosted zone</strong>.</p></li>
+<li><p>In the <strong>Create hosted zone</strong> pane, enter a domain name and, optionally, a comment. For more information about a setting, pause the mouse pointer over its label to see a tool tip.</p>
+<p>For information about how to specify characters other than a-z, 0-9, and - (hyphen) and how to specify internationalized domain names, see <a href="DomainNameFormat.html">DNS domain name format</a>.</p></li>
+<li><p>For <strong>Record type</strong>, accept the default value of <strong>Public hosted zone</strong>.</p></li>
+<li><p>Choose <strong>Create hosted zone</strong>.</p></li>
+</ol>
+<h2 id="step-3-create-records-inactive-domains">Step 3: Create records (inactive domains)<a name="migrate-dns-create-records-domain-inactive"></a></h2>
+<p>After you create a hosted zone, you create records in the hosted zone that define where you want to route traffic for a domain (example.com) or subdomain (www.example.com). For example, if you want to route traffic for example.com and www.example.com to a web server on an Amazon EC2 instance, you create two records, one named example.com and the other named www.example.com. In each record, you specify the IP address for your EC2 instance.</p>
+<p>You can create records in a variety of ways:</p>
+<p><strong>Import a zone file</strong><br />
+This is the easiest method if you got a zone file from your current DNS service in <a href="#migrate-dns-get-zone-file-domain-inactive">Step 1: Get your current DNS configuration from the current DNS service provider (inactive domains)</a>. Amazon Route 53 can’t predict when to create alias records or to use special routing types such as weighted or failover. As a result, if you import a zone file, Route 53 creates standard DNS records using the simple routing policy.<br />
+For more information, see <a href="resource-record-sets-creating-import.html">Creating records by importing a zone file</a>.</p>
+<p><strong>Create records individually in the console</strong><br />
+If you didn’t get a zone file and you just want to create a few records with a routing policy of Simple to get started, you can create the records in the Route 53 console. You can create both alias and non-alias records.<br />
+For more information, see the following topics:<br />
++ <a href="routing-policy.html">Choosing a routing policy</a> + <a href="resource-record-sets-choosing-alias-non-alias.html">Choosing between alias and non-alias records</a> + <a href="resource-record-sets-creating.html">Creating records by using the Amazon Route 53 console</a></p>
+<p><strong>Create records programmatically</strong><br />
+You can create records by using one of the AWS SDKs, the AWS CLI, or AWS Tools for Windows PowerShell. For more information, see <a href="https://docs.aws.amazon.com/">AWS Documentation</a>.<br />
+If you’re using a programming language that AWS doesn’t provide an SDK for, you can also use the Route 53 API. For more information, see the <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/">Amazon Route 53 API Reference</a>.</p>
+<h2 id="step-4-update-the-domain-registration-to-use-amazon-route-53-name-servers-inactive-domains">Step 4: Update the domain registration to use Amazon Route 53 name servers (inactive domains)<a name="migrate-dns-update-domain-inactive"></a></h2>
+<p>When you’ve finished creating records for the domain, you can change the DNS service for your domain to Amazon Route 53. Perform the following procedure to update settings with the domain registrar.<a name="migrate-dns-update-domain-inactive-procedure"></a></p>
+<p><strong>To update the name servers for the domain</strong></p>
+<ol type="1">
+<li><p>In the Route 53 console, get the name servers for your Route 53 hosted zone:</p>
+<ol type="1">
+<li><p>Open the Route 53 console at <a href="https://console.aws.amazon.com/route53/">https://console.aws.amazon.com/route53/</a>.</p></li>
+<li><p>In the navigation pane, choose <strong>Hosted zones</strong>.</p></li>
+<li><p>On the <strong>Hosted zones</strong> page, choose the radio button (not the name) for the hosted zone, then choose <strong>View details</strong>.</p></li>
+<li><p>On the details page for the hosted zone, choose <strong>Hosted zone details</strong>.</p></li>
+<li><p>Make note of the four servers listed for <strong>Name servers</strong>.</p></li>
+</ol></li>
+<li><p>Use the method provided by the registrar for the domain to change the name servers for the domain to use the four Route 53 name servers that you got in step 2 of this procedure.</p>
+<p>If the domain is registered with Route 53, see <a href="domain-name-servers-glue-records.html">Adding or changing name servers and glue records for a domain</a>.</p></li>
+</ol>
+</body>
+</html>

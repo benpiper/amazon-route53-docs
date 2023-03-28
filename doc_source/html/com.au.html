@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>com.au</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="com.au-australia">.com.au (Australia)<a name="com.au"></a></h1>
+<p><a href="registrar-tld-list.html#index">Return to index</a></p>
+<p><strong>Confirmation email from the TLD registry</strong><br />
+Our registrar associate, Gandi, resells .com.au domains through DomainDirectors. When you transfer a domain name to Route 53, DomainDirectors sends an email to the registrant contact for the domain to verify contact information or to authorize transfer requests.</p>
+<p><strong>Registration and renewal period</strong><br />
+One to five years.</p>
+<p><strong>Restrictions</strong><br />
+Only second-level domains are available. Route 53 supports the second-level domains .com.au and net.au.<br />
+Open to the public, with some restrictions:<br />
++ The .com.au and .net.au domains are open to partnerships or sole traders registered in Australia; to foreign companies licensed to trade in Australia; and to owners or applicants of an Australian-registered trademark. Individuals cannot register .com.au/.net.au domains. The registrant contact must be a company. + Your domain name must be identical to your name (as registered with the relevant Australian authorities) or to your trademark (or to the abbreviation or acronym for your trademark). + The domain name should indicate your activity. For example, it should indicate a product that you sell or a service that you provide. + During the registration process, you must provide the following information: + Your registration type: ABN (Australian Business Number), ACN (Australian Company Number), or TM (Trademark) if the domain name corresponds to your trademark. + Your ID number, which can be a Medicare card number, a tax file number (TFN), a state driver’s license number, or an Australian Business Number (ABN). + Your state or province. + Incorrect or mismatched contact information, including name, ABN, or Trademark (TM) number will result in registration, trade, and renewals failures. An ownership change might be required to correct information for existing domains.</p>
+<p><strong>Privacy protection</strong><br />
+Not supported.</p>
+<p><strong>Domain locking to prevent unauthorized transfers</strong><br />
+Not supported. We recommend that you prevent unauthorized transfers by restricting access to the <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_domains_RetrieveDomainAuthCode.html">RetrieveDomainAuthCode</a> API action. (When you restrict access to this Route 53 API, you also restrict who can generate an authorization code using the Route 53 console, AWS SDKs, and other programmatic methods.) For more information, see <a href="auth-and-access-control.html">Identity and access management in Amazon Route 53</a>.</p>
+<p><strong>Internationalized domain names</strong><br />
+Not supported.</p>
+<p><strong>Authorization code required for transfer to Route 53</strong><br />
+Yes</p>
+<p><strong>DNSSEC</strong><br />
+Supported for domain registration. When you set the key, you must choose DNS security algorithm 2 (DH). For more information, see <a href="domain-configure-dnssec.html">Configuring DNSSEC for a domain</a>.</p>
+<p><strong>Deadlines for renewing and restoring domains</strong><br />
++ Renewal is possible: Between 60 days before expiration and the expiration date + Late renewal with Route 53 is possible: Until 29 days after expiration + Domain is deleted from Route 53: 29 days after expiration + Restoration with the registry is possible: No + Domain is deleted from the registry: 30 days after expiration</p>
+<p><strong>Deletion of domain registration</strong><br />
+The registry for .com.au domains doesn’t allow you to delete domain registrations. Instead, you must disable automatic renewal and wait for the domain to expire. For more information, see <a href="domain-delete.html">Deleting a domain name registration</a>.</p>
+<p><strong>Changing ownership</strong><br />
+Change the owner, either programmatically or by using the Route 53 console. See <a href="domain-update-contacts.html#domain-update-contacts-basic">Updating contact information for a domain</a>. Then complete the following process to complete the ownership change:</p>
+<ol type="1">
+<li><p>Both the old and new registrants must click the link they receive in an email from <em>noreply@emailverification.info</em> to their listed email addresses. If this isn’t completed within 14 days, you have to start the process again.</p></li>
+<li><p>After the responses are confirmed, the owner change in the registry will be processed in a short time without any further confirmation.</p></li>
+</ol>
+</body>
+</html>

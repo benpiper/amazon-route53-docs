@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>setting-up-route-53</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="setting-up-amazon-route-53">Setting up Amazon Route 53<a name="setting-up-route-53"></a></h1>
+<p>The overview and procedures in this section help you get started with AWS.</p>
+<p><strong>Topics</strong> + <a href="#setting-up-sign-up-for-aws">Sign up for AWS</a> + <a href="#setting-up-access-account">Access your account</a> + <a href="#setting-up-create-iam-user">Create an IAM user</a> + <a href="#setting-up-aws-cli">Set up the AWS Command Line Interface or AWS Tools for Windows PowerShell</a> + <a href="#setting-up-sdk">Download an AWS SDK</a></p>
+<h2 id="sign-up-for-aws">Sign up for AWS<a name="setting-up-sign-up-for-aws"></a></h2>
+<p>When you sign up for AWS, your AWS account is automatically signed up for all services in AWS, including Amazon Route 53. You are charged only for the services that you use.</p>
+<p>If you have an AWS account already, skip to <a href="#setting-up-access-account">Access your account</a>. If you don’t have an AWS account, use the following procedure to create one.<a name="setting-up-sign-up-for-aws-procedure"></a></p>
+<p><strong>To create an AWS account</strong></p>
+<ol type="1">
+<li><p>Open <a href="https://portal.aws.amazon.com/billing/signup">https://portal.aws.amazon.com/billing/signup</a>.</p></li>
+<li><p>Follow the online instructions.</p>
+<p>Part of the sign-up procedure involves receiving a phone call and entering a verification code on the phone keypad.</p>
+<p>When you sign up for an AWS account, an <em>AWS account root user</em> is created. The root user has access to all AWS services and resources in the account. As a security best practice, <a href="https://docs.aws.amazon.com/singlesignon/latest/userguide/getting-started.html">assign administrative access to an administrative user</a>, and use only the root user to perform <a href="https://docs.aws.amazon.com/general/latest/gr/root-vs-iam.html#aws_tasks-that-require-root">tasks that require root user access</a>.</p></li>
+</ol>
+<p>Note your AWS account number, because you’ll need it later.</p>
+<h2 id="access-your-account">Access your account<a name="setting-up-access-account"></a></h2>
+<p>You use AWS services by using any of the following options: + AWS Management Console + API for each service + AWS Command Line Interface (AWS CLI) + AWS Tools for Windows PowerShell + AWS SDKs</p>
+<p>For each of those options, you need to access your AWS account by providing credentials that verify that you have permissions to use the services.</p>
+<h3 id="access-the-console">Access the console<a name="setting-up-access-account-console"></a></h3>
+<p>To access the AWS Management Console for the first time, you provide an email address and a password. This combination of your email address and password is called your <em>root identity</em> or <em>root account credentials</em>. After you access your account for the first time, we strongly recommend that you don’t use your root account credentials again for everyday use. Instead, you should create new credentials by using <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html">AWS Identity and Access Management</a>. To do that, you create a user account for yourself known as an <em>IAM user</em>, and then add the IAM user to an IAM group with administrative permissions or grant the IAM user administrative permissions. You then can access AWS using a special URL and the credentials for the IAM user. You also can add other IAM users later, and restrict their access to specified resources in the account.</p>
+<h3 id="access-the-api-aws-cli-aws-tools-for-windows-powershell-or-the-aws-sdks">Access the API, AWS CLI, AWS Tools for Windows PowerShell, or the AWS SDKs<a name="setting-up-access-account-api-cli"></a></h3>
+<p>To use the API, the AWS CLI, AWS Tools for Windows PowerShell, or the AWS SDKs, you must create <em>access keys</em>. These keys consist of an access key ID and secret access key, which are used to sign programmatic requests that you make to AWS.</p>
+<p>To create the keys, you sign in to the AWS Management Console. We strongly recommend that you sign in with your IAM user credentials instead of your root credentials. For more information, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html">Managing access keys for IAM users</a> in the <em>IAM User Guide</em>.</p>
+<h2 id="create-an-iam-user">Create an IAM user<a name="setting-up-create-iam-user"></a></h2>
+<p>Perform the following procedures to create a group for administrators, create an IAM user, and then add the IAM user to the administrators group. If you signed up for AWS but have not created an IAM user for yourself, you can create one using the IAM console. If you aren’t familiar with using the console, see <a href="https://docs.aws.amazon.com/awsconsolehelpdocs/latest/gsg/getting-started.html">Working with the AWS Management Console</a> for an overview.</p>
+<p>To create an administrator user, choose one of the following options.</p>
+<hr />
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Choose one way to manage your administrator</th>
+<th>To</th>
+<th>By</th>
+<th>You can also</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>In IAM Identity Center (Recommended)</td>
+<td>Use short-term credentials to access AWS.This aligns with the security best practices. For information about best practices, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html#bp-users-federation-idp">Security best practices in IAM</a> in the <em>IAM User Guide</em>.</td>
+<td>Following the instructions in <a href="https://docs.aws.amazon.com/singlesignon/latest/userguide/getting-started.html">Getting started</a> in the AWS IAM Identity Center (successor to AWS Single Sign-On) User Guide.</td>
+<td>Configure programmatic access by <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html">Configuring the AWS CLI to use AWS IAM Identity Center (successor to AWS Single Sign-On)</a> in the AWS Command Line Interface User Guide.</td>
+</tr>
+<tr class="even">
+<td>In IAM (Not recommended)</td>
+<td>Use long-term credentials to access AWS.</td>
+<td>Following the instructions in <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/getting-started_create-admin-group.html">Creating your first IAM admin user and user group</a> in the IAM User Guide.</td>
+<td>Configure programmatic access by <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html">Managing access keys for IAM users</a> in the IAM User Guide.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>To sign in as your new IAM user</strong></p>
+<ol type="1">
+<li><p>Sign out of the AWS console.</p></li>
+<li><p>Sign in by using the following URL, where <em>your_aws_account_id</em> is your AWS account number without the hyphens. For example, if your AWS account number is 1234-5678-9012, your AWS account ID is 123456789012:</p>
+<pre><code>https://your_aws_account_id.signin.aws.amazon.com/console/</code></pre></li>
+<li><p>Enter the IAM user name (not your email address) and password that you just created. When you’re signed in, the navigation bar displays “<em>your_user_name</em> @ <em>your_aws_account_id</em>”.</p></li>
+</ol>
+<p>If you don’t want the URL for your sign-in page to contain your AWS account ID, you can create an account alias.<a name="setting-up-create-account-alias-procedure"></a></p>
+<p><strong>To create an account alias and conceal your account ID</strong></p>
+<ol type="1">
+<li><p>On the IAM console, choose <strong>Dashboard</strong> in the navigation pane.</p></li>
+<li><p>On the dashboard, choose <strong>Customize</strong> and enter an alias such as your company name.</p></li>
+<li><p>Sign out of the AWS console.</p></li>
+<li><p>Sign in by using the following URL:</p>
+<pre><code>https://your_account_alias.signin.aws.amazon.com/console/</code></pre></li>
+</ol>
+<p>To verify the sign-in link for IAM users for your account, open the IAM console and check under <strong>IAM users sign-in link</strong> on the dashboard.</p>
+<p>For more information about using IAM, see <a href="auth-and-access-control.html">Identity and access management in Amazon Route 53</a>.</p>
+<h2 id="set-up-the-aws-command-line-interface-or-aws-tools-for-windows-powershell">Set up the AWS Command Line Interface or AWS Tools for Windows PowerShell<a name="setting-up-aws-cli"></a></h2>
+<p>The AWS Command Line Interface (AWS CLI) is a unified tool for managing AWS services. For information about how to install and configure the AWS CLI, see <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html">Getting set up with the AWS Command Line Interface</a> in the <em>AWS Command Line Interface User Guide</em>.</p>
+<p>If you have experience with Windows PowerShell, you might prefer to use AWS Tools for Windows PowerShell. For more information, see <a href="https://docs.aws.amazon.com/powershell/latest/userguide/pstools-getting-set-up.html">Setting up the AWS Tools for Windows PowerShell</a> in the <em>AWS Tools for Windows PowerShell User Guide</em>.</p>
+<h2 id="download-an-aws-sdk">Download an AWS SDK<a name="setting-up-sdk"></a></h2>
+<p>If you’re using a programming language that AWS provides an SDK for, we recommend that you use an SDK instead of the Amazon Route 53 API. The SDKs make authentication simpler, integrate easily with your development environment, and provide easy access to Route 53 commands. For more information, see <a href="https://aws.amazon.com/tools/">Tools for Amazon Web Services</a>.</p>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>creating-resources-with-cloudformation</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="creating-amazon-route-53-and-amazon-route-53-resolver-resources-with-aws-cloudformation">Creating Amazon Route 53 and Amazon Route 53 Resolver resources with AWS CloudFormation<a name="creating-resources-with-cloudformation"></a></h1>
+<p>Amazon Route 53 and Amazon Route 53 Resolver are integrated with AWS CloudFormation, a service that helps you to model and set up your AWS resources so that you can spend less time creating and managing your resources and infrastructure. You create a template that describes all the AWS resources that you want, and AWS CloudFormation provisions and configures those resources for you.</p>
+<p>When you use AWS CloudFormation, you can reuse your template to set up your Route 53 and Route 53 Resolver resources consistently and repeatedly. Describe your resources once, and then provision the same resources over and over in multiple AWS accounts and Regions.</p>
+<h2 id="route-53-route-53-resolver-and-aws-cloudformation-templates">Route 53, Route 53 Resolver, and AWS CloudFormation templates<a name="working-with-templates"></a></h2>
+<p>To provision and configure resources for Route 53, Route 53 Resolver, and related services, you must understand <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/template-guide.html">AWS CloudFormation templates</a>. Templates are formatted text files in JSON or YAML. These templates describe the resources that you want to provision in your AWS CloudFormation stacks. If you’re unfamiliar with JSON or YAML, you can use AWS CloudFormation Designer to help you get started with AWS CloudFormation templates. For more information, see <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/working-with-templates-cfn-designer.html">What is AWS CloudFormation Designer?</a> in the <em>AWS CloudFormation User Guide</em>.</p>
+<p>Route 53 supports creating the following resource types in AWS CloudFormation: + <code>AWS::Route53::DNSSEC</code> + <code>AWS::Route53::HealthCheck</code> + <code>AWS::Route53::HostedZone</code> + <code>AWS::Route53::KeySigningKey</code> + <code>AWS::Route53::RecordSet</code> + <code>AWS::Route53::RecordSetGroup</code></p>
+<p>For more information, including examples of JSON and YAML templates for Route 53 resources, see the <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/AWS_Route53.html">Amazon Route 53 resource type reference</a> in the <em>AWS CloudFormation User Guide</em>.</p>
+<p>Route 53 Resolver supports creating the following resource types in AWS CloudFormation: + <code>AWS::Route53Resolver::FirewallDomainList</code> + <code>AWS::Route53Resolver::FirewallDomainList</code> + <code>AWS::Route53Resolver::FirewallRuleGroupAssociation</code> + <code>AWS::Route53Resolver::ResolverDNSSECConfig</code> + <code>AWS::Route53Resolver::ResolverEndpoint</code> + <code>AWS::Route53Resolver::ResolverQueryLoggingConfig</code> + <code>AWS::Route53Resolver::ResolverQueryLoggingConfigAssociation</code> + <code>AWS::Route53Resolver::ResolverRule</code> + <code>AWS::Route53Resolver::ResolverRuleAssociation</code></p>
+<p>For more information, including examples of JSON and YAML templates for Route 53 Resolver resources, see the <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/AWS_Route53Resolver.html">Amazon Route 53 Resolver resource type reference</a> in the <em>AWS CloudFormation User Guide</em>.</p>
+<h2 id="learn-more-about-aws-cloudformation">Learn more about AWS CloudFormation<a name="learn-more-cloudformation"></a></h2>
+<p>To learn more about AWS CloudFormation, see the following resources: + <a href="http://aws.amazon.com/cloudformation/">AWS CloudFormation</a> + <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html">AWS CloudFormation User Guide</a> + <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/Welcome.html">AWS CloudFormation API Reference</a> + <a href="https://docs.aws.amazon.com/cloudformation-cli/latest/userguide/what-is-cloudformation-cli.html">AWS CloudFormation Command Line Interface User Guide</a></p>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>dns-failover-private-hosted-zones</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+</head>
+<body>
+<h1 id="configuring-failover-in-a-private-hosted-zone">Configuring failover in a private hosted zone<a name="dns-failover-private-hosted-zones"></a></h1>
+<p>If you’re creating failover records in a private hosted zone, note the following: + Route 53 health checkers are outside the VPC. To check the health of an endpoint within a VPC by IP address, you must assign a public IP address to the instance in the VPC. + You can create a CloudWatch metric, associate an alarm with the metric, and then create a health check that is based on the data stream for the alarm. For example, you might create a CloudWatch metric that checks the status of the EC2 <code>StatusCheckFailed</code> metric, add an alarm to the metric, and then create a health check that is based on the data stream for the alarm to check instances within a Virtual Private Cloud (VPC) that only have private IP addresses. For information about creating CloudWatch metrics and alarms by using the CloudWatch console, see the <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/">Amazon CloudWatch User Guide</a>.</p>
+<p>For more information, see <a href="hosted-zones-private.html">Working with private hosted zones</a> and <a href="monitoring-health-checks.html">Monitoring health checks using CloudWatch</a>.</p>
+</body>
+</html>
